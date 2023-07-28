@@ -7,16 +7,9 @@
             switch ($_SERVER['HTTP_HOST']) {
                 case 'localhost':
                     $mysql_host     = "localhost";
-                    $mysql_db       = "db_jfh_assessoria";
+                    $mysql_db       = "paulo_bareta_fotografia";
                     $mysql_username = "root";
-                    $mysql_password = "]l1[h/c50kJ-YsAd";
-                break;
-
-                case 'jfhassessoria.com':
-                    $mysql_host     = "192.185.177.49";
-                    $mysql_db       = "jfhcre23_jfh_assessoria";
-                    $mysql_username = "jfhcre23_superus_jfh_assessoria";
-                    $mysql_password = "6vq!dKO,QNAV";
+                    $mysql_password = "";
                 break;
                 
                 default:

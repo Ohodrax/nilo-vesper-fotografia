@@ -47,7 +47,7 @@
                 //corpo do email como html_entity_decode
                 $mail->isHTML(true);
                 //assunto do email
-                $mail->Subject = 'Novo contato - JFH Assessoria';
+                $mail->Subject = 'Novo contato - Site';
                 //corpo do email
     
                 $message = "";
