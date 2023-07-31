@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Sora:wght@300;400;500;600&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     outline: 0;
     outline: none;
+    font-family: 'Montserrat', sans-serif;
 }
 
 :root {
@@ -324,7 +327,7 @@ header {
         position: absolute;
         width: auto;
         top: 20px;
-        left: -150px;
+        left: -170px;
         padding: 6px 12px;
         border-radius: 8px;
         text-align: center;

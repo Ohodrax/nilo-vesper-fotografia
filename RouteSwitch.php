@@ -129,6 +129,22 @@ abstract class RouteSwitch
             require __DIR__ . '/views/contact.php';
         }
     }
+
+    protected function admin()
+    {
+        if (!file_exists(__DIR__ . '/views/admin/login.php')) {
+
+            // procura a página not found
+            if (!file_exists(__DIR__ . '/views/not-found.php')) {
+                http_response_code(404);
+                echo "Página não encontrada";
+            } else {
+                require __DIR__ . '/views/not-found.php';
+            }
+        } else {
+            require __DIR__ . '/views/admin/login.php';
+        }
+    }
     
     public function __call($name, $arguments)
     {

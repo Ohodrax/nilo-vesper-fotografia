@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Sora:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
+:root {
+    --light-gray: #6f6f6f;
+    --header-text-color: #fff;
+    --texto-destaque-color: #d5d5d5;
+    --texto-escuro-color: #000000;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+}
+
+.content {
+    max-width: 1440px;
+}
+
+.nav-content {
+    padding: 16px 0;
+    transition: all 0.3s;
+}
+
+.nav-content div a h1 {
+    font-weight: 400;
+    transition: all 0.3s;
+    margin: 0;
+    font-size: 24px;
+}
+
+.nav-content ul li {
+    padding: 5px 10px;
+}
+
+.nav-content div a h1 span {
+    font-weight: 700;
+}
+
+.navbar-collapse {
+    font-size: 18px;
+}
+
+.active {
+    font-weight: 600;
+}
+
+
+/* effects */
+
+.hover-underline-animation {
+    display: inline-block;
+    position: relative;
+}
+
+.hover-underline-animation::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--light-gray);
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+    transform-origin: bottom right;
+}
+
+.hover-underline-animation:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
