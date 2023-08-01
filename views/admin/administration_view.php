@@ -27,7 +27,7 @@
         <nav class="navbar navbar-expand-lg nav-content bg-body-tertiary">
             <div class="container-fluid content ">
 
-                <a class="navbar-brand" href="#" data-aos="fade-down" data-aos-delay="100"><h1>Painel<span>Administrativo</span></h1></a>
+                <a class="navbar-brand" href="#" data-aos="fade-down" data-aos-delay="100" onclick="renderPage(this)"><h1>Painel<span>Administrativo</span></h1></a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdm" aria-controls="navbarAdm" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,28 +36,28 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarAdm">
                     <ul class="navbar-nav my-3 mt-lg-0 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" aria-current="page" href="#" data-aos="fade-down" data-aos-delay="150">Início</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="150" onclick="renderPage(this)">Início</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="200">Retratos</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="200" onclick="renderPage(this)">Retratos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="250">Personalidades</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="250" onclick="renderPage(this)">Personalidades</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="300">Moda</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="300" onclick="renderPage(this)">Moda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="350">Corporativo</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="350" onclick="renderPage(this)">Corporativo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="400">Clientes</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="400" onclick="renderPage(this)">Clientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="450">Sobre</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="450" onclick="renderPage(this)">Sobre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="500">Contato</a>
+                            <a class="nav-link px-2 hover-underline-animation" href="#" data-aos="fade-down" data-aos-delay="500" onclick="renderPage(this)">Contato</a>
                         </li>
                     </ul>
                 </div>
@@ -66,9 +66,11 @@
         </nav>
     </header>
 
-    <section class="content" id="root">
-        <?php include $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_main.php"; ?>
-    </section>
+    <div class="row justify-content-center">
+        <section class="content" id="root">
+            <?php include $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_main.php"; ?>
+        </section>
+    </div>
 
     <section class="content">
         <h3>Início</h3>
@@ -105,14 +107,7 @@
         </ul>
     </section>
 
-    <div class="toast align-items-center text-bg-primary border-0" role="alert" id="toastNotification">
-  <div class="d-flex">
-    <div class="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-</div>
+    <div id="toastBox"></div>
 
     <!-- Custom JS -->
     <script src="../../scripts/_admin.js"></script>

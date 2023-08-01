@@ -3,35 +3,35 @@
     if (isset($_POST['renderContent'])) {
         switch ($_POST['renderContent']) {
             
-            case 'home':
+            case 'Início':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_home.php";
             break;
             
-            case 'pictures':
+            case 'Retratos':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_pictures.php";
             break;
             
-            case 'personalities':
+            case 'Personalidades':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_personalities.php";
             break;
             
-            case 'fashion':
+            case 'Moda':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_fashion.php";
             break;
             
-            case 'corporate':
+            case 'Corporativo':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_corporate.php";
             break;
             
-            case 'clients':
+            case 'Clientes':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_clients.php";
             break;
             
-            case 'about':
+            case 'Sobre':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_about.php";
             break;
             
-            case 'contact':
+            case 'Contato':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_contact.php";
             break;
             

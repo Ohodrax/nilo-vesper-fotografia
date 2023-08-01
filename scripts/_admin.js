@@ -1,14 +1,5 @@
 AOS.init();
 
-const toastElList = document.querySelectorAll('.toast')
-const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, {}))
-
-const myToast = document.getElementById('toastNotification');
-
-myToastEl.addEventListener('hidden.bs.toast', () => {
-  console.log("salkjdoasj")
-})
-
 function mask(o, f) {
     setTimeout(function() {
         var v = maskCelular(o.value);
@@ -36,15 +27,46 @@ function maskCelular(v) {
     return r;
 }
 
-function renderPage(o) {
+function setLinkActive(o) {
+    let navLinks = document.getElementsByClassName("nav-link");
+
+    // remove todos os links ativos
+    for (let index = 0; index < navLinks.length; index++) {
+        navLinks[index].style.fontWeight = 400;
+    }
+
+    // define um novo link ativo
+    o.style.fontWeight = 500;
+}
+
+async function renderPage(o) {
     let refContent = o.innerHTML;
     let data_post = `renderContent=${refContent}`;
-    let url = "../ajax/a_renderAdmin_main.php";
+    let url = "../../ajax/a_renderAdmin_main.php";
+
+    setLinkActive(o);
 
     try {
+
+        await http_post(url, data_post).then(snapshot => {
+
+            try {
+
+                document.getElementById("root").innerHTML = snapshot;
+                
+            } catch (error) {
+                console.log(error)
+                showToast("Ocorreu um erro", false);
+            }
+
+        }).catch(error => {
+            console.log(error)
+            showToast("Ocorreu um erro", false);
+        })
         
     } catch (error) {
-        
+        console.log(error)
+        showToast("Ocorreu um erro", false);
     }
 }
 
@@ -65,4 +87,36 @@ function http_post(url, data) {
     
         http.send(data);
     });
+}
+
+function showToast(msg, ret) {
+    let toastBox = document.getElementById("toastBox");
+    let toast = document.createElement("div");
+    let icon;
+    toast.classList.add("toast");
+
+    if (ret === undefined) {
+        icon = `<i class='bx bxs-error-circle'></i>`;
+        toast.classList.add("toast-info");
+    } else {
+        if (ret) {
+            icon = `<i class='bx bxs-check-circle'></i>`;
+            toast.classList.add("toast-success");
+        } else {
+            toast.classList.add("toast-error");
+            icon = `<i class='bx bxs-x-circle'></i>`;
+        }
+    }
+
+    setTimeout(() => {
+        toast.classList.add("toast-out");
+    }, 5000);
+    
+    toast.innerHTML = `${icon} ${msg}`;
+    
+    toastBox.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 6000);
 }
