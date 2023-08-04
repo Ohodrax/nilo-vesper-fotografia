@@ -1,7 +1,8 @@
 AOS.init();
 
+var device;
+
 window.onload = () => {
-    let device;
     const ua = navigator.userAgent;
 
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {

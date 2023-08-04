@@ -75,7 +75,7 @@
             <h1 class="texto-destaque mb-4 text-end">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
             <div class="row justify-content-lg-end">
                 <div class="col-12 col-lg-10">
-                    <textarea class="form-control person-form-control person-form-textarea mb-4">30 ANOS DE CARREIRA
+                    <textarea class="form-control person-form-control person-form-textarea mb-4" rows="10">30 ANOS DE CARREIRA
                     DEDICADOS A ARTE</textarea>
                 </div>
             </div>
