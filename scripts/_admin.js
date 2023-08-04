@@ -1,11 +1,26 @@
 AOS.init();
 
+window.onload = () => {
+    let device;
+    const ua = navigator.userAgent;
+
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      device = "tablet";
+    }
+    
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+      device = "mobile";
+    }
+
+    device = "desktop";
+};
+
 function gallery_functions() {
     const slider = document.querySelector('.image-render-box');
     let isDown = false;
     let startX;
     let scrollLeft;
-    
+
     slider.addEventListener('mousedown', (e) => {
         isDown = true;
         slider.classList.add('active');
@@ -29,6 +44,7 @@ function gallery_functions() {
         slider.scrollLeft = scrollLeft - walk;
         // console.log(walk);
     });
+    
 }
 
 function arrowSlide(to) {
@@ -105,6 +121,10 @@ async function renderPage(o) {
                     case "Início":
                         document.getElementsByClassName("image-render-box")[1].remove();
                         gallery_functions();
+
+                        if (device == "tablet" || device == "mobile") {
+                            document.getElementsByClassName("image-render-box")[0].style.overflowX = "scroll";
+                        }
                     break;
                 
                     default:
