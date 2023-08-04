@@ -345,6 +345,7 @@ input[type="file"] {
 }
 .person-form-textarea {
     resize: none;
+    min-height: 500px!important;
 }
 
 .person-form-control:active, .person-form-control:focus, .person-form-control:target {
