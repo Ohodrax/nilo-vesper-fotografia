@@ -41,7 +41,8 @@
     
         }
     } else {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_users.php";
+        // require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_users.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_home.php";
     }
 
 ?>

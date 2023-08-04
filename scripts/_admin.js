@@ -1,5 +1,52 @@
 AOS.init();
 
+function gallery_functions() {
+    const slider = document.querySelector('.image-render-box');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+    slider.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+    
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; //scroll-fast
+        slider.scrollLeft = scrollLeft - walk;
+        // console.log(walk);
+    });
+}
+
+function arrowSlide(to) {
+    const slider = document.querySelector('.image-render-box');
+    let scrollTime = 0;
+
+    let timerSlide = setInterval(() => {
+        scrollTime++;
+
+        if (scrollTime > 25) {
+            clearInterval(timerSlide);
+        } else {
+            
+            slider.scrollLeft = to == "right" ? slider.scrollLeft + scrollTime : slider.scrollLeft - scrollTime;
+        }
+    }, 10);
+}
+
 function mask(o, f) {
     setTimeout(function() {
         var v = maskCelular(o.value);
@@ -53,7 +100,17 @@ async function renderPage(o) {
             try {
 
                 document.getElementById("root").innerHTML = snapshot;
+
+                switch (refContent) {
+                    case "Início":
+                        document.getElementsByClassName("image-render-box")[1].remove();
+                        gallery_functions();
+                    break;
                 
+                    default:
+                    break;
+                }
+
             } catch (error) {
                 console.log(error)
                 showToast("Ocorreu um erro", false);
