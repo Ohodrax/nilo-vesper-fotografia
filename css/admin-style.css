@@ -90,9 +90,9 @@ body {
 /* Toast CSS */
 
 #toastBox {
-    position: absolute;
+    position: fixed;
     bottom: 30px;
-    right: 30px;
+    right: 0;
     display: flex;
     align-items: flex-end;
     flex-direction: column;
@@ -107,12 +107,13 @@ body {
     font-weight: 500;
     margin: 15px 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    display: flex;
+    display: flex!important;
     align-items: center;
     position: relative;
     transform: translateX(100%);
     animation: moveleft 0.3s linear forwards;
     border-bottom: 0;
+    font-size: 16px;
 }
 
 @keyframes moveleft {
@@ -131,7 +132,7 @@ body {
 
 .toast i {
     margin: 0 20px;
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .toast-success i {
@@ -218,7 +219,7 @@ input[type="file"] {
     background-color: rgba(0, 0, 0, .05);
 }
 .new-image-box:hover > .new-image-content-box {
-    transform: scale(1.1);
+    transform: scale(1.02);
 }
 
 
@@ -290,7 +291,7 @@ input[type="file"] {
     z-index: 500;
 }
 .single-image-box span:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     cursor: pointer;
 }
 .single-image-box span i {
@@ -388,7 +389,7 @@ input[type="file"] {
     filter: brightness(0.9);
 }
 .set-single-image:hover > .new-banner-box {
-    transform: scale(1.1);
+    transform: scale(1.02);
 }
 
 
@@ -427,7 +428,7 @@ input[type="file"] {
     filter: brightness(0.9);
 }
 .set-parallax-image:hover > .new-banner-box {
-    transform: scale(1.1);
+    transform: scale(1.02);
 }
 
 .new-banner-box {
@@ -444,6 +445,7 @@ input[type="file"] {
     transition: all .3s;
     font-size: 20px;
     z-index: -1;
+    text-align: center;
 }
 .new-banner-box-empty {
     border: 5px dashed #000;
@@ -451,6 +453,183 @@ input[type="file"] {
 .new-banner-box i {
     font-size: 50px;
 }
+
+
+/* css parte da galeria de gestão de imagens */
+    .add-image-gallery {
+        border: 3px dashed #000;
+        height: 450px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        transition: all .3s;
+    }
+
+    .add-image-gallery .info-add-image-gallery {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: absolute;
+        z-index: -1;
+        transition: all .3s;
+    }
+
+    .add-image-gallery label {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .add-image-gallery:hover {
+        background-color: rgba(0, 0, 0, .05);
+    }
+
+    .add-image-gallery:hover .info-add-image-gallery {
+        transform: scale(1.02);
+    }
+
+    .add-image-gallery .info-add-image-gallery i {
+        font-size: 50px;
+    }
+    
+    .add-image-gallery .info-add-image-gallery span {
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .gallery-image-box {
+        max-width: 450px;
+        height: 270px;
+        display: flex;
+        flex-direction: row;
+    }
+    .gallery-single-image-box {
+        object-fit: fill;
+        width: 90%;
+        border: 1px solid #f1f3f5;
+        text-align: center;
+    }
+    .gallery-image-box img {
+        max-width: 400px;
+        height: 100%;
+    }
+    .gallery-image-options-box {
+        width: 45px;
+        height: 100%;
+        border-radius: 0 20px 20px 0;
+        background-color: #f1f3f5;
+        font-size: 28px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .gallery-image-options-box span {
+        margin: auto;
+        transition: all .3s;
+    }
+    .gallery-image-options-box span:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+/* css parte da galeria de gestão de imagens */
+
+/* css da parte de gestão de usuários */
+
+    thead tr th {
+        font-size: 24px;
+        font-weight: 500;
+        cursor: default;
+    }
+    tbody tr td {
+        font-size: 20px;
+        vertical-align: middle;
+        cursor: default;
+    }
+    .btn-new-user {
+        font-size: 20px;
+        padding: 14px 30px;
+        color: #000;
+        background: transparent;
+        border: 1px solid #000;
+        font-weight: 400;
+        transition: all 0.3s;
+        width: 375px;
+    }
+    .btn-new-user:hover {
+        color: #fff;
+        background: #000;
+    }
+    .btn-edit-user {
+        font-size: 24px;
+        color: #000;
+        padding: 0 15px;
+        background: transparent;
+        border: 1px solid #000;
+        font-weight: 400;
+        transition: all 0.3s;
+    }
+    .btn-edit-user:hover {
+        color: #fff;
+        background: #000;
+    }
+    .btn-custom-default {
+        font-size: 20px;
+        color: #000;
+        padding: 8px 20px;
+        background: transparent;
+        border: 1px solid #000;
+        font-weight: 400;
+        transition: all 0.3s;
+        width: 250px;
+    }
+    .btn-custom-default:hover {
+        color: #fff;
+        background: #000;
+    }
+    .modal-content {
+        border-radius: 0;
+    }
+    .modal-title {
+        font-size: 28px;
+        font-weight: 500;
+    }
+    .person-form-control {
+        border-radius: 0;
+        border: 1px solid #d5d5d5;
+        color: #000;
+        height: 24px;
+        font-size: 20px;
+        outline: none;
+        padding: 20px 10px;
+        width: 100%;
+        text-align: start;
+    }
+    .person-form-control:active, .person-form-control:focus, .person-form-control:target {
+        outline: none;
+        color: #000;
+        box-shadow: 0 0 0 0;
+        border: 1px solid #000;
+        outline: 0;
+    }
+    .person-form-control::placeholder {
+        color: #000;
+    }
+    .custom-form-label {
+        font-size: 20px;
+    }
+    .btn-close {
+        font-size: 20px;
+    }
+    table {
+        white-space: nowrap;
+    }
+/* css da parte de gestão de usuários */
+
 
 /* View Mobile */
 
@@ -467,5 +646,31 @@ input[type="file"] {
     }
     .person-form-control {
         font-size: 20px;
+    }
+
+    .add-image-gallery .info-add-image-gallery span {
+        font-size: 24px;
+        max-width: 300px;
+    }
+    .gallery-image-box {
+        max-width: 100%;
+    }
+    .gallery-image-box img {
+        max-width: 310px;
+    }
+    .gallery-image-options-box {
+        font-size: 24px;
+    }
+    .btn-new-user {
+        width: 100%;
+    }
+    .table-fluid {
+        overflow-x: scroll;
+    }
+    .modal-title {
+        font-size: 24px;
+    }
+    .btn-custom-default {
+        width: 100%;
     }
 }

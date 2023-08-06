@@ -1,5 +1,11 @@
 AOS.init();
 
+window.onload = () => {
+    if (document.getElementsByClassName("image-render-box").length > 1) {
+        document.getElementsByClassName("image-render-box")[1].remove();
+    }
+}
+
 var device;
 
 window.onload = () => {
@@ -120,7 +126,8 @@ async function renderPage(o) {
 
                 switch (refContent) {
                     case "Início":
-                        document.getElementsByClassName("image-render-box")[1].remove();
+                        // document.getElementsByClassName("image-render-box")[1].remove();
+
                         gallery_functions();
 
                         if (device == "tablet" || device == "mobile") {
@@ -174,15 +181,15 @@ function showToast(msg, ret) {
     toast.classList.add("toast");
 
     if (ret === undefined) {
-        icon = `<i class='bx bxs-error-circle'></i>`;
+        icon = `<i class="bi bi-info-circle text-warning"></i>`;
         toast.classList.add("toast-info");
     } else {
         if (ret) {
-            icon = `<i class='bx bxs-check-circle'></i>`;
+            icon = `<i class="bi bi-check2-circle text-success"></i>`;
             toast.classList.add("toast-success");
         } else {
             toast.classList.add("toast-error");
-            icon = `<i class='bx bxs-x-circle'></i>`;
+            icon = `<i class="bi bi-x-circle text-danger"></i>`;
         }
     }
 

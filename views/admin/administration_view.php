@@ -69,13 +69,15 @@
         </nav>
     </header>
 
+    <br>
+
     <section>
-        <div class="container-fluid content" id="root">
+        <div class="container-fluid content my-5" id="root">
             <?php include $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_main.php"; ?>
         </div>
     </section>
 
-    <section>
+    <!-- <section>
         <div class="container-fluid content">
             <h3>Início</h3>
             <ul>
@@ -110,16 +112,13 @@
                 <li>CRUD usuários</li>
             </ul>
         </div>
-    </section>
+    </section> -->
 
     <div id="toastBox"></div>
 
-    <div class="image-render-box"></div>
+    <!-- <div class="image-render-box"></div> -->
 
     <!-- Custom JS -->
     <script src="../../scripts/_admin.js"></script>
-
-    <script src="../../scripts/gallery_functions.js"></script>
-
 </body>
 </html>

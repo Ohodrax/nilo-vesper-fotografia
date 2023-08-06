@@ -1,13 +1,15 @@
 <?php
 
-    echo "<h1 class='my-5'>Início</h1>";
+    echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Início</span></h1>";
 
 ?>
+
+<br>
 
 <section class="content my-5">
     <div class="row">
         <div class="col-12">
-            <h2 class="mb-3">Modo de exibição: Carrossel de imagens</h2>
+            <h1 class="texto-destaque mb-4 text-start"><span>MODO DE</span> EXIBIÇÃO: <span>Carrossel de imagens</span></h1>
         </div>
     </div>
     <div class="row">
@@ -68,6 +70,7 @@
 </section>
 
 <br>
+<br>
 
 <section class="content my-5">
     <div class="row justify-content-between">
@@ -75,7 +78,7 @@
             <h1 class="texto-destaque mb-4 text-end">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
             <div class="row justify-content-lg-end">
                 <div class="col-12 col-lg-10">
-                    <textarea class="form-control person-form-control person-form-textarea mb-4" rows="10">30 ANOS DE CARREIRA
+                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10">30 ANOS DE CARREIRA
                     DEDICADOS A ARTE</textarea>
                 </div>
             </div>
@@ -97,11 +100,12 @@
 </section>
 
 <br>
+<br>
     
 <section class="content my-5">
     <div class="row">
         <div class="col-12">
-            <h2 class="mb-3">Banner Parallax 1</h2>
+            <h1 class="texto-destaque mb-4 text-start"><span>BANNER</span> PARALLAX <span>1</span></h1>
         </div>
     </div>
     <div class="row">
@@ -123,11 +127,12 @@
 </section>
 
 <br>
+<br>
 
 <section class="content my-5">
     <div class="row">
         <div class="col-12">
-            <h2 class="mb-3">Banner Parallax 2</h2>
+            <h1 class="texto-destaque mb-4 text-start"><span>BANNER</span> PARALLAX <span>2</span></h1>
         </div>
     </div>
     <div class="row">
