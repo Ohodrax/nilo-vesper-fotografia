@@ -105,8 +105,10 @@ function setLinkActive(o) {
         navLinks[index].style.fontWeight = 400;
     }
 
-    // define um novo link ativo
-    o.style.fontWeight = 500;
+    if (o !== undefined) {
+        // define um novo link ativo
+        o.style.fontWeight = 500;
+    }
 }
 
 async function renderPage(o) {
@@ -204,4 +206,141 @@ function showToast(msg, ret) {
     setTimeout(() => {
         toast.remove();
     }, 6000);
+}
+
+async function renderModalContent(o) {
+    let url = "../../ajax/a_modalUser_renderContent.php";
+    let data_post = `renderContent=${o.dataset.renderContent}`;
+
+    if (o.dataset.targetId !== undefined) {
+        data_post = data_post + `&targetId=${o.dataset.targetId}`;
+    }
+
+    try {
+        await http_post(url, data_post).then(snapshot => {
+
+            document.getElementById("modalAction_content").innerHTML = snapshot;
+
+        }).catch(error => {
+            console.log(error)
+            showToast("Ocorreu um erro", false);
+        })
+    } catch (error) {
+        console.log(error)
+        showToast("Ocorreu um erro", false);
+    }
+}
+
+async function performAction(o) {
+    let refAction = {
+        "Adicionar": "Adicionando",
+        "Editar"   : "Editando",
+        "Excluir"  : "Excluindo"
+    };
+    let oldInner = o.innerHTML;
+    let doingActionRef = `${refAction[o.innerHTML]} <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>`;
+    o.innerHTML = doingActionRef;
+    o.setAttribute("disabled", true);
+
+    let url      = "../../control/c_adminUser_CRUD.php";
+    let proccess = true;
+    let emptyRef = "";
+    let data_post;
+
+    for (let index = 0; index < document.getElementsByTagName("input").length; index++) {
+        const element = document.getElementsByTagName("input")[index];
+
+        if (element.required && element.value == "") {
+            proccess = false;
+            emptyRef = emptyRef == "" ? element.name : `${emptyRef}, ${element.name}`;
+        } else if (element.id.includes("form")) {
+            data_post = data_post == undefined ? `${element.id}=${element.value}` : `${data_post}&${element.id}=${element.value}`;
+        }        
+    }
+
+    if (o.dataset.targetId !== undefined) {
+        data_post = `${data_post}&targetId=${o.dataset.targetId}`;
+    }
+
+    if (proccess) {
+
+        try {
+            await http_post(url, data_post).then(snapshot => {
+
+                try {
+                    let ret = JSON.parse(snapshot);
+    
+                    showToast(ret.ref, ret.return);
+                    
+                    if (ret.return) {
+                        
+                        for (let index = 0; index < document.getElementsByTagName("input").length; index++) {
+                            const element = document.getElementsByTagName("input")[index];
+                    
+                            if (element.id.includes("form")) {
+                                element.value = "";
+                            }
+                        }
+
+                        bootstrap.Modal.getInstance("#modalAction").hide();
+
+                        renderPage(document.getElementsByClassName("navbar-brand")[0]);
+                    }
+    
+                } catch (error) {
+                    console.log(error)
+                    showToast("Ocorreu um erro", false);
+                }
+    
+            }).catch(error => {
+                console.log(error)
+                showToast("Ocorreu um erro", false);
+            })
+            
+        } catch (error) {
+            console.log(error)
+            showToast("Ocorreu um erro", false);
+        }
+        
+    } else {
+        showToast("Campo(s) vazio(s): " + emptyRef, false);
+    }
+
+    o.innerHTML = oldInner;
+    o.removeAttribute("disabled");
+}
+
+async function changeStatus(o) {
+    let url = "../../control/c_adminUser_changeStatus.php";
+    let data_post = `targetId=${o.dataset.targetId}&setStatus=${o.checked}`;
+
+    try {
+        
+        await http_post(url, data_post).then(snapshot => {
+
+            try {
+             
+                let ret = JSON.parse(snapshot);
+
+                showToast(ret.ref, ret.return);
+
+                if (ret.return) {
+                    document.getElementById("checkboxLabel_" + o.dataset.targetId).innerHTML = o.checked ? "Ativo" : "Inativo";
+                } else {
+                    o.checked = !o.checked;
+                }
+
+                
+            } catch (error) {
+                console.log(error);
+                showToast("Ocorreu um erro", false);
+            }
+        }).catch(error => {
+            console.log(error);
+            showToast("Ocorreu um erro", false);
+        })
+    } catch (error) {
+        console.log(error);
+        showToast("Ocorreu um erro", false);
+    }
 }

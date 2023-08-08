@@ -1,6 +1,7 @@
 <?php
 
     if (isset($_POST['renderContent'])) {
+                
         switch ($_POST['renderContent']) {
             
             case 'Início':

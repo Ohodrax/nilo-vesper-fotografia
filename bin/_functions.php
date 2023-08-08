@@ -1,5 +1,5 @@
 <?php
-    include('../vendor/autoload.php');
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
