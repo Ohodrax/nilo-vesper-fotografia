@@ -41,26 +41,35 @@
                         <li class="nav-item">
                             <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="150" onclick="renderPage(this)">Início</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="200" onclick="renderPage(this)">Retratos</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle mx-2 hover-underline-animation" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-aos="fade-down" data-aos-delay="200">Galerias <i class="bi bi-caret-down-fill"></i></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" onclick="renderPage(this)">Retratos</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" onclick="renderPage(this)">Personalidades</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" onclick="renderPage(this)">Moda</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" onclick="renderPage(this)">Corporativo</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="250" onclick="renderPage(this)">Personalidades</a>
+                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="300" onclick="renderPage(this)">Clientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="300" onclick="renderPage(this)">Moda</a>
+                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="350" onclick="renderPage(this)">Sobre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="350" onclick="renderPage(this)">Corporativo</a>
+                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="400" onclick="renderPage(this)">Contato</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="400" onclick="renderPage(this)">Clientes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="450" onclick="renderPage(this)">Sobre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="500" onclick="renderPage(this)">Contato</a>
+                            <a class="nav-link mx-2 hover-underline-animation" data-aos="fade-down" data-aos-delay="450" onclick="logout()">Sair</a>
                         </li>
                     </ul>
                 </div>

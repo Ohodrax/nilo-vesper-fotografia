@@ -19,6 +19,16 @@ class Router extends RouteSwitch
             $receivedGetParam = $explodedUri[1];
         }
 
+        if (strpos($route, "/")) {
+            $explodedUri = explode("/", $route);
+
+            // aqui eu pego a pagina que esta sendo solicitada
+            $route = $explodedUri[0];
+            
+            // nesta outra eu pego os valores que estao indo pra ela através de get
+            $receivedGetParam = $explodedUri[1];
+        }
+
         if ($route === '') {
             $this->home();
         } else {

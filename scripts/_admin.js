@@ -143,17 +143,17 @@ async function renderPage(o) {
 
             } catch (error) {
                 console.log(error)
-                showToast("Ocorreu um erro", false);
+                showToast("Erro do sistema", false);
             }
 
         }).catch(error => {
             console.log(error)
-            showToast("Ocorreu um erro", false);
+            showToast("Erro do sistema", false);
         })
         
     } catch (error) {
         console.log(error)
-        showToast("Ocorreu um erro", false);
+        showToast("Erro do sistema", false);
     }
 }
 
@@ -223,11 +223,11 @@ async function renderModalContent(o) {
 
         }).catch(error => {
             console.log(error)
-            showToast("Ocorreu um erro", false);
+            showToast("Erro do sistema", false);
         })
     } catch (error) {
         console.log(error)
-        showToast("Ocorreu um erro", false);
+        showToast("Erro do sistema", false);
     }
 }
 
@@ -289,17 +289,17 @@ async function performAction(o) {
     
                 } catch (error) {
                     console.log(error)
-                    showToast("Ocorreu um erro", false);
+                    showToast("Erro do sistema", false);
                 }
     
             }).catch(error => {
                 console.log(error)
-                showToast("Ocorreu um erro", false);
+                showToast("Erro do sistema", false);
             })
             
         } catch (error) {
             console.log(error)
-            showToast("Ocorreu um erro", false);
+            showToast("Erro do sistema", false);
         }
         
     } else {
@@ -329,18 +329,23 @@ async function changeStatus(o) {
                 } else {
                     o.checked = !o.checked;
                 }
-
                 
             } catch (error) {
                 console.log(error);
-                showToast("Ocorreu um erro", false);
+                showToast("Erro do sistema", false);
             }
         }).catch(error => {
             console.log(error);
-            showToast("Ocorreu um erro", false);
+            showToast("Erro do sistema", false);
         })
     } catch (error) {
         console.log(error);
-        showToast("Ocorreu um erro", false);
+        showToast("Erro do sistema", false);
     }
+}
+
+async function logout() {
+    setTimeout(() => {
+        window.location.href = "/logout";
+    }, 1000);
 }

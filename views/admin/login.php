@@ -50,12 +50,17 @@
             <form action="">
                 <h1 data-aos="fade-up">Login</h1>
                 <div class="input-box" data-aos="fade-up" data-aos-delay="200">
-                    <input type="text" placeholder="Usuário" required>
+                    <input type="text" placeholder="Usuário" required name="username" id="username" inputmode="email">
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box" data-aos="fade-up" data-aos-delay="300">
-                    <input type="password" placeholder="Senha" required>
-                    <i class='bx bxs-lock-alt' ></i>
+                    <input type="password" placeholder="Senha" required name="userpassword" id="userpassword">
+
+                    <input type="checkbox" name="showPassword" id="showPassword" class="d-none" onchange="changeInput(this)">
+                    <label for="showPassword" id="lock-icon">
+                        <i class='bx bxs-lock-alt'></i>
+                        <i class='bx bxs-lock-open-alt'></i>
+                    </label>
                 </div>
     
                 <div class="remember-forgot" data-aos="fade-up" data-aos-delay="400">
@@ -67,7 +72,7 @@
                 </div>
     
                 <div data-aos="fade-up" data-aos-delay="500">
-                    <button type="submit" class="btn">Entrar</button>
+                    <button type="submit" class="btn" onclick="login(this)">Entrar</button>
                 </div>
             </form>
         </div>
@@ -83,20 +88,28 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-box input-box-modal" data-aos="fade-up" data-aos-delay="300">
-                        <input type="email" placeholder="E-mail" required>
+                        <input type="email" placeholder="E-mail" required name="emailsendrecovery" id="emailsendrecovery" inputmode="email">
                         <i class='bx bxs-envelope'></i>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
-                    <button type="button" class="btn btn-outline-dark">Recuperar</button>
+                    <button type="button" class="btn btn-outline-dark" onclick="recuperarSenha(this)">Recuperar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        AOS.init();
-    </script>
+    <div id="toastBox"></div>
+
+    <script src="../scripts/_admin_login.js"></script>
+    <?php
+        // exibe a mensagem de logout
+        if ($showMessage) {
+            echo "<script>function doSomethingElse() { showToast('Você foi desconectado com sucesso', true);}</script>";
+        } else {
+            echo "<script>function doSomethingElse() { return null; }</script>";
+        }
+    ?>
 </body>
 </html>

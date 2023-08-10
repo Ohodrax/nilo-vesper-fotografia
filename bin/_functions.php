@@ -10,7 +10,7 @@
     });
 
     // Enviar email com novo contato passando apenas os campos do formulário
-    function send_newContact_email($arrayCampos) {
+    function send_email($message, $subject, $destinyAddr) {
 
         $sended = true;
 
@@ -21,14 +21,14 @@
     
                 // $mail->SMTPDebug = 3;
                 $mail->isSMTP();
-                $mail->Host       = 'smtp.titan.email';
+                $mail->Host       = 'smtp.office365.com';
                 $mail->SMTPAuth   = true;
-                $mail->SMTPSecure = 'ssl';
+                $mail->SMTPSecure = 'tls';
     
                 //usuario e senha para autenticacao
-                $mail->Username = 'contato@jfhassessoria.com';
-                $mail->Password = 'jfhUnderground#6';
-                $mail->Port     = 465;
+                $mail->Username = 'bot.systemsite@hotmail.com';
+                $mail->Password = 'mYS1st3m&1T3';
+                $mail->Port     = 587;
                 $mail->CharSet  = 'utf-8';
     
             /*End of Server Config*/
@@ -36,9 +36,9 @@
             /*Recipients*/
     
                 //email de quem esta enviando email
-                $mail->setFrom('contato@jfhassessoria.com');
+                $mail->setFrom('bot.systemsite@hotmail.com');
                 //destinatario email
-                $mail->addAddress('contato@jfhassessoria.com', 'Emprestimos');//(strtolower($_POST['email']), strtolower(ucfirst($_POST['nome'])));
+                $mail->addAddress($destinyAddr);//(strtolower($_POST['email']), strtolower(ucfirst($_POST['nome'])));
     
             /*End of Recipients*/
     
@@ -47,14 +47,8 @@
                 //corpo do email como html_entity_decode
                 $mail->isHTML(true);
                 //assunto do email
-                $mail->Subject = 'Novo contato - Site';
+                $mail->Subject = $subject;
                 //corpo do email
-    
-                $message = "";
-    
-                foreach ($arrayCampos as $key => $value) {
-                    $message .=  $key . ": " . $value . "<br>";
-                }
     
                 $mail->Body = $message;
     

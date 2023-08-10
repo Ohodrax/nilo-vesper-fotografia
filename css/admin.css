@@ -89,6 +89,10 @@ body {
     font-size: 20px;
 }
 
+#lock-icon {
+    cursor: pointer;
+}
+
 .wrapper .remember-forgot {
     display: flex;
     justify-content: space-between;
@@ -178,4 +182,106 @@ body {
     border-radius: 0;
     font-size: 16px;
     border: 1px solid rgba(255, 255, 255, .2);
+}
+
+#toastBox {
+    position: fixed;
+    bottom: 30px;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    width: 400px;
+    height: 80px;
+    background: #fff;
+    font-weight: 500;
+    margin: 15px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    display: flex!important;
+    align-items: center;
+    position: relative;
+    transform: translateX(100%);
+    animation: moveleft 0.3s linear forwards;
+    border-bottom: 0;
+    font-size: 16px;
+}
+
+@keyframes moveleft {
+    0% {
+        transform: translateX(100%);
+    }
+
+    80% {
+        transform: translateX(-10%);
+    }
+    
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.toast i {
+    margin: 0 20px;
+    font-size: 30px;
+}
+
+.toast-success i {
+    color: seagreen;
+} 
+
+.toast-error i {
+    color: red;
+} 
+
+.toast-info i {
+    color: gold;
+}
+
+.toast::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    background: seagreen;
+    animation: anim 5s linear forwards;
+}
+
+@keyframes anim {
+    100% {
+        width: 0%;
+    }
+}
+
+.toast-error::after {
+    background: red;
+}
+
+.toast-info::after {
+    background: orange;
+}
+
+.toast-out {
+    animation: moveout 0.3s linear forwards;
+}
+
+@keyframes moveout {
+    0% {
+        transform: translateX(-5%);
+    }
+
+    90% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(110%);
+    }
 }
