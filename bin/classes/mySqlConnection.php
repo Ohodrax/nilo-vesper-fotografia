@@ -12,6 +12,13 @@
                     $mysql_password = "";
                 break;
                 
+                case 'dev-pbf.spark-it.com.br':
+                    $mysql_host     = "167.172.141.23";
+                    $mysql_db       = "jrmhepaxnp";
+                    $mysql_username = "jrmhepaxnp";
+                    $mysql_password = "s6Ks8ZUbqu";
+                break;
+                
                 default:
                     $mysql_host     = "";
                     $mysql_db       = "";
