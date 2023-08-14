@@ -92,6 +92,9 @@ body {
 #lock-icon {
     cursor: pointer;
 }
+.lock-icon {
+    cursor: pointer;
+}
 
 .wrapper .remember-forgot {
     display: flex;
@@ -186,7 +189,7 @@ body {
 
 #toastBox {
     position: fixed;
-    bottom: 30px;
+    bottom: 50px;
     right: 0;
     display: flex;
     align-items: flex-end;
@@ -285,3 +288,13 @@ body {
         transform: translateX(110%);
     }
 }
+
+/* View Mobile */
+
+@media screen and (max-width: 768px) {
+    #toastBox {
+        width: 100%;
+    }
+}
+
+/* View Mobile */

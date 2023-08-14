@@ -1,6 +1,6 @@
 <?php
 
-    echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Moda</span></h1>";
+    echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>".ucfirst($referencePage)."</span></h1>";
 
 ?>
 
@@ -16,11 +16,11 @@
     <div class="row">
         <div class="col-12">
             <div class="set-parallax-image">
+                <input type="file" oninput="uploadImage(this, <?php echo $reference; ?>, 'banner_1')" accept="image/png, image/jpg, image/jpeg">
 
-                <input type="file" id="fileInputBanner">
-                <label for="fileInputBanner"></label>
-
-                <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
+                <?php
+                    echo "<img src='../../assets/".$banner1."' alt='Image'>";
+                ?>
 
                 <div class="new-banner-box">
                     <i class="bi bi-camera"></i>
@@ -37,14 +37,15 @@
 <section class="content my-5">
     <div class="row justify-content-between">
         <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center justify-content-md-end">
-            <h1 class="texto-destaque text-center text-md-end"><span>CAPA</span> MODA</h1>
+            <h1 class="texto-destaque text-center text-md-end"><span>CAPA</span> <?php echo strtoupper($referencePage); ?></h1>
         </div>
         <div class="col-12 col-lg-5">
             <div class="set-single-image">
-                <input type="file" id="fileInputBanner">
-                <label for="fileInputBanner"></label>
-
-                <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
+                <input type="file" oninput="uploadImage(this, <?php echo $reference; ?>, 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
+                
+                <?php
+                    echo "<img src='../../assets/".$capaImage."' alt='Image'>";
+                ?>
 
                 <div class="new-banner-box">
                     <i class="bi bi-camera"></i>
@@ -60,7 +61,7 @@
 
 <section>
     <div class="container-fluid content my-5">
-        <h1 class="texto-destaque text-center text-md-start mb-3"><span>GALERIA DE</span> MODA</h1>
+        <h1 class="texto-destaque text-center text-md-start mb-3"><span>GALERIA DE</span> <?php echo strtoupper($referencePage); ?></h1>
         <br>
         <div class="row">
             <div class="col-12">

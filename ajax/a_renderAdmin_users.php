@@ -1,7 +1,5 @@
 <?php
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getInformations_users.php";
-
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Usuários</span></h1>";
 
 ?>
@@ -29,6 +27,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nome</th>
+                            <th>Perfil de acesso</th>
                             <th>E-mail</th>
                             <th>Criado em</th>
                             <th>Status</th>
@@ -53,6 +52,7 @@
                                     echo "<tr>";                                        
                                     echo    "<td>".$value['id_usuario']."</td>";
                                     echo    "<td>".$value['nome']."</td>";
+                                    echo    "<td>".$value['nome_perfil']."</td>";
                                     echo    "<td>".$value['email']."</td>";
                                     echo    "<td>".date("d/m/Y H:i", strtotime($value['data_criacao']))."</td>";
                                     echo    "<td>";

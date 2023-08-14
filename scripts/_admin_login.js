@@ -64,7 +64,7 @@ function showToast(msg, ret) {
     }, 6000);
 }
 
-async function login(o) {
+async function processLogin(o) {
     let url = "../../control/c_loginValidation.php";
     let username = document.getElementById("username").value;
     let userpassword = document.getElementById("userpassword").value;
@@ -99,10 +99,6 @@ async function login(o) {
 
             if (ret.return) {
 
-                setTimeout(() => {
-                    window.location.href = "/admin";
-                }, 6000);
-
                 if (document.getElementById("rememberMe").checked) {
                     let jsonSave = JSON.stringify({
                         "user" : username
@@ -111,6 +107,9 @@ async function login(o) {
                 } else {
                     localStorage.clear("savedUser");
                 }
+
+                window.location.href = "/admin";
+
             } else {
                 o.innerHTML = "Entrar";
                 o.removeAttribute("disabled");
@@ -132,7 +131,17 @@ async function login(o) {
     }
 }
 
-async function recuperarSenha(o) {
+async function login(e, o) {
+    e.preventDefault();
+
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
+            processLogin(o);
+        });
+    });
+}
+
+async function runRecuperarSenha(o) {
     let url = "../../control/c_recoveryPassword_sendLink.php";
     let emailsendrecovery = document.getElementById("emailsendrecovery").value;
 
@@ -183,6 +192,14 @@ async function recuperarSenha(o) {
         o.innerHTML = "Recuperar";
         o.removeAttribute("disabled");
     }
+}
+
+async function recuperarSenha(o) {
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
+            runRecuperarSenha(o);
+        });
+    });
 }
 
 function changeInput(o) {

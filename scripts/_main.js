@@ -44,7 +44,7 @@ function maskCelular(v) {
     return r;
 }
 
-async function enviarContato(o){
+async function processarEnvio(o) {
     let url          = "../control/c_proccess_new_contact.php";
     let tags_name    = ['input', 'textarea'];
     let data_post    = "";
@@ -113,6 +113,14 @@ async function enviarContato(o){
         o.removeAttribute("disabled");
         o.innerHTML = "ENVIAR";
     }
+}
+
+async function enviarContato(o){
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
+            processarEnvio(o);
+        });
+    });
 }
 
 function http_post(url, data) {

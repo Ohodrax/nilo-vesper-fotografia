@@ -12,16 +12,16 @@
     </div>
     
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">Número do Whatsapp</label>
-        <input type="text" class="person-form-control">
+        <label for="input_whatsapp_number" class="custom-form-label">Número do Whatsapp</label>
+        <input type="text" class="person-input-users" id="input_whatsapp_number" name="input_whatsapp_number" onfocusout="updateTextParam(this)" onkeydown="mask(this, event)" value="<?php echo $input_whatsapp_number; ?>">
     </div>
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">Número de Celular para Contato</label>
-        <input type="text" class="person-form-control">
+        <label for="input_whatsapp_number_contact" class="custom-form-label">Número de Celular para Contato</label>
+        <input type="text" class="person-input-users" id="input_whatsapp_number_contact" name="input_whatsapp_number_contact" onfocusout="updateTextParam(this)" onkeydown="mask(this, event)" value="<?php echo $input_whatsapp_number_contact; ?>">
     </div>
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">E-mail para Contato</label>
-        <input type="text" class="person-form-control">
+        <label for="input_email" class="custom-form-label">E-mail para Contato</label>
+        <input type="text" class="person-input-users" id="input_email" name="input_email" onfocusout="updateTextParam(this)" value="<?php echo $input_email; ?>">
     </div>
 </div>
 
@@ -33,15 +33,15 @@
     </div>
     
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">Instagram</label>
-        <input type="text" class="person-form-control">
+        <label for="input_instagram" class="custom-form-label">Instagram</label>
+        <input type="text" class="person-input-users" name="input_instagram" id="input_instagram" onfocusout="updateTextParam(this)" value="<?php echo $input_instagram; ?>">
     </div>
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">Facebook</label>
-        <input type="text" class="person-form-control">
+        <label for="input_facebook" class="custom-form-label">Facebook</label>
+        <input type="text" class="person-input-users" name="input_facebook" id="input_facebook" onfocusout="updateTextParam(this)" value="<?php echo $input_facebook; ?>">
     </div>
     <div class="col-12 col-lg-4 mb-4">
-        <label for="" class="custom-form-label">Linkedin</label>
-        <input type="text" class="person-form-control">
+        <label for="input_linkedin" class="custom-form-label">Linkedin</label>
+        <input type="text" class="person-input-users" name="input_linkedin" id="input_linkedin" onfocusout="updateTextParam(this)" value="<?php echo $input_linkedin; ?>">
     </div>
 </div>

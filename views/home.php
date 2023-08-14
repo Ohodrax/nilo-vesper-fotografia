@@ -210,5 +210,6 @@
     <?php include 'components/_menu-offcanvas.html'; ?>
     
     <script src="./scripts/_main.js"></script>
+
 </body>
 </html>

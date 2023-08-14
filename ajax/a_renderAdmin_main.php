@@ -1,27 +1,38 @@
 <?php
 
+    if(session_status() == 1){
+        session_start();
+    }
+
+    $referencePage = "";
+    $reference = "";
+
     if (isset($_POST['renderContent'])) {
+        
+        $referencePage = $_POST['renderContent'];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getInformations.php";
                 
-        switch ($_POST['renderContent']) {
+        switch ($referencePage) {
             
             case 'Início':
                 require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_home.php";
             break;
             
             case 'Retratos':
-                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_pictures.php";
+                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_gallery.php";
             break;
             
             case 'Personalidades':
-                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_personalities.php";
+                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_gallery.php";
             break;
             
             case 'Moda':
-                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_fashion.php";
+                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_gallery.php";
             break;
             
             case 'Corporativo':
-                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_corporate.php";
+                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_gallery.php";
             break;
             
             case 'Clientes':
@@ -37,13 +48,13 @@
             break;
             
             default:
-                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_users.php";
+                require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/".$_SESSION['firstPage'];
             break;
     
         }
     } else {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_users.php";
-        // require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_home.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getInformations.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/ajax/".$_SESSION['firstPage'];
     }
 
 ?>

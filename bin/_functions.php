@@ -36,7 +36,7 @@
             /*Recipients*/
     
                 //email de quem esta enviando email
-                $mail->setFrom('bot.systemsite@hotmail.com');
+                $mail->setFrom('bot.systemsite@hotmail.com', 'Sistema | Robô de E-mail');
                 //destinatario email
                 $mail->addAddress($destinyAddr);//(strtolower($_POST['email']), strtolower(ucfirst($_POST['nome'])));
     

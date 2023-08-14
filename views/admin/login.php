@@ -72,7 +72,7 @@
                 </div>
     
                 <div data-aos="fade-up" data-aos-delay="500">
-                    <button type="submit" class="btn" onclick="login(this)">Entrar</button>
+                    <button type="submit" class="btn" onclick="login(event, this)">Entrar</button>
                 </div>
             </form>
         </div>
@@ -103,10 +103,11 @@
     <div id="toastBox"></div>
 
     <script src="../scripts/_admin_login.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
     <?php
         // exibe a mensagem de logout
         if ($showMessage) {
-            echo "<script>function doSomethingElse() { showToast('Você foi desconectado com sucesso', true);}</script>";
+            echo "<script>function doSomethingElse() { showToast('".$message['ref']."', ".$message['return'].");}</script>";
         } else {
             echo "<script>function doSomethingElse() { return null; }</script>";
         }

@@ -148,6 +148,7 @@ abstract class RouteSwitch
 
             if (array_key_exists("showMessage", $_SESSION)) {
                 $showMessage = true;
+                $message     = $_SESSION['showMessage'];
             }
 
             if(array_key_exists("userName", $_SESSION)) {
@@ -168,14 +169,14 @@ abstract class RouteSwitch
     
         session_start();
 
-        $_SESSION["showMessage"] = true;
+        $_SESSION["showMessage"] = array("return" => true, "ref" => "Você foi desconectado!");
 
         header("Location: /login");
     }
 
     protected function recovery()
     {
-        if (!file_exists(__DIR__ . '/views/admin/login.php')) {
+        if (!file_exists(__DIR__ . '/views/admin/recovery_password.php')) {
 
             // procura a página not found
             if (!file_exists(__DIR__ . '/views/not-found.php')) {
@@ -208,6 +209,15 @@ abstract class RouteSwitch
             }
         } else {
             session_start();
+
+            $showMessage = false;
+
+            if (array_key_exists("showMessage", $_SESSION)) {
+                $showMessage = true;
+                $message     = $_SESSION['showMessage'];
+                
+                unset($_SESSION['showMessage']);
+            }
 
             if (array_key_exists("userName", $_SESSION)) {
                 require __DIR__ . '/views/admin/administration_view.php';

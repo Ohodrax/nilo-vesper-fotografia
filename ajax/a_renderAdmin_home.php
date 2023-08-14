@@ -1,7 +1,6 @@
 <?php
 
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Início</span></h1>";
-
 ?>
 
 <br>
@@ -9,15 +8,14 @@
 <section class="content my-5">
     <div class="row">
         <div class="col-12">
-            <h1 class="texto-destaque mb-4 text-start"><span>MODO DE</span> EXIBIÇÃO: <span>Carrossel de imagens</span></h1>
+            <h1 class="texto-destaque mb-4 text-start"><span>MODO DE</span> EXIBIÇÃO: <span><?php echo $printMode; ?></span></h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-3 d-flex justify-content-start mb-3">
+        <div class="col-12 col-md-3 d-flex justify-content-start align-items-center mb-3">
             <div class="new-image-box">
 
-                <input type="file" id="fileInputCarrossel1">
-                <label for="fileInputCarrossel1"></label>
+                <input type="file" oninput="uploadImage(this, 'home', 'carrossel_principal')" multiple accept="image/png, image/jpg, image/jpeg">
 
                 <div class="new-image-content-box">
                     <i class="bi bi-camera"></i>
@@ -33,32 +31,22 @@
                 </div>
                 
                 <div class="image-render-box" id="image-render-box">
+                    <?php
 
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                    <div class="single-image-box">
-                        <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-
+                        if ($numCarrosselImages == 0) {
+                            echo "<h1 class='text-center'>Sem imagens</h1>";
+                        } else {
+                            for ($i=0; $i < count($ret_selecImages); $i++) { 
+                                if ($ret_selecImages[$i]['localizacao'] == "carrossel_principal") {
+                                    echo '<div class="single-image-box">';
+                                    echo    '<img src="../../assets/home/' . $ret_selecImages[$i]['nome'] . '" alt="Image">';
+                                    echo    '<span onclick="deleteImage('.$ret_selecImages[$i]['id_image'].')"><i class="bi bi-trash"></i></span>';
+                                    echo '</div>';
+                                }
+                            }
+                        }
+                    
+                    ?>
                 </div>
                 
                 <div class="arrow arrow-right" onclick="arrowSlide(`right`)">
@@ -78,17 +66,17 @@
             <h1 class="texto-destaque mb-4 text-end">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
             <div class="row justify-content-lg-end">
                 <div class="col-12 col-lg-10">
-                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10">30 ANOS DE CARREIRA
-                    DEDICADOS A ARTE</textarea>
+                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10" name="textarea_capa" onfocusout="updateTextParam(this)"><?php echo $textareaCapa; ?></textarea>
                 </div>
             </div>
         </div>
         <div class="col-12 col-lg-5">
             <div class="set-single-image">
-                <input type="file" id="fileInputBanner">
-                <label for="fileInputBanner"></label>
+                <input type="file" oninput="uploadImage(this, 'home', 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
 
-                <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
+                <?php
+                    echo "<img src='../../assets/".$capaImage."' alt='Image'>";
+                ?>
 
                 <div class="new-banner-box">
                     <i class="bi bi-camera"></i>
@@ -112,10 +100,11 @@
         <div class="col-12">
             <div class="set-parallax-image">
 
-                <input type="file" id="fileInputBanner">
-                <label for="fileInputBanner"></label>
+                <input type="file" oninput="uploadImage(this, 'home', 'banner_1')" accept="image/png, image/jpg, image/jpeg">
 
-                <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
+                <?php
+                    echo "<img src='../../assets/".$banner1."' alt='Image'>";
+                ?>
 
                 <div class="new-banner-box">
                     <i class="bi bi-camera"></i>
@@ -139,10 +128,11 @@
         <div class="col-12">
             <div class="set-parallax-image">
 
-                <input type="file" id="fileInputBanner">
-                <label for="fileInputBanner"></label>
+                <input type="file" oninput="uploadImage(this, 'home', 'banner_2')" accept="image/png, image/jpg, image/jpeg">
 
-                <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image">
+                <?php
+                    echo "<img src='../../assets/".$banner2."' alt='Image'>";
+                ?>
 
                 <div class="new-banner-box">
                     <i class="bi bi-camera"></i>

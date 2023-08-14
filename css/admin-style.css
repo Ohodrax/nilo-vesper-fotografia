@@ -212,10 +212,6 @@ body {
 
 /* input image manager section */
 
-input[type="file"] {
-    display: none;
-}
-
 .new-image-box {
     width: 100%;
     height: 230px;
@@ -227,7 +223,8 @@ input[type="file"] {
     position: relative;
     transition: all .3s;
 }
-.new-image-box label {
+.new-image-box input[type="file"] {
+    opacity: 0;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -239,7 +236,6 @@ input[type="file"] {
 .new-image-box:hover > .new-image-content-box {
     transform: scale(1.02);
 }
-
 
 .new-image-content-box {
     display: flex;
@@ -281,7 +277,7 @@ input[type="file"] {
 .single-image-box {
     position: relative;
     width: 280px;
-    height: 100%;
+    height: 220px;
     margin: 0 15px 0 15px;
     object-fit: cover;
 }
@@ -362,6 +358,16 @@ input[type="file"] {
     outline: none;
     padding: 28px;
 }
+.person-select-control {
+    border-radius: 0;
+    border: 1px solid var(--texto-destaque-color);
+    text-align: end;
+    color: #000;
+    font-size: 28px;
+    font-weight: 300;
+    outline: none;
+    padding: 28px;
+}
 .person-form-textarea {
     resize: none;
     min-height: 500px!important;
@@ -397,7 +403,8 @@ input[type="file"] {
     filter: brightness(0.7);
     z-index: -1;
 }
-.set-single-image label {
+.set-single-image input[type="file"] {
+    opacity: 0;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -428,7 +435,8 @@ input[type="file"] {
     color: #000;
     border: 5px dashed #000;
 }
-.set-parallax-image label {
+.set-parallax-image input[type="file"] {
+    opacity: 0;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -495,7 +503,8 @@ input[type="file"] {
         transition: all .3s;
     }
 
-    .add-image-gallery label {
+    .add-image-gallery input[type="file"] {
+        opacity: 0;
         position: absolute;
         width: 100%;
         height: 100%;
@@ -620,25 +629,25 @@ input[type="file"] {
         font-size: 28px;
         font-weight: 500;
     }
-    .person-form-control {
+    .person-input-users {
         border-radius: 0;
         border: 1px solid #d5d5d5;
         color: #000;
-        height: 24px;
+        height: 42px;
         font-size: 20px;
         outline: none;
-        padding: 20px 10px;
+        padding: 0 10px;
         width: 100%;
-        text-align: start;
+        /* text-align: start; */
     }
-    .person-form-control:active, .person-form-control:focus, .person-form-control:target {
+    .person-input-users:active, .person-input-users:focus, .person-input-users:target {
         outline: none;
         color: #000;
-        box-shadow: 0 0 0 0;
+        /* box-shadow: 0 0 0 0; */
         border: 1px solid #000;
         outline: 0;
     }
-    .person-form-control::placeholder {
+    .person-input-users::placeholder {
         color: #000;
     }
     .custom-form-label {

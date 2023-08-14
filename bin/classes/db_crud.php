@@ -192,6 +192,57 @@
                 return "Error when tried to execute function: ". $e->getMessage();
             }
         }
+
+        public function default_call_proc() {
+            // prepara a conexão com o db
+            $mysql      = new mySqlConnection();
+            $pdoConnect = $mysql->newConnection();
+
+            try {
+
+                // verifica se os parametros foram declarados corretamente
+                if (!isset($this->proc) || !isset($this->data)) {
+                    return false;
+                }
+
+                // coleta os valores passados para a classe
+                $proc       = $this->proc;
+                $array_data = $this->data;
+            
+                // define os arrays para separar as colunas e valores para inserir no banco de dados
+                $array_cols           = array();
+                $array_rows_prevalues = array();
+                $array_rows_values    = array();
+                $insert_number        = count($array_data);
+            
+                // executa a separação da chave e valor da variável data
+                foreach ($array_data as $key => $value) {
+                    array_push($array_cols, $key);
+                    array_push($array_rows_prevalues, ":".$key);
+                    array_push($array_rows_values, $value);
+                }
+            
+                // executa o processo do PDO
+                $sqlQuery = "call ".$proc." (".implode(", ", $array_rows_prevalues).");";
+                $execQuery = $pdoConnect->prepare($sqlQuery);
+
+                for ($i=0; $i < $insert_number; $i++) {
+                    // define o tipo de parametro que o mysql vai inserir de acordo com o valor da string
+                    $param_type = $array_rows_values[$i] == "" ? PDO::PARAM_NULL : PDO::PARAM_STR;
+
+                    // faz o bind de cada valor a ser inserido no db
+                    $execQuery->bindParam($array_rows_prevalues[$i], $array_rows_values[$i], $param_type);
+                }
+
+                $execQuery->execute();
+                $ret_execQuery=boolval($execQuery->rowCount());
+
+                return $ret_execQuery;
+
+            } catch (Exception $e) {
+                return "Error when tried to execute function: ". $e->getMessage();
+            }            
+        }
     }
 
 ?>

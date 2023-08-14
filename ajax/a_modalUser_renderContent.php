@@ -10,6 +10,7 @@
     $formText        = "";
     $dataSet         = "";
 
+    $formInputPerfil = 0;
     $formInputName   = "";
     $formInputEmail  = "";
 
@@ -51,6 +52,7 @@
                     } else {
                         $renderContent = true;
 
+                        $formInputPerfil = $ret_selectUser[0]['id_perfil'];
                         $formInputName   = $ret_selectUser[0]['nome'];
                         $formInputEmail  = $ret_selectUser[0]['email'];
                     }
@@ -90,6 +92,7 @@
                     } else {
                         $renderContent = true;
 
+                        $formInputPerfil = $ret_selectUser[0]['id_perfil'];
                         $formInputName   = $ret_selectUser[0]['nome'];
                         $formInputEmail  = $ret_selectUser[0]['email'];
                     }
@@ -111,6 +114,14 @@
     }
 
     if ($renderContent) {
+        $filters = array(
+            "status = 1"
+        );
+    
+        $selectProfiles = new db_crud();
+        $selectProfiles->table   = "tb_perfil";
+        $selectProfiles->filters = $filters;
+        $ret_selectProfiles = $selectProfiles->default_select_data();
 ?>
 
 <div class="modal-content">
@@ -122,18 +133,44 @@
         <div class="row">
             <div class="col-12 col-lg-6 mb-3">
                 <label for="formName" class="custom-form-label">Nome</label>
-                <input type="text" class="person-form-control" <?php echo $disableInputs; ?> id="formName" required name="Nome" value="<?php echo $formInputName; ?>">
+                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formName" required name="Nome" value="<?php echo $formInputName; ?>">
             </div>
             <div class="col-12 col-lg-6 mb-3">
                 <label for="formEmail" class="custom-form-label">E-mail</label>
-                <input type="text" class="person-form-control" <?php echo $disableInputs; ?> id="formEmail" required inputmode="email" name="E-mail" value="<?php echo $formInputEmail; ?>">
+                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formEmail" required inputmode="email" name="E-mail" value="<?php echo $formInputEmail; ?>">
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-lg-6 mb-3">
                 <label for="formPassword" class="custom-form-label">Senha</label>
-                <input type="password" class="person-form-control" <?php echo $disableInputs; echo $requirePassword; ?> id="formPassword" name="Senha">
+                <input type="password" class="person-input-users" <?php echo $disableInputs; echo $requirePassword; ?> id="formPassword" name="Senha">
                 <div class="form-text fs-4"><?php echo $formText; ?></div>
+            </div>
+            <div class="col-12 col-lg-6 mb-3">
+                <label for="formPerfil" class="custom-form-label">Perfil de acesso</label>
+                <select name="Perfil de acesso" id="formPerfil" class="person-input-users" <?php echo $disableInputs; ?> required>
+                    <?php
+                        if (count($ret_selectProfiles) > 0) {
+                            if ($formInputPerfil == "" || $formInputPerfil == 0) {
+                                echo "<option disabled selected value=''>Selecionar...</option>";
+                                
+                                foreach ($ret_selectProfiles as $key => $value) {
+                                    echo "<option value='".$value['id_perfil']."'>".$value['nome']."</option>";
+                                }
+                            } else {
+                                foreach ($ret_selectProfiles as $key => $value) {
+                                    if ($formInputPerfil == $value['id_perfil']) {
+                                        echo "<option value='".$value['id_perfil']."' selected>".$value['nome']."</option>";
+                                    } else {
+                                        echo "<option value='".$value['id_perfil']."'>".$value['nome']."</option>";
+                                    }
+                                }
+                            }
+                        } else {
+                            echo "<option disabled selected>Selecionar...</option>";
+                        }
+                    ?>
+                </select>
             </div>
         </div>
     </div>

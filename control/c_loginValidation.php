@@ -31,7 +31,7 @@
             $orderby = "id_usuario desc";
 
             $selectUser = new db_crud();
-            $selectUser->table   = "tb_usuario";
+            $selectUser->table   = "v_select_user_profile";
             $selectUser->filters = $filters;
             $selectUser->orderby = $orderby;
             $ret_selectUser = $selectUser->default_select_data();
@@ -40,11 +40,13 @@
                 if ($ret_selectUser[0]['status'] == 1) {
                     if (password_verify($userpass, $ret_selectUser[0]['senha'])) {
 
-                        session_id($ret_selectUser[0]['id_usuario'].$ret_selectUser[0]['nome'].date("YmdHis"));
+                        session_id(md5($ret_selectUser[0]['id_usuario'].$ret_selectUser[0]['nome'].date("YmdHis")));
                         
                         session_start();
 
                         $_SESSION['userName'] = $ret_selectUser[0]['nome'];
+                        $_SESSION['firstPage'] = $ret_selectUser[0]['first_page'];
+                        $_SESSION["showMessage"] = array("return" => "true", "ref" => "Seja bem vindo(a) ".$ret_selectUser[0]['nome']);
 
                         $array_return['return'] = true;
                         $array_return['ref'] = "Aguarde, por favor... ";

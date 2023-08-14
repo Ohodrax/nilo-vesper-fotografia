@@ -96,6 +96,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
 </footer>
 
 <a href="https://wa.me/5511991386363" class="btn-whatsapp" target="_blank" <?php echo $_SERVER['REQUEST_URI'] == '/contato' ? '' : 'data-aos="zoom-in-up" data-aos-delay="300"'; ?>>

@@ -32,7 +32,7 @@
             $selectUser->orderby = $orderby;
             $ret_selectUser = $selectUser->default_select_data();
 
-            if (is_array($ret_selectUser)) {
+            if (count($ret_selectUser) > 0) {
                 $id_usuario          = $ret_selectUser[0]['id_usuario'];
                 $nome                = $ret_selectUser[0]['nome'];
                 $destinyAddr         = $ret_selectUser[0]['email'];

@@ -22,6 +22,11 @@
             $proccess = false;
             $array_return['ref'] = $array_return['ref'] . "Campo senha não encontrado";
         }
+        
+        if (!array_key_exists("formPerfil", $_POST) && $proccess) {
+            $proccess = false;
+            $array_return['ref'] = $array_return['ref'] . "Campo de perfil não encontrado";
+        }
     
         if ($proccess) {
     
@@ -29,6 +34,7 @@
                 $formName     = $_POST['formName'];
                 $formEmail    = $_POST['formEmail'];
                 $formPassword = $_POST['formPassword'];
+                $formPerfil   = $_POST['formPerfil'];
                 $formAction   = $_POST['formAction'];
     
                 switch ($formAction) {
@@ -48,10 +54,16 @@
                             $proccess = false;
                             $array_return['ref'] = "Senha muito curta";
                         }
+                        
+                        if (intval($formPerfil) == 0 && $proccess) {
+                            $proccess = false;
+                            $array_return['ref'] = "Perfil Inválido";
+                        }
     
                         if ($proccess) {
     
                             $array_data = array(
+                                "id_perfil"    => $formPerfil,
                                 "nome"         => $formName,
                                 "email"        => $formEmail,
                                 "senha"        => password_hash($formPassword, PASSWORD_DEFAULT),
@@ -80,6 +92,7 @@
     
                             if ($id_usuario != 1) {
                                 $array_data = array(
+                                    "id_perfil"             => $formPerfil,
                                     "nome"                  => $formName,
                                     "email"                 => $formEmail,
                                     "alterado_por"          => $_SESSION['userName'],
