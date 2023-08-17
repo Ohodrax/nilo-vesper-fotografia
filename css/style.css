@@ -176,6 +176,15 @@ header {
     cursor: pointer;
 }
 
+.simple-image-div-box {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .image-hover-text {
     display: flex;
     opacity: 0;
@@ -225,7 +234,7 @@ header {
     .person-form-control {
         border-radius: 0;
         border: 1px solid var(--texto-destaque-color);
-        color: var(--texto-destaque-color);
+        /* color: var(--texto-destaque-color); */
         height: 48px;
         font-size: 18px;
         outline: none;
@@ -239,7 +248,7 @@ header {
 
     .person-form-control:active, .person-form-control:focus, .person-form-control:target {
         outline: none;
-        color: var(--texto-destaque-color);
+        /* color: var(--texto-destaque-color); */
         box-shadow: 0 0 0 0;
         border: 1px solid var(--texto-destaque-color);
         outline: 0;

@@ -59,17 +59,19 @@
             $arrayCarrosselCorporativo    = array();
 
             if (count($ret_selectImages) > 0) {
-                if ($value['referencia'] == "pictures") {
-                    array_push($arrayCarrosselRetratos, $value['nome']);
-                }
-                if ($value['referencia'] == "personalities") {
-                    array_push($arrayCarrosselPersonalidades, $value['nome']);
-                }
-                if ($value['referencia'] == "fashion") {
-                    array_push($arrayCarrosselModa, $value['nome']);
-                }
-                if ($value['referencia'] == "corporate") {
-                    array_push($arrayCarrosselCorporativo, $value['nome']);
+                foreach ($ret_selectImages as $key => $value) {
+                    if ($value['referencia'] == "pictures") {
+                        array_push($arrayCarrosselRetratos, $value['nome']);
+                    }
+                    if ($value['referencia'] == "personalities") {
+                        array_push($arrayCarrosselPersonalidades, $value['nome']);
+                    }
+                    if ($value['referencia'] == "fashion") {
+                        array_push($arrayCarrosselModa, $value['nome']);
+                    }
+                    if ($value['referencia'] == "corporate") {
+                        array_push($arrayCarrosselCorporativo, $value['nome']);
+                    }                    
                 }
             }
         }

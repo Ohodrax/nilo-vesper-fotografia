@@ -18,11 +18,22 @@
 
     <!-- AOS Animated - JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
     <title>Paulo Bareta Fotografia</title>
+
+    <meta property="og:title" content="Paulo Bareta Fotógrafo Profissional 30 anos de carreira">
+    <meta property="og:description" content="Fotógrafo profissional, campanhas publicitárias, Lookbook, Catálogo de moda, Still, fotos para mídias sociais, ​Making off, Retratos, Eventos,fotos corporativo.">
+    <meta property="og:url" content="https://www.paulobareta.com.br">
+    <meta property="og:site_name" content="bareta">
+    <meta property="og:type" content="website">
+    <meta name="keywords" content="Eventos, Fot&amp;oacute;grafo profissional, Life Style, Moda, Retrato, Still">
+    
 </head>
 <body>
     <!-- menu header -->
@@ -30,7 +41,7 @@
 
 
     <!-- Imagem Principal Home -->
-    <?php    
+    <?php
         if (count($arrayCarrosselImages) == 0) {
             // se tiver nenhuma imagem inserida como destaque da home
             
@@ -88,7 +99,7 @@
                 <h2 class="texto-subdestaque"><?php echo $textarea_capa; ?></h2>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4 text-end p-0 image-div-box" data-aos="fade-up" data-aos-delay="300" style="cursor: default;">
+            <div class="col-12 col-md-6 col-lg-4 text-end p-0 simple-image-div-box" data-aos="fade-up" data-aos-delay="300" style="cursor: default;">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row">';

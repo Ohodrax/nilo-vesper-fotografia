@@ -19,6 +19,9 @@
     <!-- AOS Animated - JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
@@ -55,7 +58,7 @@
 
                 <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo $textarea_about_capa; ?></p>
             </div>
-            <div class="col-12 col-md-6 col-lg-5 text-end p-0 image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row" style="height: 650px">';

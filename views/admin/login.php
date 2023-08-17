@@ -20,6 +20,9 @@
     <!-- Icons Ref -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    
     <title>Admin Login</title>
 
     <link rel="stylesheet" href="../../css/admin.css">

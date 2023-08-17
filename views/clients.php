@@ -19,6 +19,9 @@
     <!-- AOS Animated - JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
@@ -61,7 +64,7 @@
                     <img src="./assets/parceiros.png" alt="Image Parceiros" class="img-fluid">
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-5 text-end p-0 image-div-box image-content-parceiros" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box image-content-parceiros" data-aos="fade-up" data-aos-delay="300">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row mt-2">';

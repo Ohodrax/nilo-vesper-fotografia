@@ -61,51 +61,63 @@ async function processarEnvio(o) {
         for (let tagIndex = 0; tagIndex < tags_length.length; tagIndex++) {
             const element = tags_length[tagIndex];
 
-            data_post = data_post === "" ? "" : data_post + "&";
+            if (element.id.includes("form_")) {
+                data_post = data_post === "" ? "" : data_post + "&";
+                
+                if (element.type == "checkbox") {
+                    value = element.checked ? 1 : 0;
+                } else {
+                    value = element.value;
+                }
 
-            if (element.type == "checkbox") {
-                value = element.checked ? 1 : 0;
-            } else {
-                value = element.value;
+                if (element.required && value === "" || value === 0) {
+                    proccessForm = false;
+                    data_invalid.push(element.name);
+
+                    element.classList.remove('is-valid');
+                    element.classList.add('is-invalid');
+                } else if (element.required) {
+                    element.classList.remove('is-invalid');
+                    element.classList.add('is-valid');
+                }
+                
+                data_post = data_post + element.id + "=" + value;
             }
-
-            if (element.required && value === "" || value === 0) {
-                proccessForm = false;
-                data_invalid.push(element.name);
-
-                element.classList.remove('is-valid');
-                element.classList.add('is-invalid');
-            } else if (element.required) {
-                element.classList.remove('is-invalid');
-                element.classList.add('is-valid');
-            }
-            
-            data_post = data_post + element.id + "=" + value;
         }
     }
 
     if (proccessForm) {
-        let ret = await http_post_form(url, data_post);
+        
+        await http_post(url, data_post).then(snapshot => {
 
-        try {
-            ret = JSON.parse(ret);
-            showMessage(ret.return);
-
-            if (ret.return) {
-                clearInputs();
-            } else {
-                showMessage(ret.return)
-
+            try {
+                let ret = JSON.parse(snapshot);
+                showMessage(ret.return);
+    
+                if (ret.return) {
+                    clearInputs();
+                } else {
+                    console.log(ret.ref)
+                }
+    
+                o.removeAttribute("disabled");
+                o.innerHTML = "ENVIAR";
+    
+            } catch (error) {
+                console.log(error)
+                showMessage(false);
+    
                 o.removeAttribute("disabled");
                 o.innerHTML = "ENVIAR";
             }
-        } catch (error) {
+
+        }).catch(error => {
             console.log(error)
             showMessage(false);
 
             o.removeAttribute("disabled");
             o.innerHTML = "ENVIAR";
-        }
+        })
 
     } else {
         showMessage(false);
@@ -176,4 +188,23 @@ async function getMoreImages(o) {
     }).catch(error => {
         console.log(error);
     })
+}
+
+async function clearInputs() {
+    let tags_name = ['input', 'textarea'];
+
+    for (let tagsIndex = 0; tagsIndex < tags_name.length; tagsIndex++) {
+        const tags_length =  document.getElementsByTagName(tags_name[tagsIndex]);
+
+        for (let tagIndex = 0; tagIndex < tags_length.length; tagIndex++) {
+            const element = tags_length[tagIndex];
+
+            if (element.id.includes("form_")) {
+                element.value = "";
+                
+                element.classList.remove('is-valid');
+                element.classList.remove('is-invalid');
+            }
+        }
+    }
 }
