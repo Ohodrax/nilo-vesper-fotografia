@@ -1,3 +1,5 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

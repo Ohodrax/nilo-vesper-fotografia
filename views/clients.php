@@ -1,3 +1,5 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,13 +53,7 @@
                 
                 <br>
 
-                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300">
-                    proident qui ut Excepteur aliqua ullamco in deserunt ad qui veniam veniam minim id est proident. proident tempor id in proident do sed ipsum voluptate sint in eiusmod est reprehenderit aute esse occaecat ut velit. cupidatat ut ipsum exercitation enim amet incididunt amet laborum veniam proident incididunt ullamco reprehenderit commodo amet.
-                    <br><br>
-                    mollit eu culpa lorem eu adipiscing in magna elit aliquip non veniam veniam aliquip sed ex id. eu nisi adipiscing reprehenderit labore quis amet esse consectetur do cupidatat labore reprehenderit proident officia ipsum laborum. enim ut pariatur enim deserunt nulla sed in quis ut irure minim id officia occaecat aliquip sint velit ex.
-                    <br><br>
-                    ut est consequat occaecat enim qui voluptate pariatur officia aliqua fugiat do cupidatat nisi culpa in ut elit commodo. ex laboris aute veniam officia commodo exercitation dolore non fugiat dolor officia officia deserunt ad quis do.
-                </p>
+                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo $textarea_clients_capa; ?></p>
 
                 <br>
 
@@ -66,7 +62,13 @@
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 image-div-box image-content-parceiros" data-aos="fade-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_3b61b5690c78465c86494dfb5e52e24c~mv2.jpg" alt="Modelo na Praia" class="image-row mt-2">
+                <?php
+                    if ($capaPrincipal == 'default-image.jpg') {
+                        echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row mt-2">';
+                    } else {
+                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-row mt-2">';
+                    }
+                ?>
             </div>
         </div>
     </main>
@@ -77,7 +79,13 @@
     <section>
         <div class="row align-items-center mx-0 mt-5 gap-5 flex-row w-100">
             <div class="col-12 col-md-8 col-lg-7 p-0" data-aos="fade-right" data-aos-delay="200">
-                <img src="https://static.wixstatic.com/media/e139a4_7fb5c08e3fb147dc974853abd82f0c57~mv2_d_5213_3475_s_4_2.jpg" alt="Banner parceiros" class="content-client-image-1">
+                <?php
+                    if ($banner1 == 'default-image.jpg') {
+                        echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="content-client-image-1">';
+                    } else {
+                        echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="content-client-image-1">';
+                    }
+                ?>
             </div>
         </div>
     </section>

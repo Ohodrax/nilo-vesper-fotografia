@@ -14,7 +14,7 @@
         if ($id_usuario != 1) {
             $array_data = array(
                 "status"                => $setStatus,
-                "alterado_por"          => "SYSTEM",
+                "alterado_por"          => $_SESSION['userName'],
                 "data_ultima_alteracao" => date("Y-m-d H:i:s")
             );
 

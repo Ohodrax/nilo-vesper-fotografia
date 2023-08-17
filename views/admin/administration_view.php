@@ -88,42 +88,6 @@
 
     <br>
     <br>
-    <!-- <section>
-        <div class="container-fluid content">
-            <h3>Início</h3>
-            <ul>
-                <li>Banner Carrossel</li>
-                <li><ol>
-                    <li>Modo de imagem</li>
-                </ol></li>
-                <li>Textos</li>
-                <li>Banner Parallax 1 e 2</li>
-            </ul>
-            <h3>Retratos | Personalidades | Moda | Corporativo</h3>
-            <ul>
-                <li>Galeria</li>
-                <li>Imagem destaque</li>
-                <li>Selecionar 5 destaques no máximo</li>
-            </ul>
-            <h3>Clientes | Sobre</h3>
-            <ul>
-                <li>Texto início</li>
-                <li>Imagem destaque 1</li>
-                <li>Imagem destaque 2</li>
-            </ul>
-            <h3>Contato</h3>
-            <ul>
-                <li>E-mail de destaque do contato</li>
-                <li>E-mail para receber contato do formulário</li>
-                <li>Número de telefone de destaque do contato</li>
-                <li>Número de telefone de contato do whatsapp</li>
-            </ul>
-            <h3>Quem pode acessar minha página Admin?</h3>
-            <ul>
-                <li>CRUD usuários</li>
-            </ul>
-        </div>
-    </section> -->
 
     <div id="toastBox"></div>
 

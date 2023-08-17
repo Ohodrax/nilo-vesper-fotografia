@@ -1,3 +1,5 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,5 +63,6 @@
     </a>
     
     <script src="../scripts/_main.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
 </body>
 </html>

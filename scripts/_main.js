@@ -159,3 +159,21 @@ function showMessage(ret) {
         errorMessage.style.opacity = 0;
     }, 4000);
 }
+
+async function getMoreImages(o) {
+    let url = "../ajax/a_renderSite_galleryImages.php";
+    let reference = document.getElementById("referenceRef").value;
+    let data_post = `renderedRef=${document.getElementsByClassName("gallery-grid").length}&referenceRef=${reference}`;
+
+    o.remove();
+
+    await http_post(url, data_post).then(snapshot => {
+
+        document.getElementById("gallery-box").innerHTML = document.getElementById("gallery-box").innerHTML + snapshot;
+        
+        AOS.init();
+
+    }).catch(error => {
+        console.log(error);
+    })
+}

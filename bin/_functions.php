@@ -158,4 +158,61 @@
         }
     }
 
+    // função para retornar a referencia da página que esta sendo requisitada para buscar os dados relacionados a ela
+    function getReference($requestUri) {
+        $route = substr($requestUri, 1);
+            
+        // verifica se tem variavel na url
+        if (strpos($route, "?")) {
+            $explodedUri = explode("?", $route);
+
+            // aqui eu pego a pagina que esta sendo solicitada
+            $route = $explodedUri[0];
+        }
+
+        if (strpos($route, "/")) {
+            $explodedUri = explode("/", $route);
+
+            // aqui eu pego a pagina que esta sendo solicitada
+            $route = $explodedUri[0];
+        }
+
+        switch (strtolower($route)) {
+            
+            case '':
+                $reference = "home";
+            break;
+            
+            case 'retratos':
+                $reference = "pictures";
+            break;
+            
+            case 'personalidades':
+                $reference = "personalities";
+            break;
+            
+            case 'moda':
+                $reference = "fashion";
+            break;
+            
+            case 'corporativo':
+                $reference = "corporate";
+            break;
+            
+            case 'clientes':
+                $reference = "clients";
+            break;
+            
+            case 'sobre':
+                $reference = "about";
+            break;
+
+            default:
+                $reference = "";
+            break;
+        }
+
+        return $reference;
+    }
+
 ?>

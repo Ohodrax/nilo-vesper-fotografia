@@ -200,7 +200,6 @@ header {
 }
 
 .content-image-1 {
-    background-image: url('../assets/content-image-1.jpg');
     background-attachment: fixed;
     background-repeat: no-repeat;
     filter: brightness(0.8);
@@ -387,10 +386,10 @@ header {
 
 /* Retratos */
 
-    .imagem-destaque-retrato {
+    .banner-destaque {
         width: 100%;
         object-fit: cover;
-        object-position: top;
+        object-position: center;
         filter: brightness(0.7);
         height: 100vh;
     }

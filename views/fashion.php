@@ -1,3 +1,5 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -28,7 +30,13 @@
     <?php include "./views/components/_header.html"; ?>
 
     <section class="mb-5">
-        <img src="https://static.wixstatic.com/media/e139a4_bbd750021b7a4be8974ecdb1849cc435~mv2_d_5616_3744_s_4_2.jpg" alt="Destaque retrato" class="imagem-destaque-retrato">
+        <?php
+            if ($banner1 == 'default-image.jpg') {
+                echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="banner-destaque">';
+            } else {
+                echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="banner-destaque">';
+            }
+        ?>
     </section>
 
     <br>
@@ -42,7 +50,13 @@
             </div>
 
             <div class="col-12 col-md-6 col-lg-4 text-end image-retrato-box" style="cursor: default;height: 450px;" data-aos="fade-up" data-aos-delay="400">
-                <img src="https://static.wixstatic.com/media/e139a4_fb7a91a065b842fba8b374a6f7478f98~mv2.jpg" alt="Retrato principal" class="image-retrato">
+                <?php
+                    if ($capaPrincipal == 'default-image.jpg') {
+                        echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-retrato">';
+                    } else {
+                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-retrato">';
+                    }
+                ?>
             </div>
 
         </div>
@@ -51,82 +65,9 @@
     <br>
     <br>
 
-    <section class="w-100 my-5">
-        <div class="row justify-content-between w-100 mx-0">
-            
-            <div class="col-12 col-md-4 image-retrato-box image-box-full mb-3" data-aos="fade-up-right" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_7fb5c08e3fb147dc974853abd82f0c57~mv2_d_5213_3475_s_4_2.jpg" alt="Retrato linha 2 - 1" class="image-retrato">
-            </div>
-
-            <div class="col-12 col-md-7 image-retrato-box image-box-full mb-3"  data-aos="fade-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_304107ec481a4caa9747530390213c3a~mv2.jpg" alt="Retrato linha 2 - 2" class="image-retrato">
-            </div>
-
-        </div>
-    </section>
-
-    <br>
-    <br>
-
-    <section class="w-100 my-5">
-        <div class="row justify-content-around w-100 mx-0">
-
-            <div class="col-12 col-md-3 image-retrato-box image-box-3 mb-3" data-aos="zoom-in-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_4dbb4fd1a5dc4e77b8dbd11f806d977a~mv2.jpg" alt="Retrato linha 3 - 1" class="image-retrato">
-            </div>
-
-            <div class="col-12 col-md-3 image-retrato-box image-box-3 mb-3" data-aos="zoom-in-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_e14a32d5782749ed852d292c9c19e86e~mv2.jpg" alt="Retrato linha 3 - 3" class="image-retrato">
-            </div>
-
-        </div>
-    </section>
-
-    <br>
-    <br>
-
-    <section class="w-100 my-5">
-        <div class="row justify-content-evenly w-100 mx-0">
-            
-            <div class="col-12 image-retrato-box image-box-full mb-3" data-aos="fade-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_da0997213e474292885a1e29d0c1e807~mv2.jpg" alt="Retrato linha 4 - 1" class="image-retrato">
-            </div>
-
-        </div>
-    </section>
-
-    <br>
-    <br>
-
-    <section class="w-100 my-5">
-        <div class="row justify-content-between align-items-center w-100 mx-0">
-
-            <div class="col-12 col-md-3 image-retrato-box image-box-2 mb-3" data-aos="fade-up-right" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_badfa048d33142c2bf5dd0e9a47e9c23~mv2_d_3744_5616_s_4_2.jpg" alt="Retrato linha 5 - 1" class="image-retrato">
-            </div>
-
-            <div class="col-12 col-md-8 image-retrato-box image-full-line-5 mb-3" data-aos="fade-up" data-aos-delay="300">
-                <img src="https://static.wixstatic.com/media/e139a4_b293db4366e54767911cadd325377133~mv2_d_5423_3615_s_4_2.jpg" alt="Retrato linha 5 - 2" class="image-retrato">
-            </div>
-
-        </div>
-    </section>
-
-    <br>
-    <br>
-
-    <section class="w-100">
-        <div class="row mx-0 justify-content-center">
-
-            <div class="col-10 div col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                <button class="button-enviar w-100">Ver mais</button>
-            </div>
-
-        </div>
-    </section>
-
-    <br>
-    <br>
+    <div id="gallery-box">
+        <?php echo "<input type='hidden' id='referenceRef' value='".$reference."'>"; include "./ajax/a_renderSite_galleryImages.php"; ?>
+    </div>
 
     <!-- Formulario de contato e links -->
     <?php include 'ajax/a_renderContact_form.php'; ?>

@@ -1,3 +1,5 @@
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,39 +53,16 @@
                 
                 <br>
 
-                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300">
-                    Fotógrafo paulistano, apaixonado pelo mar, pai de uma doce
-                    menina, por trás das lentes ele é o filho da Dona Alair e do
-                    seu Olavo.
-                    <br><br>
-                    Bareta para os íntimos, seu nome é Paulo Cesar, escorpiano,
-                    coloca em seus trabalhos suas principais características:
-                    verdade e perfeccionismo.
-                    <br><br>
-                    Fotógrafo nato desenvolveu-se logo cedo entre negativos,
-                    lentes e câmeras. Atuou em moda, still, gastronomia, life style
-                    e tem no seu portfólio colaboração para os grandes editoriais
-                    e clientes do meio.
-                    <br><br>
-                    São mais de 30 anos de carreira dedicados a arte, que como
-                    ele mesmo diz uma espécie de pintura de seus personagens.
-                    Para ele a magia está em captar suas fotos com pequenas
-                    pinceladas "Quanto mais irretocável melhor, ou melhor na
-                    primeira pincelada..."
-                    <br><br>
-                    Nessa trajetória o amor pela arte, pela imagem, o levou a
-                    todos os caminhos atrás das câmeras, empreendeu anos
-                    depois para se tornar dono do seu próprio tempo.
-                    <br><br>
-                    Convido você a conhecer o trabalho desse renomado
-                    profissional, como muitos já fizeram...
-                    <br><br>
-                    Parceiros de história e de vida: Mulata Brasil, Long Island, DCI,
-                    Grupo 3, Notre Dame, Cavalera, Estúdio Preto e Branco
-                </p>
+                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo $textarea_about_capa; ?></p>
             </div>
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
-                <img src="./assets/paulo-barete.png" alt="Paulo Barete" class="image-row" style="height: 650px">
+                <?php
+                    if ($capaPrincipal == 'default-image.jpg') {
+                        echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row" style="height: 650px">';
+                    } else {
+                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-row" style="height: 650px">';
+                    }
+                ?>
             </div>
         </div>
     </main>
@@ -94,7 +73,13 @@
     <section>
         <div class="row align-items-center mx-0 mt-5 gap-5 flex-row w-100">
             <div class="col-12 col-md-8 col-lg-7 p-0" data-aos="fade-right" data-aos-delay="200">
-                <img src="./assets/content-about-image-1.jpg" alt="Banner sobre" class="content-about-image-1">
+                <?php
+                    if ($banner1 == 'default-image.jpg') {
+                        echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="content-about-image-1">';
+                    } else {
+                        echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="content-about-image-1">';
+                    }
+                ?>
             </div>
         </div>
     </section>

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12">
             <div class="set-parallax-image">
-                <input type="file" oninput="uploadImage(this, <?php echo $reference; ?>, 'banner_1')" accept="image/png, image/jpg, image/jpeg">
+                <input type="file" oninput="uploadImage(this, '<?php echo $reference; ?>', 'banner_1')" accept="image/png, image/jpg, image/jpeg">
 
                 <?php
                     echo "<img src='../../assets/".$banner1."' alt='Image'>";
@@ -41,7 +41,7 @@
         </div>
         <div class="col-12 col-lg-5">
             <div class="set-single-image">
-                <input type="file" oninput="uploadImage(this, <?php echo $reference; ?>, 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
+                <input type="file" oninput="uploadImage(this, '<?php echo $reference; ?>', 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
                 
                 <?php
                     echo "<img src='../../assets/".$capaImage."' alt='Image'>";
@@ -66,8 +66,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="add-image-gallery w-100 p-5">
-                    <input type="file" id="fileInputBanner">
-                    <label for="fileInputBanner"></label>
+                    <input type="file" oninput="uploadImage(this, '<?php echo $reference; ?>', 'gallery')" multiple accept="image/png, image/jpg, image/jpeg">
 
                     <div class="info-add-image-gallery">
                         <i class="bi bi-camera"></i>
@@ -82,66 +81,7 @@
 <section>
     <div class="container-fluid content my-5">
         <div class="row flex-row justify-content-start gap-3">
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star-fill"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://i0.wp.com/techwek.com/wp-content/uploads/2020/12/gato-imagem.jpg?resize=416%2C738&ssl=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-auto mb-3">
-                <div class="gallery-image-box">
-                    <img src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-                    
-                    <div class="gallery-image-options-box">
-                        <span><i class="bi bi-star"></i></span>
-                        <span><i class="bi bi-trash"></i></span>
-                    </div>
-                </div>
-            </div>
+            <?php include $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderGallery_photos_main.php"; ?>
         </div>
     </div>
 </section>

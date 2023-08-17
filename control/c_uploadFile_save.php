@@ -46,7 +46,7 @@
             "image/jpeg",
         );
 
-        $getFileName     = $reference . "_" . $_FILES[0]['name'];
+        $getFileName     = $reference . "_" . $localization . "_" . $_FILES[0]['name'];
         $getFileMimeType = mime_content_type($_FILES[0]['tmp_name']);
 
         // checa se é um arquivo permitido
@@ -57,7 +57,8 @@
             // se a imagem que esta sendo inserida faz parte de um carrossel, então ele vai inserir várias imagens da mesma referencia e do mesmo local, direfenciando apenas o 
             // nome, caso contrário, for de um banner ou capa ou parallax ele sempre vai substituir;
             $carrossel = array(
-                "carrossel_principal"
+                "carrossel_principal",
+                "gallery",
             );
 
             $replaceImage = in_array($localization, $carrossel) ? 1 : 0;

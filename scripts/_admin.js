@@ -420,7 +420,7 @@ async function uploadImage(o, ref, loc) {
     o.value = "";
 }
 
-async function deleteImage(id) {
+async function deleteImage(id, reloadRef) {
     let url = "../../control/c_uploadFile_delete.php";
     let data_post = `targetId=${id}`;
 
@@ -428,6 +428,10 @@ async function deleteImage(id) {
         showToast("Ausência de parametro", false);
         
         return false;
+    }
+
+    if (reloadRef === undefined) {
+        reloadRef = "home";
     }
 
     await http_post(url, data_post).then(snapshot => {
@@ -438,7 +442,7 @@ async function deleteImage(id) {
             showToast(ret.ref, ret.return);
 
             if (ret.return) {
-                renderPage(document.getElementById("nav-menu-home"));
+                renderPage(document.getElementById(`nav-menu-${reloadRef}`));
             }
             
         } catch (error) {
@@ -485,4 +489,36 @@ async function updateTextParam(o) {
 
         return false;
     })
+}
+
+async function setDestaque(id, reloadRef) {
+    let url = "../../control/c_galleryManager_setDestaque.php";
+    let data_post = `targetId=${id}`;
+
+    try {
+        
+        await http_post(url, data_post).then(snapshot => {
+
+            try {
+             
+                let ret = JSON.parse(snapshot);
+
+                showToast(ret.ref, ret.return);
+
+                if (ret.return) {
+                    renderPage(document.getElementById(`nav-menu-${reloadRef}`));
+                }
+                
+            } catch (error) {
+                console.log(error);
+                showToast("Erro do sistema", false);
+            }
+        }).catch(error => {
+            console.log(error);
+            showToast("Erro do sistema", false);
+        })
+    } catch (error) {
+        console.log(error);
+        showToast("Erro do sistema", false);
+    }
 }
