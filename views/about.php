@@ -56,7 +56,7 @@
                 
                 <br>
 
-                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo $textarea_about_capa; ?></p>
+                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo nl2br($textarea_about_capa); ?></p>
             </div>
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
                 <?php
