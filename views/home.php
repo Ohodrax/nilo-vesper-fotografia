@@ -96,7 +96,7 @@
             <div class="col-12 col-md-6 col-lg-6" data-aos="fade-up-right">
                 <h1 class="texto-destaque mb-4">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
                 <br>
-                <h2 class="texto-subdestaque"><?php echo $textarea_capa; ?></h2>
+                <h2 class="texto-subdestaque"><?php echo nl2br($textarea_capa); ?></h2>
             </div>
 
             <div class="col-12 col-md-6 col-lg-4 text-end p-0 simple-image-div-box" data-aos="fade-up" data-aos-delay="300" style="cursor: default;">
