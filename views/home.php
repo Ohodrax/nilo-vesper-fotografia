@@ -402,5 +402,10 @@
     
     <script src="./scripts/_main.js"></script>
 
+    <div class="row m-0" style="position: static;bottom:0;">
+        <div class="col-12 py-3">
+            <h4 class="text-center text-dark">Design criado por <a href="https://studiovis.com.br" style="color: #52265C;" target="_blank">Studio VIS</a> e desenvolvido por <a href="https://spark-it.com.br" style="color: #B30104;" target="_blank">Spark IT</a></h4>
+        </div>
+    </div>
 </body>
 </html>
