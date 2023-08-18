@@ -108,12 +108,14 @@
         echo "</div>";
 
     } else {
-        echo '<section class="w-100 my-5">';
-        echo    '<div class="row justify-content-between w-100 mx-0">';
-        echo        '<div class="col-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">';
-        echo            '<h1 class="text-center">Nenhuma imagem adicionada</h1>';
-        echo        '</div>';
-        echo    '</div>';
-        echo '</section>';
+        if ($setFrom == 0) {
+            echo '<section class="w-100 my-5">';
+            echo    '<div class="row justify-content-between w-100 mx-0">';
+            echo        '<div class="col-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">';
+            echo            '<h1 class="text-center">Nenhuma imagem adicionada</h1>';
+            echo        '</div>';
+            echo    '</div>';
+            echo '</section>';
+        }
     }
 ?>
