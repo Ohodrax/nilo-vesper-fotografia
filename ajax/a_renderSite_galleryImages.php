@@ -96,7 +96,7 @@
             echo '<section class="w-100">';
             echo    '<div class="row mx-0 justify-content-center">';
             echo        '<div class="col-10 div col-md-6 col-lg-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">';
-            echo            '<button class="button-enviar w-100" onclick="getMoreImages(this)">Ver mais</button>';
+            echo            '<button class="button-enviar w-100" onclick="getMoreImages(this)">VER MAIS</button>';
             echo        '</div>';
             echo    '</div>';
             echo '</section>';
