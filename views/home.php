@@ -404,7 +404,7 @@
 
     <div class="row m-0" style="position: static;bottom:0;">
         <div class="col-12 py-3">
-            <p class="text-center text-md-end text-dark" style="font-size: 10px;">Design criado por <a href="https://studiovis.com.br" style="color: #52265C;" target="_blank">Studio VIS</a> e desenvolvido por <a href="https://spark-it.com.br" style="color: #B30104;" target="_blank">Spark IT</a></p>
+            <p class="text-center text-dark" style="font-size: 10px;">Design criado por <a href="https://studiovis.com.br" style="color: #52265C;" target="_blank">Studio VIS</a> e desenvolvido por <a href="https://spark-it.com.br" style="color: #B30104;" target="_blank">Spark IT</a></p>
         </div>
     </div>
 </body>
