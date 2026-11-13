@@ -61,6 +61,7 @@ jobs:
           TEST_DB_USER: root
           TEST_DB_PASSWORD: isolated-ci-only
           TEST_DB_PORT: '3306'
+          TEST_BROWSER_UPLOAD: ${{ matrix.php == '8.2' && '1' || '0' }}
       - run: npm run deploy:plan
   deploy:
     needs: validate

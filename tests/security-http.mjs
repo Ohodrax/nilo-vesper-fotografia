@@ -118,6 +118,35 @@ try {
   assert.equal((await owner.request('/logout')).status, 405);
   assert.equal((await owner.post('/logout', {})).status, 200);
   assert.equal((await owner.request('/ajax/a_renderAdmin_main.php')).status, 401); checks++;
+  if (process.env.TEST_BROWSER_UPLOAD === '1') {
+    const { chromium } = await import('@playwright/test');
+    const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || undefined });
+    try {
+      const page = await browser.newPage();
+      // Administration must work even if optional CDNs are unavailable.
+      await page.route('**/*', route => route.request().url().startsWith(origin + '/') ? route.continue() : route.abort());
+      await page.goto(origin + '/login');
+      await page.locator('#username').fill('owner@example.invalid');
+      await page.locator('#userpassword').fill('test-password-owner-123');
+      await Promise.all([page.waitForURL(origin + '/admin'), page.getByRole('button', { name: 'Entrar', exact: true }).click()]);
+      await page.evaluate(() => renderPage(document.getElementById('nav-menu-pictures')));
+      const input = page.locator('input[type=file][oninput*="gallery"]').first();
+      const uploadResponse = page.waitForResponse(response => response.url().endsWith('/control/c_uploadFile_save.php'));
+      // This approved 18 MP photo also exceeds the default 2 MiB PHP upload limit.
+      await input.setInputFiles(path.join(root, 'assets/clients/clients_banner_clientes.jpg'));
+      const response = await uploadResponse;
+      assert.equal(response.status(), 200);
+      assert.equal((await response.json()).return, true);
+      await page.waitForFunction(() => document.getElementById('image-upload-status').textContent === '1 de 1 imagens salvas.');
+      const uploadedImages = run('images');
+      assert.equal(uploadedImages.length, 1);
+      const deleted = await page.evaluate(async id => fetch('/control/c_uploadFile_delete.php', {
+        method: 'POST', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ targetId: String(id) }),
+      }).then(response => response.json()), uploadedImages[0].id_image);
+      assert.equal(deleted.return, true);
+      checks++;
+    } finally { await browser.close(); }
+  }
   console.log('MariaDB + HTTP: ' + checks + ' security checks passed (schema, seed, SQLi, XSS, auth/roles, CSRF, uploads, reset and session revocation).');
 } catch (error) {
   console.error(output.slice(-12000).replace(/test-password-[^ \n]+/g, '[test password]'));

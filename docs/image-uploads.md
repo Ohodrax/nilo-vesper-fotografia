@@ -21,3 +21,5 @@ Se ocorrer HTTP 413 mesmo com a cópia otimizada, confira os limites de envio do
 ## Testes
 
 `npm test`, `npm run check:php` e `npm run test:security` verificam o fluxo e as proteções do servidor. Execute `npx playwright install chromium` e `npm run test:images` para testar num navegador real: JPEG de 24 MP, transparência PNG, orientação EXIF, originais pequenos, limites menores de PHP e formatos inválidos. Localmente, `PLAYWRIGHT_CHANNEL=chrome` permite usar Chrome instalado. O CI executa esses testes automaticamente.
+
+Com `TEST_BROWSER_UPLOAD=1`, `test:security` também entra pelo formulário e envia uma foto real de 18 MP pelo painel até o banco/GD, com os CDNs externos bloqueados. Esse cenário roda no CI em PHP 8.2.
