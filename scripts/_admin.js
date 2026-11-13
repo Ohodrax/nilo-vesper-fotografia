@@ -380,10 +380,12 @@ async function changeStatus(o) {
 }
 
 async function logout() {
-    setTimeout(() => {
+    try {
         await http_post("/logout", "");
         window.location.href = "/login";
-    }, 1000);
+    } catch {
+        showToast("Não foi possível sair. Tente novamente.", false);
+    }
 }
 
 async function uploadImage(o, ref, loc) {
