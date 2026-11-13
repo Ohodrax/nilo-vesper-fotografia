@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'ohodrax/paulo-bareta-fotografia',
+        'name' => 'ohodrax/nilo-vesper-fotografia',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
         'reference' => '2307660227c9bba270efb67592907b6fce1175a4',
@@ -10,7 +10,7 @@
         'dev' => false,
     ),
     'versions' => array(
-        'ohodrax/paulo-bareta-fotografia' => array(
+        'ohodrax/nilo-vesper-fotografia' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
             'reference' => '2307660227c9bba270efb67592907b6fce1175a4',

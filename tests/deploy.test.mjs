@@ -29,6 +29,22 @@ test('plan preserves production assets, private files and existing webserver con
   assert.deepEqual(plan.preserved, ['assets/photo.jpg', '.htaccess']); assert.equal(plan.changes.length, 1);
   assert.equal(client.files.get('/hosting/site/.env').toString(), 'private');
 });
+
+test('existing target markers and rollback manifests survive the rebrand', async () => {
+  const client = mock();
+  for (const [directory, filename] of [[config.remoteDir, '.deploy-target.json'], [config.backupDir, '.deploy-backups.json']]) {
+    client.files.set(`${directory}/${filename}`, Buffer.from(JSON.stringify({ project: 'Ohodrax/paulo-bareta-fotografia', targetId: config.targetId })));
+  }
+  await verifyTarget(client, config);
+  client.files.set('/hosting/site/index.php', Buffer.from('old'));
+  await deploy(client, config, [file('index.php', 'new')], 'legacy-release');
+  const manifestPath = '/hosting/backups/legacy-release/manifest.json';
+  const manifest = JSON.parse(client.files.get(manifestPath));
+  manifest.project = 'Ohodrax/paulo-bareta-fotografia';
+  client.files.set(manifestPath, Buffer.from(JSON.stringify(manifest)));
+  await rollback(client, config, 'legacy-release');
+  assert.equal(client.files.get('/hosting/site/index.php').toString(), 'old');
+});
 test('deploy keeps backups outside webroot and rollback restores overwritten files, removes only new managed files', async () => {
   const client = mock(); client.files.set('/hosting/site/index.php', Buffer.from('old')); client.files.set('/hosting/site/uploads/private.jpg', Buffer.from('upload'));
   const result = await deploy(client, config, [file('index.php', 'new'), file('Router.php', 'router')], 'release-1');

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../bin/security.php';
+require_once __DIR__ . '/../bin/branding.php';
+require_once __DIR__ . '/../bin/image-upload.php';
 require_once __DIR__ . '/../bin/classes/mySqlConnection.php';
 require_once __DIR__ . '/../bin/classes/db_crud.php';
 function ensure($ok, $name) { if (!$ok) throw new RuntimeException($name); }
@@ -9,6 +11,21 @@ function rejects(callable $fn, string $name) {
     throw new RuntimeException($name);
 }
 $pdo = new PDO('sqlite::memory:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+ensure(ini_size_bytes('2M') === 2097152 && ini_size_bytes('128K') === 131072 && ini_size_bytes('-1') === 0, 'Read PHP upload and memory limits');
+$limits = image_upload_limits();
+ensure($limits['maxBytes'] <= 8388608 && $limits['maxPixels'] <= 8000000, 'Runtime limits cannot exceed server safety caps');
+$pdo->exec('CREATE TABLE tb_image (nome TEXT, status INTEGER, referencia TEXT)');
+$imageInsert = $pdo->prepare('INSERT INTO tb_image VALUES (?, ?, ?)');
+foreach (retired_media_names() as $name) $imageInsert->execute([$name, 1, 'pictures']);
+$imageInsert->execute(['approved.jpg', 1, 'pictures']);
+$imageInsert->execute(['inactive.jpg', 0, 'pictures']);
+$images = new db_crud($pdo);
+$images->table = 'tb_image';
+$images->filters = visible_media_filters([['referencia', '=', 'pictures']]);
+ensure(array_column($images->default_select_data(), 'nome') === ['approved.jpg'], 'Retired and inactive photos must be excluded before pagination');
+ensure(brand_text('Paulo Bareta, 30 anos de carreira', 'demo') === 'demo', 'Do not transfer a real biography');
+ensure(brand_text('paulobareta@example.invalid') === '', 'Do not transfer old contacts');
+ensure(brand_text('São Paulo, Brasil') === 'São Paulo, Brasil', 'Keep unrelated geographic names');
 $pdo->exec('CREATE TABLE tb_usuario (id_usuario INTEGER PRIMARY KEY, nome TEXT, email TEXT)');
 $pdo->exec("INSERT INTO tb_usuario VALUES (1, 'Owner', 'owner@example.invalid'), (2, 'Editor', 'editor@example.invalid')");
 $db = new db_crud($pdo);

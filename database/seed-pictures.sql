@@ -46,7 +46,3 @@ WHERE NOT EXISTS (SELECT 1 FROM tb_image WHERE referencia = 'pictures' AND nome 
 INSERT INTO tb_image (nome, referencia, localizacao, status, criado_por, alterado_por)
 SELECT 'pictures_gallery_content-image-2.jpg', 'pictures', 'gallery', 1, 'SETUP', 'SETUP'
 WHERE NOT EXISTS (SELECT 1 FROM tb_image WHERE referencia = 'pictures' AND nome = 'pictures_gallery_content-image-2.jpg');
-
-INSERT INTO tb_image (nome, referencia, localizacao, status, criado_por, alterado_por)
-SELECT 'pictures_gallery_paulo-barete.png', 'pictures', 'gallery', 1, 'SETUP', 'SETUP'
-WHERE NOT EXISTS (SELECT 1 FROM tb_image WHERE referencia = 'pictures' AND nome = 'pictures_gallery_paulo-barete.png');

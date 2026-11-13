@@ -58,7 +58,8 @@
         <div class="col-12 col-md-8 col-lg-5 d-flex align-items-end">
             <div class="row text-end">
                 <div class="col-12 mb-5" data-aos="fade-up" data-aos-delay="300">
-                    <h2 class="footer-titulo">PAULO<span>BARETA</span>FOTOGRAFIA</h2>
+                    <h2 class="footer-titulo">NILO<span>VESPER</span>FOTOGRAFIA</h2>
+                    <p class="mt-3">Identidade fictícia. Projeto demonstrativo da <a class="link-default" href="https://spartun.com.br">Spartun Digital</a>.</p>
                 </div>
                 <div class="col-12 my-3" data-aos="fade-up" data-aos-delay="400">
                     <p class="footer-texto-contato">
@@ -101,7 +102,9 @@
     <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
 </footer>
 
+<?php if (preg_replace('/\D/', '', $input_whatsapp_number_contact) !== ''): ?>
 <a href="https://wa.me/55<?php echo preg_replace('/\D/', '', $input_whatsapp_number_contact); ?>" class="btn-whatsapp" target="_blank" <?php echo $_SERVER['REQUEST_URI'] == '/contato' ? '' : 'data-aos="zoom-in-up" data-aos-delay="300"'; ?>>
     <img src="./assets/whatsapp-icon.png" alt="Botao whatssapp">
     <span class="tooltip-text">Envie uma mensagem</span>
 </a>
+<?php endif; ?>

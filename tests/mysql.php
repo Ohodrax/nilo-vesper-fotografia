@@ -17,7 +17,16 @@ if ($action === 'prepare') {
     $pdo->exec(file_get_contents(__DIR__ . '/../database/upgrade-security.sql'));
     $seed = file_get_contents(__DIR__ . '/../database/seed-pictures.sql');
     $pdo->exec($seed); $pdo->exec($seed);
-    if ((int) $pdo->query('SELECT COUNT(*) FROM tb_image')->fetchColumn() !== 13) throw new RuntimeException('Seed must be repeatable.');
+    if ((int) $pdo->query('SELECT COUNT(*) FROM tb_image')->fetchColumn() !== 12) throw new RuntimeException('Seed must be repeatable.');
+    $pdo->exec("INSERT INTO tb_image (nome, referencia, localizacao, status, destaque_carrossel, criado_por) VALUES ('pictures_gallery_paulo-barete.png', 'pictures', 'gallery', 1, 1, 'SETUP'), ('about_paulo-barete.png', 'about', 'capa_principal', 1, 0, 'SETUP')");
+    $pdo->exec("UPDATE tb_parametro SET input_value = 'Paulo Bareta, 30 anos de carreira' WHERE input_reference = 'textarea_about_capa'");
+    $migration = file_get_contents(__DIR__ . '/../database/rebrand-nilo-vesper.sql');
+    $pdo->exec($migration); $pdo->exec($migration);
+    if ((int) $pdo->query("SELECT COUNT(*) FROM tb_image WHERE nome LIKE '%barete%' AND (status <> 0 OR destaque_carrossel <> 0)")->fetchColumn() !== 0) throw new RuntimeException('Rebrand must retire images');
+    if (!str_contains($pdo->query("SELECT input_value FROM tb_parametro WHERE input_reference = 'textarea_about_capa'")->fetchColumn(), 'Nilo Vesper')) throw new RuntimeException('Rebrand must replace legacy biography');
+    // Simulate an installation whose database migration has not run yet.
+    $pdo->exec("UPDATE tb_image SET status = 1, destaque_carrossel = 1 WHERE nome LIKE '%barete%'");
+    $pdo->exec("UPDATE tb_parametro SET input_value = 'Paulo Bareta, 30 anos de carreira' WHERE input_reference = 'textarea_about_capa'");
     $stmt = $pdo->prepare('INSERT INTO tb_usuario (id_usuario, id_perfil, nome, email, senha) VALUES (?, ?, ?, ?, ?)');
     $stmt->execute([1, 1, '<img src=x onerror=alert(1)>', 'owner@example.invalid', password_hash('test-password-owner-123', PASSWORD_DEFAULT)]);
     $stmt->execute([2, 2, 'Editor', 'editor@example.invalid', password_hash('test-password-editor-123', PASSWORD_DEFAULT)]);

@@ -32,7 +32,7 @@ require_admin();
 
     $selecGalleryImages = new db_crud();
     $selecGalleryImages->table   = "tb_image";
-    $selecGalleryImages->filters = $filters;
+    $selecGalleryImages->filters = visible_media_filters($filters);
     $selecGalleryImages->orderby = $orderby;
     $ret_selecGalleryImages = $selecGalleryImages->default_select_data();
 

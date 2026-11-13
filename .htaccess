@@ -3,6 +3,9 @@ Options -Indexes
     Require all denied
 </FilesMatch>
 RewriteEngine On
+# Retired identity assets: block direct URLs left by a preserving deployment.
+RewriteRule ^assets/(?:.*/)?(?:paulo-barete\.png|about_paulo-barete\.png|pictures_gallery_paulo-barete\.png|parceiros\.png|favicon\.ico)$ - [G,L,NC]
+RewriteRule ^index\.html\.old$ - [G,L,NC]
 RewriteRule ^(?:bin|vendor|deploy|tests|docs|database|views|node_modules)(?:/|$) - [F,L]
 RewriteRule ^assets/.*\.(?:php[0-9]*|phtml|phar)$ - [F,L,NC]
 # Ativação do RewriteEngine que nos permite gerenciar as rotas

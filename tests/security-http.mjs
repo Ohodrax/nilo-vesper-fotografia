@@ -17,7 +17,7 @@ const listener = createServer();
 listener.listen(0, '127.0.0.1'); await once(listener, 'listening');
 const port = listener.address().port; await new Promise(resolve => listener.close(resolve));
 const origin = 'http://127.0.0.1:' + port;
-const state = await mkdtemp(path.join(path.dirname(root), 'paulo-test-state-'));
+const state = await mkdtemp(path.join(path.dirname(root), 'nilo-test-state-'));
 let server, output = '', checks = 0;
 try {
   const fixture = run('prepare');
@@ -63,6 +63,17 @@ try {
   assert.equal(home.status, 200);
   assert.ok(home.text.includes('&lt;/textarea&gt;&lt;script&gt;alert(1)&lt;/script&gt;'));
   assert.ok(!home.text.includes('href="javascript:')); checks++;
+  for (const route of ['/', '/retratos', '/personalidades', '/moda', '/corporativo', '/clientes', '/sobre', '/contato', '/login']) {
+    const page = await visitor.request(route);
+    assert.equal(page.status, 200, route);
+    assert.ok(page.text.includes('Nilo Vesper Fotografia'), route);
+    assert.doesNotMatch(page.text, /paulo[\s_-]*bare(?:ta|te)|parceiros\.png|favicon\.ico|30 anos/i, route);
+    checks++;
+  }
+  const gallery = await visitor.post('/ajax/a_renderSite_galleryImages.php', { referenceRef: 'pictures', renderedRef: '0' });
+  assert.equal(gallery.status, 200);
+  assert.doesNotMatch(gallery.text, /barete/i);
+  checks++;
   const owner = new Browser();
   const admin = await owner.login('owner@example.invalid', 'test-password-owner-123');
   assert.equal(admin.status, 200);
@@ -78,6 +89,15 @@ try {
   forged.set('reference', 'pictures'); forged.set('localization', 'gallery');
   forged.set('0', new Blob(['<?php echo "injected"; ?>'], { type: 'image/png' }), 'payload.png');
   assert.equal((await owner.post('/control/c_uploadFile_save.php', forged)).status, 400); checks++;
+  // A small compressed file can exceed the pixel cap: reject it before GD decoding.
+  const largeHeader = Buffer.from(fixture.png, 'base64');
+  largeHeader.writeUInt32BE(6000, 16); largeHeader.writeUInt32BE(4000, 20);
+  const oversized = new FormData();
+  oversized.set('reference', 'pictures'); oversized.set('localization', 'gallery');
+  oversized.set('0', new Blob([largeHeader], { type: 'image/png' }), '24-megapixels.png');
+  const refused = await owner.post('/control/c_uploadFile_save.php', oversized);
+  assert.equal(refused.status, 400);
+  assert.match(JSON.parse(refused.text).ref, /resolução|processamento/); checks++;
   const valid = new FormData();
   valid.set('reference', 'pictures'); valid.set('localization', 'gallery');
   const png = Buffer.from(fixture.png, 'base64');

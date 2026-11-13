@@ -49,6 +49,10 @@ jobs:
           coverage: none
       - run: npm ci --ignore-scripts
       - run: npm test
+      - if: matrix.php == '8.2'
+        run: npx playwright install --with-deps chromium
+      - if: matrix.php == '8.2'
+        run: npm run test:images
       - run: npm run check:php
       - run: composer validate --no-check-publish
       - run: composer audit --locked
@@ -68,7 +72,7 @@ jobs:
     timeout-minutes: 20
     environment: heliohost-production
     concurrency:
-      group: paulo-bareta-heliohost-production
+      group: photography-heliohost-production
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
