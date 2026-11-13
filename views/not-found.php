@@ -67,6 +67,5 @@
     </a>
     
     <script src="../scripts/_main.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
 </body>
 </html>

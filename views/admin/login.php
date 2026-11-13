@@ -107,7 +107,6 @@
     <div id="toastBox"></div>
 
     <script src="../scripts/_admin_login.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
     <?php
         // exibe a mensagem de logout
         if ($showMessage) {

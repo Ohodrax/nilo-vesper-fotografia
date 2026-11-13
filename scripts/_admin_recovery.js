@@ -1,4 +1,4 @@
-AOS.init();
+globalThis.AOS?.init();
 
 function changeInput(o) {
     let iconLock     = `<i class='bx bxs-lock-alt'></i>`;

@@ -62,7 +62,7 @@
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
-                        echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row" style="height: 650px">';
+                        echo '<div class="brand-monogram" role="img" aria-label="Identidade visual Nilo Vesper"><span>NV</span><small>FOTOGRAFIA</small></div>';
                     } else {
                         echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-row" style="height: 650px">';
                     }

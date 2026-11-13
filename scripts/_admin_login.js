@@ -1,4 +1,4 @@
-AOS.init();
+globalThis.AOS?.init();
 
 window.onload = () => {
     let rememberUser = localStorage.getItem("savedUser");
@@ -140,11 +140,7 @@ async function processLogin(o) {
 async function login(e, o) {
     e.preventDefault();
 
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
-            processLogin(o);
-        });
-    });
+    return processLogin(o);
 }
 
 async function runRecuperarSenha(o) {
@@ -201,11 +197,7 @@ async function runRecuperarSenha(o) {
 }
 
 async function recuperarSenha(o) {
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
-            runRecuperarSenha(o);
-        });
-    });
+    return runRecuperarSenha(o);
 }
 
 function changeInput(o) {

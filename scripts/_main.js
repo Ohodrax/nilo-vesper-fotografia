@@ -1,4 +1,4 @@
-AOS.init();
+globalThis.AOS?.init();
 
 window.addEventListener('scroll', () => {
     let urls = ['/', '/retratos', '/personalidades', '/moda', '/corporativo'];
@@ -128,11 +128,7 @@ async function processarEnvio(o) {
 }
 
 async function enviarContato(o){
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l', {action: 'submit'}).then(function(token) {
-            processarEnvio(o);
-        });
-    });
+    return processarEnvio(o);
 }
 
 function http_post(url, data) {
@@ -188,7 +184,7 @@ async function getMoreImages(o) {
 
         document.getElementById("gallery-box").innerHTML = document.getElementById("gallery-box").innerHTML + snapshot;
         
-        AOS.init();
+        globalThis.AOS?.init();
 
     }).catch(error => {
         console.log(error);

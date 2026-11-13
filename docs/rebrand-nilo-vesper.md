@@ -32,6 +32,8 @@ O HTML antigo `index.html.old` também foi retirado. O histórico Git e backups 
 
 As únicas referências técnicas à identidade anterior ficam nas regras de retirada, testes de regressão, migração de banco e compatibilidade de configuração/backups. Não são exibidas como marca. A pasta local, o nome do repositório e o domínio são recursos externos à substituição de conteúdo.
 
+A chamada reCAPTCHA com chave fixa do projeto anterior foi retirada dos formulários: seu token não era enviado nem validado no servidor e podia bloquear login/contato em outro domínio. Autenticação, CSRF e limites de requisições no servidor permanecem ativos. Animações indisponíveis também não bloqueiam os scripts de administração.
+
 Para reverter o código, use o rollback documentado. Não restaure o retrato ou os logos para a pasta pública, nem reative os seus cadastros ao restaurar o banco. Se um backup SQL for necessário, reaplique `rebrand-nilo-vesper.sql` antes de liberar o tráfego. Preserve a configuração privada que estiver ativa.
 
 ## Validação

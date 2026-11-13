@@ -98,8 +98,6 @@
             </div>
         </div>
     </div>
-
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
 </footer>
 
 <?php if (preg_replace('/\D/', '', $input_whatsapp_number_contact) !== ''): ?>
