@@ -1,4 +1,5 @@
-AOS.init();
+// Animation availability must never prevent administration or uploads.
+globalThis.AOS?.init();
 
 var device;
 
