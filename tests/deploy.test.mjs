@@ -5,7 +5,7 @@ const config = { remoteDir: '/hosting/site', backupDir: '/hosting/backups', targ
 function mock() {
   const files = new Map(), dirs = new Set(['/hosting', config.remoteDir, config.backupDir]), links = new Set();
   for (const [dir, name] of [[config.remoteDir, '.deploy-target.json'], [config.backupDir, '.deploy-backups.json']]) files.set(`${dir}/${name}`, Buffer.from(JSON.stringify({ project: PROJECT, targetId: config.targetId })));
-  return { files, dirs, links, async exists(p) { return links.has(p) ? 'l' : files.has(p) ? '-' : dirs.has(p) ? 'd' : false; }, async realPath(p) { return p; }, async stat(p) { return { size: files.get(p).length }; }, async get(p) { return files.get(p); },
+  return { files, dirs, links, sftp: { mkdir(p, _attrs, callback) { if (dirs.has(p)) callback(new Error('exists')); else { dirs.add(p); callback(); } } }, async exists(p) { return links.has(p) ? 'l' : files.has(p) ? '-' : dirs.has(p) ? 'd' : false; }, async realPath(p) { return p; }, async stat(p) { return { size: files.get(p).length }; }, async get(p) { return files.get(p); },
     async mkdir(p, recursive) { if (dirs.has(p) && !recursive) throw new Error('exists'); dirs.add(p); }, async rmdir(p) { dirs.delete(p); },
     async put(data, p) { files.set(p, Buffer.from(data)); }, async posixRename(a, b) { files.set(b, files.get(a)); files.delete(a); }, async delete(p) { files.delete(p); } };
 }
@@ -71,4 +71,23 @@ test('backup failure never touches live application files', async () => {
   client.put = async () => { throw new Error('disk full'); };
   await assert.rejects(deploy(client, config, [file('index.php', 'new')], 'release-1'), /disk full/);
   assert.equal(client.files.get('/hosting/site/index.php').toString(), 'old');
+});
+test('native SFTP lock rejects races even when high-level mkdir is idempotent', async () => {
+  const client = mock();
+  client.mkdir = async p => { client.dirs.add(p); };
+  let release, entered = 0;
+  const barrier = new Promise(resolve => { release = resolve; });
+  const operation = () => { entered++; return barrier; };
+  const first = withLock(client, config, operation);
+  const second = withLock(client, config, operation);
+  const outcomes = Promise.allSettled([first, second]);
+  await new Promise(resolve => setTimeout(resolve, 20)); release();
+  const results = await outcomes;
+  assert.equal(entered, 1); assert.equal(results.filter(result => result.status === 'rejected').length, 1);
+});
+test('repeating a completed rollback is a no-op even after a new deploy', async () => {
+  const client = mock(); client.files.set('/hosting/site/index.php', Buffer.from('old'));
+  await deploy(client, config, [file('index.php', 'new')], 'first'); await rollback(client, config, 'first');
+  await deploy(client, config, [file('index.php', 'new')], 'second'); await rollback(client, config, 'first');
+  assert.equal(client.files.get('/hosting/site/index.php').toString(), 'new');
 });

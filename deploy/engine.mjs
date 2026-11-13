@@ -114,7 +114,9 @@ export async function rollback(sftp, config, release) {
   if (manifest.project !== PROJECT || manifest.targetId !== config.targetId || manifest.root !== root || !Array.isArray(manifest.files)) throw new Error('Manifesto não corresponde ao destino.');
   const activeData = await readRemote(sftp, await safePath(sftp, backups, 'active-release.json'), 4096);
   const active = activeData ? JSON.parse(activeData.toString()).release : null;
+  if (manifest.state === 'rolled-back') return { restored: 0, release };
   if (manifest.state === 'deployed' && active !== release) throw new Error('Rollback recusado: somente a release ativa pode ser revertida.');
+  if (manifest.state === 'ready' && active !== manifest.previousRelease && active !== release) throw new Error('Rollback recusado: outra release foi aplicada após a execução interrompida.');
   if (!['ready', 'deployed', 'rolled-back'].includes(manifest.state)) throw new Error('Manifesto de release incompleto.');
   // Verify every record before the first restore. Preserve files modified after deployment.
   const restore = [];
@@ -174,7 +176,9 @@ export async function withLock(sftp, config, operation) {
   const { backups } = await verifyTarget(sftp, config);
   const lock = `${backups}/deploy.lock`;
   if (await sftp.exists(lock)) throw new Error('Outro deploy ou recuperação está pendente (deploy.lock).');
-  await sftp.mkdir(lock, false);
+  // ssh2-sftp-client.mkdir is idempotent and can silently accept an existing directory.
+  // The native SFTP primitive must atomically fail when a concurrent process won.
+  await new Promise((resolve, reject) => sftp.sftp.mkdir(lock, { mode: 0o700 }, error => error ? reject(new Error('Outro deploy adquiriu o lock ou faltam permissões.')) : resolve()));
   try { return await operation(); }
   finally { await sftp.rmdir(lock, false); }
 }
