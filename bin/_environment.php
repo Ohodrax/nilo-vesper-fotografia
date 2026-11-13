@@ -1,4 +1,3 @@
 <?php
-    include ('_variables.php');
-    include ('_functions.php');
-?>
+require_once __DIR__ . '/_variables.php';
+require_once __DIR__ . '/_functions.php';

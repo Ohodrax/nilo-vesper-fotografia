@@ -1,70 +1,45 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
+    require_once dirname(__DIR__) . "/vendor/autoload.php";
+    require_once __DIR__ . "/config.php";
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
     // ler todas as classes automaticamente
     spl_autoload_register(function ($className) {
-        include 'classes/'.$className.'.php';
+        if (in_array($className, ['mySqlConnection', 'db_crud'], true)) require_once __DIR__ . '/classes/'.$className.'.php';
     });
 
-    // Enviar email com novo contato passando apenas os campos do formulário
+    // SMTP credentials are resolved only on the server.
     function send_email($message, $subject, $destinyAddr) {
-
-        $sended = true;
-
         try {
             $mail = new PHPMailer(true);
-
-            /*Server Config*/
-    
-                // $mail->SMTPDebug = 3;
-                $mail->isSMTP();
-                $mail->Host       = 'smtp.office365.com';
-                $mail->SMTPAuth   = true;
-                $mail->SMTPSecure = 'tls';
-    
-                //usuario e senha para autenticacao
-                $mail->Username = 'bot.systemsite@hotmail.com';
-                $mail->Password = 'mYS1st3m&1T3';
-                $mail->Port     = 587;
-                $mail->CharSet  = 'utf-8';
-    
-            /*End of Server Config*/
-    
-            /*Recipients*/
-    
-                //email de quem esta enviando email
-                $mail->setFrom('bot.systemsite@hotmail.com', 'Sistema | Robô de E-mail');
-                //destinatario email
-                $mail->addAddress($destinyAddr);//(strtolower($_POST['email']), strtolower(ucfirst($_POST['nome'])));
-    
-            /*End of Recipients*/
-    
-            /*Content*/
-    
-                //corpo do email como html_entity_decode
-                $mail->isHTML(true);
-                //assunto do email
-                $mail->Subject = $subject;
-                //corpo do email
-    
-                $mail->Body = $message;
-    
-            /*End of Content*/
-    
+            $mail->isSMTP();
+            $mail->Host = app_config('SMTP_HOST');
+            $mail->SMTPAuth = true;
+            $mail->Username = app_config('SMTP_USER');
+            $mail->Password = app_config('SMTP_PASSWORD');
+            $mail->Port = (int) app_config('SMTP_PORT', '587');
+            $mail->SMTPSecure = app_config('SMTP_SECURITY', 'tls');
+            if (!(($mail->Port === 587 && $mail->SMTPSecure === 'tls') || ($mail->Port === 465 && $mail->SMTPSecure === 'ssl'))) {
+                throw new RuntimeException('Configuração TLS do SMTP inválida.');
+            }
+            $mail->SMTPOptions = ['ssl' => ['verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false]];
+            $mail->Timeout = 20;
+            $mail->CharSet = 'utf-8';
+            $mail->setFrom(app_config('SMTP_FROM'), app_config('SMTP_FROM_NAME', 'Paulo Bareta Fotografia'));
+            $mail->addAddress($destinyAddr);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+            $mail->AltBody = html_entity_decode(strip_tags($message), ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $mail->send();
-
-        } catch (Exception $th) {
-            $sended = false;
-
-            throw $th->getMessage();
+            return true;
+        } catch (Throwable $error) {
+            error_log('smtp_send_failed');
+            return false;
         }
-
-        return $sended;
     }
-
     function validation($cpf) {
         $digitos_1 = array(
             '10' => substr($cpf, 0, -13),

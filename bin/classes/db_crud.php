@@ -1,6 +1,7 @@
 <?php
 
     class db_crud extends mySqlConnection {
+        public $data, $filters, $id, $orderby, $proc, $table;
         
         function __get($atributo) {
             return $this->$atributo;
