@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -53,7 +54,7 @@
             // se tiver apenas 1 imagem inserida como destaque da home
        
             echo '<section class="mb-5">';
-            echo    '<img src="./assets/'.$reference.'/'.$arrayCarrosselImages[0].'" alt="Imagem Default" class="imagem-destaque-retrato">';
+            echo    '<img src="./assets/'.$reference.'/'.h($arrayCarrosselImages[0]).'" alt="Imagem Default" class="imagem-destaque-retrato">';
             echo '</section>';
 
         } elseif (count($arrayCarrosselImages) > 1) {
@@ -69,13 +70,13 @@
                 if ($i == 0) {
 
                     echo '<div class="carousel-item active">';
-                    echo    '<img src="./assets/'.$reference.'/'.$arrayCarrosselImages[$i].'" class="w-100 carrossel-image" alt="Carrossel Image '.$i.'">';
+                    echo    '<img src="./assets/'.$reference.'/'.h($arrayCarrosselImages[$i]).'" class="w-100 carrossel-image" alt="Carrossel Image '.$i.'">';
                     echo '</div>';
 
                 } else {
 
                     echo '<div class="carousel-item">';
-                    echo     '<img src="./assets/'.$reference.'/'.$arrayCarrosselImages[$i].'" class="w-100 carrossel-image" alt="Carrossel Image '.$i.'">';
+                    echo     '<img src="./assets/'.$reference.'/'.h($arrayCarrosselImages[$i]).'" class="w-100 carrossel-image" alt="Carrossel Image '.$i.'">';
                     echo '</div>';
 
                 }
@@ -96,7 +97,7 @@
             <div class="col-12 col-md-6 col-lg-6" data-aos="fade-up-right">
                 <h1 class="texto-destaque mb-4">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
                 <br>
-                <h2 class="texto-subdestaque"><?php echo nl2br($textarea_capa); ?></h2>
+                <h2 class="texto-subdestaque"><?php echo nl2br(h($textarea_capa)); ?></h2>
             </div>
 
             <div class="col-12 col-md-6 col-lg-4 text-end p-0 simple-image-div-box" data-aos="fade-up" data-aos-delay="300" style="cursor: default;">
@@ -104,7 +105,7 @@
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-row">';
+                        echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-row">';
                     }
                 ?>
             </div>
@@ -134,7 +135,7 @@
                             // se tiver apenas 1 imagem inserida como destaque da home
                     
                             echo '<section>';
-                            echo    '<img src="./assets/pictures/'.$arrayCarrosselRetratos[0].'" alt="Imagem Default" class="w-100 image-row">';
+                            echo    '<img src="./assets/pictures/'.h($arrayCarrosselRetratos[0]).'" alt="Imagem Default" class="w-100 image-row">';
                             echo '</section>';
 
                         } elseif (count($arrayCarrosselRetratos) > 1) {
@@ -150,13 +151,13 @@
                                 if ($i == 0) {
 
                                     echo '<div class="carousel-item active">';
-                                    echo    '<img src="./assets/pictures/'.$arrayCarrosselRetratos[$i].'" class="w-100 image-row" alt="Carrossel Retrato '.$i.'">';
+                                    echo    '<img src="./assets/pictures/'.h($arrayCarrosselRetratos[$i]).'" class="w-100 image-row" alt="Carrossel Retrato '.$i.'">';
                                     echo '</div>';
 
                                 } else {
 
                                     echo '<div class="carousel-item">';
-                                    echo     '<img src="./assets/pictures/'.$arrayCarrosselRetratos[$i].'" class="w-100 image-row" alt="Carrossel Retrato '.$i.'">';
+                                    echo     '<img src="./assets/pictures/'.h($arrayCarrosselRetratos[$i]).'" class="w-100 image-row" alt="Carrossel Retrato '.$i.'">';
                                     echo '</div>';
 
                                 }
@@ -195,7 +196,7 @@
                             // se tiver apenas 1 imagem inserida como destaque da home
                     
                             echo '<section>';
-                            echo    '<img src="./assets/personalities/'.$arrayCarrosselPersonalidades[0].'" alt="Imagem Default" class="w-100 image-row">';
+                            echo    '<img src="./assets/personalities/'.h($arrayCarrosselPersonalidades[0]).'" alt="Imagem Default" class="w-100 image-row">';
                             echo '</section>';
 
                         } elseif (count($arrayCarrosselPersonalidades) > 1) {
@@ -211,13 +212,13 @@
                                 if ($i == 0) {
 
                                     echo '<div class="carousel-item active" data-bs-interval="3500">';
-                                    echo    '<img src="./assets/personalities/'.$arrayCarrosselPersonalidades[$i].'" class="w-100 image-row" alt="Carrossel Personalidade '.$i.'">';
+                                    echo    '<img src="./assets/personalities/'.h($arrayCarrosselPersonalidades[$i]).'" class="w-100 image-row" alt="Carrossel Personalidade '.$i.'">';
                                     echo '</div>';
 
                                 } else {
 
                                     echo '<div class="carousel-item" data-bs-interval="5000">';
-                                    echo     '<img src="./assets/personalities/'.$arrayCarrosselPersonalidades[$i].'" class="w-100 image-row" alt="Carrossel Personalidade '.$i.'">';
+                                    echo     '<img src="./assets/personalities/'.h($arrayCarrosselPersonalidades[$i]).'" class="w-100 image-row" alt="Carrossel Personalidade '.$i.'">';
                                     echo '</div>';
 
                                 }
@@ -238,7 +239,7 @@
     <br>
 
     <!-- parallax girassois -->
-    <div class="content-image-1 my-5" style="background-image: url('../assets/home/<?php echo $banner1; ?>');"></div>
+    <div class="content-image-1 my-5" style="background-image: url('../assets/home/<?php echo rawurlencode($banner1); ?>');"></div>
 
     <br>
     <br>
@@ -262,7 +263,7 @@
                             // se tiver apenas 1 imagem inserida como destaque da home
                     
                             echo '<section>';
-                            echo    '<img src="./assets/corporate/'.$arrayCarrosselCorporativo[0].'" alt="Imagem Default" class="w-100 image-row">';
+                            echo    '<img src="./assets/corporate/'.h($arrayCarrosselCorporativo[0]).'" alt="Imagem Default" class="w-100 image-row">';
                             echo '</section>';
 
                         } elseif (count($arrayCarrosselCorporativo) > 1) {
@@ -278,13 +279,13 @@
                                 if ($i == 0) {
 
                                     echo '<div class="carousel-item active" data-bs-interval="3500">';
-                                    echo    '<img src="./assets/corporate/'.$arrayCarrosselCorporativo[$i].'" class="w-100 image-row" alt="Carrossel Corporativo '.$i.'">';
+                                    echo    '<img src="./assets/corporate/'.h($arrayCarrosselCorporativo[$i]).'" class="w-100 image-row" alt="Carrossel Corporativo '.$i.'">';
                                     echo '</div>';
 
                                 } else {
 
                                     echo '<div class="carousel-item" data-bs-interval="5000">';
-                                    echo     '<img src="./assets/corporate/'.$arrayCarrosselCorporativo[$i].'" class="w-100 image-row" alt="Carrossel Corporativo '.$i.'">';
+                                    echo     '<img src="./assets/corporate/'.h($arrayCarrosselCorporativo[$i]).'" class="w-100 image-row" alt="Carrossel Corporativo '.$i.'">';
                                     echo '</div>';
 
                                 }
@@ -307,7 +308,7 @@
     <br>
 
     <!-- parallax modelo -->
-    <div class="content-image-2 my-5" style="background-image: url('../assets/home/<?php echo $banner2; ?>');"></div>
+    <div class="content-image-2 my-5" style="background-image: url('../assets/home/<?php echo rawurlencode($banner2); ?>');"></div>
     
     <br>
     <br>
@@ -350,7 +351,7 @@
                             // se tiver apenas 1 imagem inserida como destaque da home
                     
                             echo '<section>';
-                            echo    '<img src="./assets/fashion/'.$arrayCarrosselModa[0].'" style="min-height: 700px;" alt="Imagem Default" class="w-100 image-row">';
+                            echo    '<img src="./assets/fashion/'.h($arrayCarrosselModa[0]).'" style="min-height: 700px;" alt="Imagem Default" class="w-100 image-row">';
                             echo '</section>';
 
                         } elseif (count($arrayCarrosselModa) > 1) {
@@ -366,13 +367,13 @@
                                 if ($i == 0) {
 
                                     echo '<div class="carousel-item active" data-bs-interval="3500">';
-                                    echo    '<img src="./assets/fashion/'.$arrayCarrosselModa[$i].'" style="min-height: 700px;" class="w-100 image-row" alt="Carrossel Moda '.$i.'">';
+                                    echo    '<img src="./assets/fashion/'.h($arrayCarrosselModa[$i]).'" style="min-height: 700px;" class="w-100 image-row" alt="Carrossel Moda '.$i.'">';
                                     echo '</div>';
 
                                 } else {
 
                                     echo '<div class="carousel-item" data-bs-interval="5000">';
-                                    echo     '<img src="./assets/fashion/'.$arrayCarrosselModa[$i].'" style="min-height: 700px;" class="w-100 image-row" alt="Carrossel Moda '.$i.'">';
+                                    echo     '<img src="./assets/fashion/'.h($arrayCarrosselModa[$i]).'" style="min-height: 700px;" class="w-100 image-row" alt="Carrossel Moda '.$i.'">';
                                     echo '</div>';
 
                                 }

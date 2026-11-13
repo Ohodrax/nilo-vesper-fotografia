@@ -81,7 +81,7 @@ async function processarEnvio(o) {
                     element.classList.add('is-valid');
                 }
                 
-                data_post = data_post + element.id + "=" + value;
+                data_post = data_post + encodeURIComponent(element.id) + "=" + encodeURIComponent(value);
             }
         }
     }
@@ -137,14 +137,19 @@ async function enviarContato(o){
 
 function http_post(url, data) {
 
-    return new Promise(response => {
+    return new Promise((response, reject) => {
         var http = new XMLHttpRequest();
         http.open('POST', url, true);
+        http.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content);
+        http.timeout = 45000;
+        http.onerror = () => reject(new Error('Falha de conexão'));
+        http.ontimeout = () => reject(new Error('Tempo de espera excedido'));
     
         //Send the proper header information along with the request
         http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
+            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -175,7 +180,7 @@ function showMessage(ret) {
 async function getMoreImages(o) {
     let url = "../ajax/a_renderSite_galleryImages.php";
     let reference = document.getElementById("referenceRef").value;
-    let data_post = `renderedRef=${document.getElementsByClassName("gallery-grid").length}&referenceRef=${reference}`;
+    let data_post = `renderedRef=${encodeURIComponent(document.getElementsByClassName("gallery-grid").length)}&referenceRef=${encodeURIComponent(reference)}`;
 
     o.remove();
 

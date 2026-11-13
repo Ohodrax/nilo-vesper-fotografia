@@ -9,11 +9,11 @@ Havia credenciais de banco **e SMTP** no código versionado. Foram removidas dos
 ## Estrutura e requisitos
 
 - Apache com `mod_rewrite`, `AllowOverride` para as regras aplicáveis e PHP 8.2–8.5. Não presumir que o document root se chame `httpdocs`; confirmar no painel e por SFTP. A aplicação usa `DOCUMENT_ROOT` e URLs absolutas, portanto deve ocupar a raiz do domínio, não um subdiretório.
-- Extensões: `pdo_mysql`, `fileinfo`, `mbstring`, `openssl`. Selecionar e conferir no PHP do domínio; a versão CLI do provedor pode ser diferente da versão FPM/Apache.
-- Banco existente, tabelas e stored procedures da aplicação devem estar provisionados; não há migração de banco neste deploy.
+- Extensões: `pdo_mysql`, `fileinfo`, `mbstring`, `openssl`, `gd`. Selecionar e conferir no PHP do domínio; a versão CLI do provedor pode ser diferente da versão FPM/Apache. Desativar `display_errors` e `display_startup_errors` no painel PHP; configurar diretórios privados graváveis para sessões e uploads temporários.
+- Provisionar o banco pelo procedimento em [database-setup.md](database-setup.md). O deploy não executa SQL. A aplicação atual usa transações PDO e não depende de stored procedures.
 - `index.php` encaminha rotas a `Router.php`/`RouteSwitch.php`. Rotas: `/`, `/home`, `/retratos`, `/personalidades`, `/moda`, `/corporativo`, `/clientes`, `/sobre`, `/contato`, `/login`, `/logout`, `/recovery` e `/admin`. Rotas desconhecidas retornam 404, inclusive nomes de métodos internos. Query strings e barra final são aceitas.
 - `assets/` contém mídia de produção, inclusive uploads. Arquivos existentes são preservados; arquivos versionados ausentes podem ser provisionados sem sobrescrever mídia.
-- A cópia versionada de PHPMailer é mantida neste PR; não há atualização ampla de dependências PHP nem auditoria de todos os endpoints legados. A CI cobre sintaxe e integração de configuração/autoload/rotas; os testes funcionais do site com banco real são uma etapa de homologação.
+- PHPMailer atualizado para 7.2.0, com `composer.lock` e auditoria na CI. Os testes de segurança usam MariaDB isolado e HTTP para exercitar SQL injection, escape de HTML, autorização, CSRF, uploads e recuperação de senha. A homologação no servidor real continua obrigatória.
 
 ## Configuração privada da aplicação
 
@@ -23,6 +23,7 @@ Exemplo fictício de INI, a ser criado pelo administrador no servidor:
 
 ```ini
 APP_URL="https://portfolio.example.com"
+APP_STATE_DIR="/example/private/paulo-bareta-state"
 DB_HOST="db.example.com"
 DB_PORT="3306"
 DB_NAME="example_database"
@@ -38,6 +39,10 @@ SMTP_FROM_NAME="Portfolio Example"
 ```
 
 Restrinja leitura ao usuário PHP/SFTP necessário (por exemplo, 0600/0640 conforme o provedor) e permita o caminho no `open_basedir` do domínio. Se o provedor não permitir variável de processo nem leitura fora do webroot, registre o bloqueio e ajuste o ambiente; não copie o segredo para arquivo público. Banco usa `utf8mb4`; Host HTTP não seleciona credenciais nem URL pública. SMTP exige certificado válido e 587/STARTTLS ou 465/TLS. Logs não exibem senha, DSN ou resposta SMTP bruta.
+
+`APP_STATE_DIR` guarda contadores de tentativas fora da raiz pública; precisa ser gravável pelo PHP e ter acesso restrito (0700). Sem a variável, usa `paulo-bareta-state` no diretório pai da aplicação. O limitador é compartilhado entre sessões no mesmo servidor. Não substitui uma proteção de borda contra ataques distribuídos. A aplicação usa cookies HttpOnly/SameSite=Lax, Secure quando APP_URL é HTTPS, timeout de sessão de 30 minutos e revalidação do usuário no banco a cada request. Apenas perfil 1 administra usuários. Troca de senha invalida sessões anteriores.
+
+Uploads aceitam PNG/JPEG até 8 MiB e 8 megapixels. Os bytes são decodificados e regravados pelo GD, com nome aleatório; nomes e caminhos enviados pelo navegador não determinam o destino. A substituição preserva arquivos antigos para backup/limpeza manual. Atualize e verifique as regras de `.htaccess` antes da ativação: seu arquivo remoto existente é preservado pelo deploy, portanto essa revisão precisa ser manual.
 
 ## Configurar GitHub Actions
 

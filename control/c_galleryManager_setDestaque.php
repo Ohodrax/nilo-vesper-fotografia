@@ -2,7 +2,8 @@
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
     
-    session_start();
+    require_post();
+    require_admin(false);
     
     $array_return = array("return" => false, "ref" => "");
 
@@ -11,7 +12,7 @@
         $id_image = $_POST['targetId'];
 
         $filters = array(
-            "id_image = ".$id_image
+            ['id_image', '=', $id_image]
         );
 
         $selectImage = new db_crud();

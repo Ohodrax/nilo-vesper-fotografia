@@ -170,7 +170,8 @@
                 toast.classList.add("toast-out");
             }, 5000);
             
-            toast.innerHTML = `${icon} ${msg}`;
+            toast.innerHTML = icon;
+            toast.appendChild(document.createTextNode(" " + String(msg)));
             
             toastBox.appendChild(toast);
 

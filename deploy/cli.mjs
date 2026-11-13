@@ -32,7 +32,7 @@ async function probe(sftp, config) {
     await sftp.put(Buffer.from(template.replaceAll('__PROBE_TOKEN__', token)), target);
     const response = await fetch(new URL(filename, config.publicUrl), { headers: { 'X-Deploy-Token': token }, redirect: 'error', signal: AbortSignal.timeout(20000) });
     const data = response.ok && await response.json();
-    if (!data || data.token !== token || data.php !== config.php || !['pdo_mysql', 'fileinfo', 'mbstring', 'openssl'].every(extension => data.extensions?.includes(extension)) || data.missing?.length) throw new Error('BLOCKED: versão PHP, extensões, domínio ou configuração externa não confirmados pelo servidor.');
+    if (!data || data.token !== token || data.php !== config.php || !['pdo_mysql', 'fileinfo', 'mbstring', 'openssl', 'gd'].every(extension => data.extensions?.includes(extension)) || data.missing?.length) throw new Error('BLOCKED: versão PHP, extensões, domínio ou configuração externa não confirmados pelo servidor.');
     return { php: data.php, extensions: data.extensions };
   } finally { if (await sftp.exists(target)) await sftp.delete(target); }
 }

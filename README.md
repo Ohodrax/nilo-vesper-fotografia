@@ -14,3 +14,5 @@ npm run deploy:plan
 ```
 
 `deploy:plan` é local e não acessa o servidor. A publicação permanece desativada até revisar o PR, rotacionar as credenciais antigas e validar o destino e os secrets. O projeto é independente do Spartun Digital.
+
+Configuração do banco e criação segura do administrador: [docs/database-setup.md](docs/database-setup.md).

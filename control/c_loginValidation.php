@@ -1,70 +1,26 @@
 <?php
-
-    header("Content-type: application/json");
-
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
-    
-    $array_return = array("return" => false, "ref" => "");
-    $proccess = true;
-
-    if (!array_key_exists("username", $_POST)) {
-        $proccess = false;
-        $array_return['ref'] = "Usuário não informado";
-    }
-    if (!array_key_exists("userpassword", $_POST) && $proccess) {
-        $proccess = false;
-        $array_return['ref'] = "Senha não informada";
-    }
-
-    if ($proccess) {
-        $username = $_POST['username'];
-        $userpass = $_POST['userpassword'];
-
-        if ($username == "" || $userpass == "") {
-            $proccess = false;
-            $array_return['ref'] = "Usuário /ou senha em branco(s)";
-        } else {
-            $filters = array(
-                "nome = '".$username."' or email = '".$username."'"
-            );
-
-            $orderby = "id_usuario desc";
-
-            $selectUser = new db_crud();
-            $selectUser->table   = "v_select_user_profile";
-            $selectUser->filters = $filters;
-            $selectUser->orderby = $orderby;
-            $ret_selectUser = $selectUser->default_select_data();
-
-            if (count($ret_selectUser) > 0) {
-                if ($ret_selectUser[0]['status'] == 1) {
-                    if (password_verify($userpass, $ret_selectUser[0]['senha'])) {
-
-                        session_id(md5($ret_selectUser[0]['id_usuario'].$ret_selectUser[0]['nome'].date("YmdHis")));
-                        
-                        session_start();
-
-                        $_SESSION['userName'] = $ret_selectUser[0]['nome'];
-                        $_SESSION['firstPage'] = $ret_selectUser[0]['first_page'];
-                        $_SESSION["showMessage"] = array("return" => "true", "ref" => "Seja bem vindo(a) ".$ret_selectUser[0]['nome']);
-
-                        $array_return['return'] = true;
-                        $array_return['ref'] = "Aguarde, por favor... ";
-                        
-                    } else {
-                        $proccess = false;
-                        $array_return['ref'] = "Senha incorreta ".$ret_selectUser[0]['nome'];
-                    }
-                } else {
-                    $proccess = false;
-                    $array_return['ref'] = "Conta de usuário inativa";
-                }
-            } else {
-                $proccess = false;
-                $array_return['ref'] = "Conta de usuário não encontrada";
-            }
-        }
-    }
-
-    echo json_encode($array_return);
-?>
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_post();
+rate_limit('login', 15, 900);
+$username = post_text('username');
+$password = $_POST['userpassword'] ?? '';
+if (strlen($password) > 1024) json_result(false, 'Dados inválidos.', 400);
+$db = new db_crud();
+$db->table = 'v_select_user_profile';
+$db->filters = [['any' => [['nome', '=', $username], ['email', '=', $username]]], ['status', '=', 1], ['status_perfil', '=', 1]];
+$db->orderby = 'id_usuario desc';
+$user = $db->default_select_data()[0] ?? null;
+// Run a password hash check even when no account matches.
+$hash = $user['senha'] ?? '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.';
+if (!$username || !$password || !password_verify($password, $hash) || !$user) json_result(false, 'Usuário ou senha inválidos.');
+session_regenerate_id(true);
+$_SESSION = [
+    'userId' => (int) $user['id_usuario'],
+    'userName' => $user['nome'],
+    'firstPage' => (int) $user['id_perfil'] === 1 ? 'a_renderAdmin_users.php' : 'a_renderAdmin_home.php',
+    'authVersion' => hash('sha256', $user['senha']),
+    'lastActivity' => time(),
+    'csrf' => bin2hex(random_bytes(32)),
+    'showMessage' => ['return' => true, 'ref' => 'Seja bem-vindo(a) ' . $user['nome']],
+];
+json_result(true, 'Aguarde, por favor...');

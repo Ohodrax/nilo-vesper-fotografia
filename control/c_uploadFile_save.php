@@ -1,127 +1,40 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
-
-    session_start();
-
-    $array_return = array("return" => false, "ref" => "");
-    $proccess     = true;
-
-    if (!array_key_exists("reference", $_POST) && $proccess) {
-        $proccess            = false;
-        $array_return['ref'] = "Referencia não identificada";
-
-        $array_return["debug"] = $_POST;
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_post();
+require_admin();
+rate_limit('upload', 30, 60);
+$reference = image_reference(post_text('reference', 30));
+$location = post_text('localization', 30);
+if (!in_array($location, ['carrossel_principal', 'gallery', 'capa_principal', 'banner_1', 'banner_2'], true)) json_result(false, 'Localização inválida.', 400);
+$file = $_FILES[0] ?? null;
+if (!$file || !is_string($file['tmp_name'] ?? null) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name']) || filesize($file['tmp_name']) > 8 * 1024 * 1024) json_result(false, 'Envie uma imagem PNG ou JPEG de até 8 MiB.', 400);
+$info = getimagesize($file['tmp_name']);
+if (!$info || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG], true) || $info[0] < 1 || $info[1] < 1 || $info[0] * $info[1] > 8000000) json_result(false, 'Imagem inválida ou maior que 8 megapixels.', 400);
+$expectedMime = $info[2] === IMAGETYPE_PNG ? 'image/png' : 'image/jpeg';
+if ((new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']) !== $expectedMime) json_result(false, 'Tipo de imagem inválido.', 400);
+if (!extension_loaded('gd')) json_result(false, 'Processamento de imagem indisponível.', 503);
+$image = $info[2] === IMAGETYPE_PNG ? imagecreatefrompng($file['tmp_name']) : imagecreatefromjpeg($file['tmp_name']);
+if (!$image) json_result(false, 'Imagem inválida.', 400);
+$name = $reference . '_' . $location . '_' . bin2hex(random_bytes(16)) . ($info[2] === IMAGETYPE_PNG ? '.png' : '.jpg');
+$target = asset_path($reference, $name);
+if ($info[2] === IMAGETYPE_PNG) { imagealphablending($image, false); imagesavealpha($image, true); }
+$pdo = (new mySqlConnection())->newConnection();
+$saved = $info[2] === IMAGETYPE_PNG ? imagepng($image, $target, 6) : imagejpeg($image, $target, 90);
+unset($image);
+if (!$saved) json_result(false, 'Não foi possível salvar a imagem.', 500);
+try {
+    $pdo->beginTransaction();
+    if (!in_array($location, ['gallery', 'carrossel_principal'], true)) {
+        $stmt = $pdo->prepare('DELETE FROM tb_image WHERE referencia = ? AND localizacao = ?');
+        $stmt->execute([$reference, $location]);
     }
-    
-    if (!array_key_exists("localization", $_POST) && $proccess) {
-        $proccess            = false;
-        $array_return['ref'] = "Localização não identificada";
-
-        $array_return["debug"] = $_POST;
-    }
-
-    if (count($_FILES) == 0 && $proccess) {
-        $proccess            = false;
-        $array_return['ref'] = "Imagem não identificada";
-
-        $array_return["debug"] = $_FILES;
-    }
-
-    $destinationFolder = $_SERVER['DOCUMENT_ROOT'] . "/assets/" . $_POST['reference'];
-
-    if (!file_exists($destinationFolder) && $proccess) {
-        $proccess            = false;
-        $array_return['ref'] = "Referencia desconhecida";
-
-        $array_return["debug"] = $destinationFolder . intval(file_exists($destinationFolder));
-    }
-
-    if ($proccess) {
-        $reference    = $_POST['reference'];
-        $localization = $_POST['localization'];
-
-        $supportedFiles = array(
-            "image/png",
-            "image/jpg",
-            "image/jpeg",
-        );
-
-        $getFileName     = $reference . "_" . $localization . "_" . $_FILES[0]['name'];
-        $getFileMimeType = mime_content_type($_FILES[0]['tmp_name']);
-
-        // checa se é um arquivo permitido
-        if (in_array($getFileMimeType, $supportedFiles) && $proccess) {
-
-            $fileTarget = $destinationFolder . "/" . $getFileName;
-
-            // se a imagem que esta sendo inserida faz parte de um carrossel, então ele vai inserir várias imagens da mesma referencia e do mesmo local, direfenciando apenas o 
-            // nome, caso contrário, for de um banner ou capa ou parallax ele sempre vai substituir;
-            $carrossel = array(
-                "carrossel_principal",
-                "gallery",
-            );
-
-            $replaceImage = in_array($localization, $carrossel) ? 1 : 0;
-
-            // processo de substituição de imagem uma vez que a referencia não é um carrossel
-            if (!boolval($replaceImage)) {
-                $filters = array(
-                    "referencia = '".$reference."'",
-                    "localizacao = '".$localization."'",
-                );
-
-                $selectReplaceImage = new db_crud();
-                $selectReplaceImage->table   = "tb_image";
-                $selectReplaceImage->filters = $filters;
-                $ret_selectReplaceImage = $selectReplaceImage->default_select_data();
-
-                if (count($ret_selectReplaceImage) > 0) {
-                    $replaceTarget = $destinationFolder . "/" . $ret_selectReplaceImage[0]['nome'];
-
-                    if (file_exists($replaceTarget)) {
-                        unlink($replaceTarget);
-                    }
-                }
-            }
-
-            if (move_uploaded_file($_FILES[0]['tmp_name'], $fileTarget)) {
-
-                // salvar nova imagem no db
-                $array_dataInsert = array(
-                    "nome"             => $getFileName,
-                    "referencia"       => $reference,
-                    "localizacao"      => $localization,
-                    "replaceReference" => $replaceImage,
-                    "user_ref"         => $_SESSION['userName']
-                );
-
-                $saveImageRef = new db_crud();
-                $saveImageRef->data = $array_dataInsert;
-                $saveImageRef->proc = "proc_insert_image";
-                $ret_saveImageRef=$saveImageRef->default_call_proc();
-
-                if ($ret_saveImageRef) {
-
-                    $array_return['return'] = true;
-                    $array_return['ref'] = "Arquivo salvo com sucesso";
-
-                    http_response_code(200);
-                } else {
-                    unlink($fileTarget);
-                    
-                    http_response_code(500);
-
-                    $array_return['ref'] = "Erro ao salvar arquivo no db";
-                }
-            } else {
-                $array_return['ref'] = "Erro ao enviar arquivo";
-            }
-
-        } elseif($proccess) {
-            $array_return['ref'] = "Tipo de arquivo não suportado, apenas PNG, JPG e JPEG são permitidos";
-        }    
-    }
-
-    echo json_encode($array_return);
-
-?>
+    $stmt = $pdo->prepare('INSERT INTO tb_image (nome, referencia, localizacao, criado_por, alterado_por) VALUES (?, ?, ?, ?, ?)');
+    $stmt->execute([$name, $reference, $location, $_SESSION['userName'], $_SESSION['userName']]);
+    $pdo->commit();
+} catch (Throwable $error) {
+    if ($pdo->inTransaction()) $pdo->rollBack();
+    unlink($target);
+    throw new RuntimeException('Não foi possível registrar a imagem.');
+}
+// Old files are preserved for backup/manual cleanup after replacement.
+json_result(true, 'Imagem salva com sucesso.');

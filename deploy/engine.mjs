@@ -15,7 +15,7 @@ export function remoteRoot(value) {
 export function deployable(value) {
   const name = relativePath(value);
   if (['.htaccess', 'index.php', 'Router.php', 'RouteSwitch.php'].includes(name)) return true;
-  if (['bin/_environment.php', 'bin/_variables.php', 'bin/_functions.php', 'bin/config.php', 'bin/classes/mySqlConnection.php', 'bin/classes/db_crud.php'].includes(name)) return true;
+  if (['bin/_environment.php', 'bin/_variables.php', 'bin/_functions.php', 'bin/config.php', 'bin/security.php', 'bin/password-reset.php', 'bin/classes/mySqlConnection.php', 'bin/classes/db_crud.php'].includes(name)) return true;
   if (/(^|\/)(?:\.|tests?\/|docs?\/|examples?\/)/i.test(name) || /(?:secret|private|config\.local|\.env|\.bak|\.old)/i.test(name)) return false;
   if (name === 'control/c_proccess_data.php') return false;
   return /^(?:ajax|control)\/[^/]+\.php$/.test(name)

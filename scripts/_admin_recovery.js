@@ -54,7 +54,8 @@ function showToast(msg, ret) {
         toast.classList.add("toast-out");
     }, 5000);
     
-    toast.innerHTML = `${icon} ${msg}`;
+    toast.innerHTML = icon;
+    toast.appendChild(document.createTextNode(" " + String(msg)));
     
     toastBox.appendChild(toast);
 
@@ -65,14 +66,19 @@ function showToast(msg, ret) {
 
 function http_post(url, data) {
 
-    return new Promise(response => {
+    return new Promise((response, reject) => {
         var http = new XMLHttpRequest();
         http.open('POST', url, true);
+        http.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content);
+        http.timeout = 45000;
+        http.onerror = () => reject(new Error('Falha de conexão'));
+        http.ontimeout = () => reject(new Error('Tempo de espera excedido'));
     
         //Send the proper header information along with the request
         http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
+            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -103,7 +109,7 @@ async function defineNewPassword(o) {
                 proccess = false;
                 emptyRef = emptyRef == "" ? element.name : `${emptyRef}, ${element.name}`;
             } else if (element.id.includes("form")) {
-                data_post = data_post == undefined ? `${element.id}=${element.value}` : `${data_post}&${element.id}=${element.value}`;
+                data_post = data_post == undefined ? `${encodeURIComponent(element.id)}=${encodeURIComponent(element.value)}` : `${data_post}&${encodeURIComponent(element.id)}=${encodeURIComponent(element.value)}`;
             }        
         }
     }

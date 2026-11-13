@@ -21,6 +21,15 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: isolated-ci-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=15
     strategy:
       fail-fast: false
       matrix:
@@ -36,11 +45,18 @@ jobs:
       - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: pdo_mysql, fileinfo, mbstring, openssl
+          extensions: pdo_mysql, fileinfo, mbstring, openssl, gd
           coverage: none
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run check:php
+      - run: composer validate --no-check-publish
+      - run: composer audit --locked
+      - run: node tests/security-http.mjs
+        env:
+          TEST_DB_USER: root
+          TEST_DB_PASSWORD: isolated-ci-only
+          TEST_DB_PORT: '3306'
       - run: npm run deploy:plan
   deploy:
     needs: validate

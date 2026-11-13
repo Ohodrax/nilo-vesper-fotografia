@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin();
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
 
@@ -21,9 +23,9 @@
     }
 
     $filters = array(
-        "id_image > 0",
-        "referencia = '".$reference."'",
-        "localizacao = 'gallery'",
+        ['id_image', '>', 0],
+        ['referencia', '=', $reference],
+        ['localizacao', '=', 'gallery'],
     );
 
     $orderby = "id_image desc";

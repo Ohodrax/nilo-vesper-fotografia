@@ -6,6 +6,7 @@ class Router extends RouteSwitch
     {
         $path = parse_url($requestUri, PHP_URL_PATH);
         $route = is_string($path) ? trim($path, '/') : '__not_found__';
+        if (preg_match('/\Arecovery\/[a-f0-9]{64}\z/D', $route)) $route = 'recovery';
         if ($route === '') $route = 'home';
         $routes = ['home', 'retratos', 'personalidades', 'moda', 'corporativo', 'clientes', 'sobre', 'contato', 'login', 'logout', 'recovery', 'admin'];
         if (!in_array($route, $routes, true)) {

@@ -2,7 +2,8 @@
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
 
-    session_start();
+    require_post();
+    require_admin(false);
 
     $array_return = array("return" => false, "ref" => "");
     $proccess     = true;
@@ -10,23 +11,22 @@
     if (!array_key_exists("refParamName", $_POST) && $proccess) {
         $proccess            = false;
         $array_return['ref'] = "Referencia não identificada";
-
-        $array_return["debug"] = $_POST;
     }
     
     if (!array_key_exists("refParamValue", $_POST) && $proccess) {
         $proccess            = false;
         $array_return['ref'] = "Valor não definido";
-
-        $array_return["debug"] = $_POST;
     }
     
     if ($proccess) {
         $refParamName  = $_POST['refParamName'];
         $refParamValue = $_POST['refParamValue'];
+        if (!in_array($refParamName, ['textarea_capa', 'textarea_clients_capa', 'textarea_about_capa', 'input_whatsapp_number', 'input_whatsapp_number_contact', 'input_email', 'input_instagram', 'input_facebook', 'input_linkedin'], true)) json_result(false, 'Campo inválido.', 400);
+        if (in_array($refParamName, ['input_instagram', 'input_facebook', 'input_linkedin'], true) && $refParamValue !== '' && safe_url($refParamValue) === '#') json_result(false, 'Informe um endereço HTTP ou HTTPS válido.', 400);
+        if ($refParamName === 'input_email' && !filter_var($refParamValue, FILTER_VALIDATE_EMAIL)) json_result(false, 'E-mail inválido.', 400);
 
         $filters = array(
-            "input_reference = '".$refParamName."'"
+            ['input_reference', '=', $refParamName]
         );
 
         $selectReplaceImage = new db_crud();

@@ -1,7 +1,9 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(false);
 
     if(session_status() == 1){
-        session_start();
+        app_session();
     }
 
     $referencePage = "";

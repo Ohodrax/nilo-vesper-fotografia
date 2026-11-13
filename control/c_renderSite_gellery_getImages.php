@@ -7,7 +7,8 @@
         include $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
 
         if (isset($_POST['renderedRef'])) {
-            $setFrom = $_POST['renderedRef'];
+            $setFrom = filter_var($_POST['renderedRef'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 10000]]);
+            if ($setFrom === false) json_result(false, 'Página inválida.', 400);
         }
 
         if (isset($_POST['referenceRef'])) {
@@ -15,12 +16,13 @@
         }
     }
     
+    $reference = image_reference($reference ?? 'pictures');
     $setTo = $setFrom * $limiter;
 
     $filters = array(
-        "localizacao = 'gallery'",
-        "referencia = '".$reference."'",
-        "status > 0"
+        ['localizacao', '=', 'gallery'],
+        ['referencia', '=', $reference],
+        ['status', '>', 0]
     );
 
     $orderby = "id_image desc limit ".$setTo.", ".$limiter;

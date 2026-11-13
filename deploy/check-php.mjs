@@ -19,4 +19,7 @@ for (const file of files) {
 const runtime = spawnSync(php, ['-d', 'error_reporting=32767', 'tests/php.php'], { encoding: 'utf8' });
 process.stdout.write(runtime.stdout || ''); process.stderr.write(runtime.stderr || '');
 if (runtime.status !== 0) process.exit(1);
+const security = spawnSync(php, ['-d', 'error_reporting=32767', 'tests/security.php'], { encoding: 'utf8' });
+process.stdout.write(security.stdout || ''); process.stderr.write(security.stderr || '');
+if (security.status !== 0) process.exit(1);
 console.log(`PHP lint: ${files.length} arquivos aprovados.`);
