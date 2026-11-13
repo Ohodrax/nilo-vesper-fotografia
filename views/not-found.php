@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -52,7 +53,7 @@
     <div class="container-fluid" data-aos="zoom-in">
         <div class="row justify-content-center align-items-center" style="height: 100vh;">
             <div class="col-auto">
-                <h1>Página não encontrada: <?php echo $name; ?></h1>
+                <h1>Página não encontrada: <?php echo h($name); ?></h1>
             </div>
         </div>
     </div>

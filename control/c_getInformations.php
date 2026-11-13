@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin();
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
 
     switch ($referencePage) {
@@ -44,8 +46,9 @@
     }
 
     if ($reference == "users") {
+        require_admin(true);
         $filters = array(
-            "id_usuario > 0"
+            ['id_usuario', '>', 0]
         );
     
         $orderby = "id_usuario asc";
@@ -58,8 +61,8 @@
     }
 
     $filters = array(
-        "id_image > 0",
-        "referencia = '".$reference."'"
+        ['id_image', '>', 0],
+        ['referencia', '=', $reference]
     );
 
     $orderby = "id_image desc";
@@ -71,8 +74,8 @@
     $ret_selecImages = $selecImages->default_select_data();
 
     $filters = array(
-        "id_parametro > 0",
-        "page_ref = '".$reference."'"
+        ['id_parametro', '>', 0],
+        ['page_ref', '=', $reference]
     );
 
     $selecParametro = new db_crud();

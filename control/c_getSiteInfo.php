@@ -8,8 +8,8 @@
     // Requisita as informações para capas, e banners
 
         $filters = array(
-            "localizacao not in ('gallery')",
-            "referencia = '".$reference."'"
+            ['localizacao', '!=', 'gallery'],
+            ['referencia', '=', $reference]
         );
 
         $selectImages = new db_crud();
@@ -44,8 +44,8 @@
 
         if ($reference == "home") {
             $filters = array(
-                "localizacao        = 'gallery'",
-                "destaque_carrossel = 1"
+                ['localizacao', '=', 'gallery'],
+                ['destaque_carrossel', '=', 1]
             );
     
             $selectImages = new db_crud();
@@ -82,8 +82,8 @@
     // Requisita as informações para contato
 
         $filters = array(
-            "id_parametro > 0",
-            "status       = 1",
+            ['id_parametro', '>', 0],
+            ['status', '=', 1],
         );
 
         $selecParametro = new db_crud();

@@ -1,0 +1,102 @@
+name: Validate and deploy to HelioHost
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Validate first; deploy and rollback require an exact destination confirmation
+        type: choice
+        options: [validate, deploy, rollback]
+        default: validate
+      confirm_target:
+        description: Exact HELIOHOST_REMOTE_DIR (required for deploy/rollback)
+        type: string
+      rollback_release:
+        description: Backup release ID (rollback only)
+        type: string
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: isolated-ci-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo_mysql, fileinfo, mbstring, openssl, gd
+          coverage: none
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run check:php
+      - run: composer validate --no-check-publish
+      - run: composer audit --locked
+      - run: node tests/security-http.mjs
+        env:
+          TEST_DB_USER: root
+          TEST_DB_PASSWORD: isolated-ci-only
+          TEST_DB_PORT: '3306'
+      - run: npm run deploy:plan
+  deploy:
+    needs: validate
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && vars.HELIOHOST_AUTO_DEPLOY == 'true'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: heliohost-production
+    concurrency:
+      group: paulo-bareta-heliohost-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Validate target or apply reviewed operation
+        env:
+          OPERATION: ${{ inputs.operation || 'deploy' }}
+          HELIOHOST_HOST: ${{ secrets.HELIOHOST_HOST }}
+          HELIOHOST_PORT: ${{ vars.HELIOHOST_PORT }}
+          HELIOHOST_USERNAME: ${{ secrets.HELIOHOST_USERNAME }}
+          HELIOHOST_PASSWORD: ${{ secrets.HELIOHOST_PASSWORD }}
+          HELIOHOST_SSH_KEY: ${{ secrets.HELIOHOST_SSH_KEY }}
+          HELIOHOST_KEY_PASSPHRASE: ${{ secrets.HELIOHOST_KEY_PASSPHRASE }}
+          HELIOHOST_HOST_KEY_SHA256: ${{ secrets.HELIOHOST_HOST_KEY_SHA256 }}
+          HELIOHOST_REMOTE_DIR: ${{ vars.HELIOHOST_REMOTE_DIR }}
+          HELIOHOST_BACKUP_DIR: ${{ vars.HELIOHOST_BACKUP_DIR }}
+          HELIOHOST_TARGET_ID: ${{ vars.HELIOHOST_TARGET_ID }}
+          HELIOHOST_PUBLIC_URL: ${{ vars.HELIOHOST_PUBLIC_URL }}
+          HELIOHOST_PHP_VERSION: ${{ vars.HELIOHOST_PHP_VERSION }}
+          HELIOHOST_ENABLED: ${{ vars.HELIOHOST_ENABLED }}
+          HELIOHOST_DESTINATION_VERIFIED: ${{ vars.HELIOHOST_DESTINATION_VERIFIED }}
+          HELIOHOST_HTACCESS_REVIEWED: ${{ vars.HELIOHOST_HTACCESS_REVIEWED }}
+          HELIOHOST_CONFIRM_TARGET: ${{ inputs.confirm_target }}
+          HELIOHOST_ROLLBACK_RELEASE: ${{ inputs.rollback_release }}
+        run: node deploy/cli.mjs "$OPERATION"

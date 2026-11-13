@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(false);
 
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Início</span></h1>";
 ?>
@@ -39,7 +41,7 @@
                             for ($i=0; $i < count($ret_selecImages); $i++) { 
                                 if ($ret_selecImages[$i]['localizacao'] == "carrossel_principal") {
                                     echo '<div class="single-image-box">';
-                                    echo    '<img src="../../assets/home/' . $ret_selecImages[$i]['nome'] . '" alt="Image">';
+                                    echo    '<img src="../../assets/home/' . h($ret_selecImages[$i]['nome']) . '" alt="Image">';
                                     echo    '<span onclick="deleteImage('.$ret_selecImages[$i]['id_image'].')"><i class="bi bi-trash"></i></span>';
                                     echo '</div>';
                                 }
@@ -66,7 +68,7 @@
             <h1 class="texto-destaque mb-4 text-end">VERDADE<br><span>&</span> PERFECCIONISMO</h1>
             <div class="row justify-content-lg-end">
                 <div class="col-12 col-lg-10">
-                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10" name="textarea_capa" onfocusout="updateTextParam(this)"><?php echo $textareaCapa; ?></textarea>
+                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10" name="textarea_capa" onfocusout="updateTextParam(this)"><?php echo h($textareaCapa); ?></textarea>
                 </div>
             </div>
         </div>
@@ -75,7 +77,7 @@
                 <input type="file" oninput="uploadImage(this, 'home', 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
 
                 <?php
-                    echo "<img src='../../assets/".$capaImage."' alt='Image'>";
+                    echo "<img src='../../assets/".h($capaImage)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">
@@ -103,7 +105,7 @@
                 <input type="file" oninput="uploadImage(this, 'home', 'banner_1')" accept="image/png, image/jpg, image/jpeg">
 
                 <?php
-                    echo "<img src='../../assets/".$banner1."' alt='Image'>";
+                    echo "<img src='../../assets/".h($banner1)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">
@@ -131,7 +133,7 @@
                 <input type="file" oninput="uploadImage(this, 'home', 'banner_2')" accept="image/png, image/jpg, image/jpeg">
 
                 <?php
-                    echo "<img src='../../assets/".$banner2."' alt='Image'>";
+                    echo "<img src='../../assets/".h($banner2)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">

@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(false);
 
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Sobre</span></h1>";
 
@@ -12,7 +14,7 @@
             <h1 class="texto-destaque mb-4 text-center text-md-end">POR TRÁS<br><span> DAS LENTES</span></h1>
             <div class="row justify-content-lg-end">
                 <div class="col-12 col-lg-10">
-                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10" name="textarea_about_capa" onfocusout="updateTextParam(this)"><?php echo $textareaCapa; ?></textarea>
+                    <textarea class="form-control person-form-control person-form-textarea mb-4 text-end" rows="10" name="textarea_about_capa" onfocusout="updateTextParam(this)"><?php echo h($textareaCapa); ?></textarea>
                 </div>
             </div>
         </div>
@@ -21,7 +23,7 @@
                 <input type="file" oninput="uploadImage(this, 'about', 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
                 
                 <?php
-                    echo "<img src='../../assets/".$capaImage."' alt='Image'>";
+                    echo "<img src='../../assets/".h($capaImage)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">
@@ -48,7 +50,7 @@
                 <input type="file" oninput="uploadImage(this, 'about', 'banner_1')" accept="image/png, image/jpg, image/jpeg">
                 
                 <?php
-                    echo "<img src='../../assets/".$banner1."' alt='Image'>";
+                    echo "<img src='../../assets/".h($banner1)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">

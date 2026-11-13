@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(true);
 
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>Usuários</span></h1>";
 
@@ -51,9 +53,9 @@
 
                                     echo "<tr>";                                        
                                     echo    "<td>".$value['id_usuario']."</td>";
-                                    echo    "<td>".$value['nome']."</td>";
-                                    echo    "<td>".$value['nome_perfil']."</td>";
-                                    echo    "<td>".$value['email']."</td>";
+                                    echo    "<td>".h($value['nome'])."</td>";
+                                    echo    "<td>".h($value['nome_perfil'])."</td>";
+                                    echo    "<td>".h($value['email'])."</td>";
                                     echo    "<td>".date("d/m/Y H:i", strtotime($value['data_criacao']))."</td>";
                                     echo    "<td>";
                                     echo       '<div class="form-check form-switch">';

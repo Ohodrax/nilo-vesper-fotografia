@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -56,14 +57,14 @@
                 
                 <br>
 
-                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo nl2br($textarea_about_capa); ?></p>
+                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo nl2br(h($textarea_about_capa)); ?></p>
             </div>
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row" style="height: 650px">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-row" style="height: 650px">';
+                        echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-row" style="height: 650px">';
                     }
                 ?>
             </div>
@@ -80,7 +81,7 @@
                     if ($banner1 == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="content-about-image-1">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="content-about-image-1">';
+                        echo '<img src="./assets/'.$reference.'/'.h($banner1).'" alt="Banner Destaque" class="content-about-image-1">';
                     }
                 ?>
             </div>

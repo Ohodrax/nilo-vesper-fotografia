@@ -1,37 +1,18 @@
 <?php
-
-    class mySqlConnection {
-
-        public function newConnection() {
-            // pega a url do site e define as variaveis de conexão de acordo com o servidor detectado
-            switch ($_SERVER['HTTP_HOST']) {
-                case 'localhost':
-                    $mysql_host     = "localhost";
-                    $mysql_db       = "paulo_bareta_fotografia";
-                    $mysql_username = "root";
-                    $mysql_password = "";
-                break;
-                
-                case 'dev-pbf.spark-it.com.br':
-                    $mysql_host     = "167.172.141.23";
-                    $mysql_db       = "jrmhepaxnp";
-                    $mysql_username = "jrmhepaxnp";
-                    $mysql_password = "s6Ks8ZUbqu";
-                break;
-                
-                default:
-                    $mysql_host     = "";
-                    $mysql_db       = "";
-                    $mysql_username = "";
-                    $mysql_password = "";
-                break;
-            }
-                
-            $pdo = new PDO('mysql:host='.$mysql_host.';dbname='.$mysql_db, $mysql_username, $mysql_password);
-
-
-            return $pdo;
+require_once dirname(__DIR__) . '/config.php';
+class mySqlConnection
+{
+    public function newConnection(): PDO
+    {
+        $config = database_options();
+        try {
+            return new PDO($config['dsn'], $config['user'], $config['password'], [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ]);
+        } catch (PDOException $error) {
+            throw new RuntimeException('Banco de dados indisponível. Verifique a configuração privada.');
         }
     }
-
-?>
+}

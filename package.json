@@ -1,0 +1,20 @@
+{
+  "name": "paulo-bareta-deploy-tools",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check:php": "node deploy/check-php.mjs",
+    "deploy:plan": "node deploy/cli.mjs plan",
+    "deploy:validate": "node deploy/cli.mjs validate",
+    "deploy:apply": "node deploy/cli.mjs deploy",
+    "deploy:rollback": "node deploy/cli.mjs rollback",
+    "test:security": "node tests/security-http.mjs"
+  },
+  "devDependencies": {
+    "ssh2-sftp-client": "^12.1.1"
+  }
+}

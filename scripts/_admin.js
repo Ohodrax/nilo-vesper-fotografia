@@ -113,7 +113,7 @@ function setLinkActive(o) {
 
 async function renderPage(o) {
     let refContent = o.innerHTML;
-    let data_post = `renderContent=${refContent}`;
+    let data_post = `renderContent=${encodeURIComponent(refContent)}`;
     let url = "../../ajax/a_renderAdmin_main.php";
 
     setLinkActive(o);
@@ -159,14 +159,19 @@ async function renderPage(o) {
 
 function http_post(url, data) {
 
-    return new Promise(response => {
+    return new Promise((response, reject) => {
         var http = new XMLHttpRequest();
         http.open('POST', url, true);
+        http.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content);
+        http.timeout = 45000;
+        http.onerror = () => reject(new Error('Falha de conexão'));
+        http.ontimeout = () => reject(new Error('Tempo de espera excedido'));
     
         //Send the proper header information along with the request
         http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
+            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -178,14 +183,19 @@ function http_post(url, data) {
 
 function http_post_file(url, data) {
 
-    return new Promise(response => {
+    return new Promise((response, reject) => {
         var http = new XMLHttpRequest();
         http.open('POST', url, true);
+        http.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content);
+        http.timeout = 45000;
+        http.onerror = () => reject(new Error('Falha de conexão'));
+        http.ontimeout = () => reject(new Error('Tempo de espera excedido'));
     
         //Send the proper header information along with the request
         // http.setRequestHeader('Content-type', 'multipart/form-data');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
+            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -218,7 +228,8 @@ function showToast(msg, ret) {
         toast.classList.add("toast-out");
     }, 5000);
     
-    toast.innerHTML = `${icon} ${msg}`;
+    toast.innerHTML = icon;
+    toast.appendChild(document.createTextNode(" " + String(msg)));
     
     toastBox.appendChild(toast);
 
@@ -229,10 +240,10 @@ function showToast(msg, ret) {
 
 async function renderModalContent(o) {
     let url = "../../ajax/a_modalUser_renderContent.php";
-    let data_post = `renderContent=${o.dataset.renderContent}`;
+    let data_post = `renderContent=${encodeURIComponent(o.dataset.renderContent)}`;
 
     if (o.dataset.targetId !== undefined) {
-        data_post = data_post + `&targetId=${o.dataset.targetId}`;
+        data_post = data_post + `&targetId=${encodeURIComponent(o.dataset.targetId)}`;
     }
 
     try {
@@ -277,13 +288,13 @@ async function performAction(o) {
                 proccess = false;
                 emptyRef = emptyRef == "" ? element.name : `${emptyRef}, ${element.name}`;
             } else if (element.id.includes("form")) {
-                data_post = data_post == undefined ? `${element.id}=${element.value}` : `${data_post}&${element.id}=${element.value}`;
+                data_post = data_post == undefined ? `${encodeURIComponent(element.id)}=${encodeURIComponent(element.value)}` : `${data_post}&${encodeURIComponent(element.id)}=${encodeURIComponent(element.value)}`;
             }        
         }
     }
 
     if (o.dataset.targetId !== undefined) {
-        data_post = `${data_post}&targetId=${o.dataset.targetId}`;
+        data_post = `${data_post}&targetId=${encodeURIComponent(o.dataset.targetId)}`;
     }
 
     if (proccess) {
@@ -336,7 +347,7 @@ async function performAction(o) {
 
 async function changeStatus(o) {
     let url = "../../control/c_adminUser_changeStatus.php";
-    let data_post = `targetId=${o.dataset.targetId}&setStatus=${o.checked}`;
+    let data_post = `targetId=${encodeURIComponent(o.dataset.targetId)}&setStatus=${encodeURIComponent(o.checked)}`;
 
     try {
         
@@ -369,9 +380,12 @@ async function changeStatus(o) {
 }
 
 async function logout() {
-    setTimeout(() => {
-        window.location.href = "/logout";
-    }, 1000);
+    try {
+        await http_post("/logout", "");
+        window.location.href = "/login";
+    } catch {
+        showToast("Não foi possível sair. Tente novamente.", false);
+    }
 }
 
 async function uploadImage(o, ref, loc) {
@@ -422,7 +436,7 @@ async function uploadImage(o, ref, loc) {
 
 async function deleteImage(id, reloadRef) {
     let url = "../../control/c_uploadFile_delete.php";
-    let data_post = `targetId=${id}`;
+    let data_post = `targetId=${encodeURIComponent(id)}`;
 
     if (id === undefined || +id === 0) {
         showToast("Ausência de parametro", false);
@@ -454,7 +468,7 @@ async function deleteImage(id, reloadRef) {
 
 async function updateTextParam(o) {
     let url = "../../control/c_adminSystem_updateTextParam.php";
-    let data_post = `refParamName=${o.name}&refParamValue=${o.value}`;
+    let data_post = `refParamName=${encodeURIComponent(o.name)}&refParamValue=${encodeURIComponent(o.value)}`;
 
     if (typeof o === undefined) {
         showToast("Erro do sistema", false);
@@ -493,7 +507,7 @@ async function updateTextParam(o) {
 
 async function setDestaque(id, reloadRef) {
     let url = "../../control/c_galleryManager_setDestaque.php";
-    let data_post = `targetId=${id}`;
+    let data_post = `targetId=${encodeURIComponent(id)}`;
 
     try {
         

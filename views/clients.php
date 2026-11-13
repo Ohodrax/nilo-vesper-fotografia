@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -56,7 +57,7 @@
                 
                 <br>
 
-                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo nl2br($textarea_clients_capa); ?></p>
+                <p class="text-end fs-4" data-aos="fade-up-right" data-aos-delay="300"><?php echo nl2br(h($textarea_clients_capa)); ?></p>
 
                 <br>
 
@@ -69,7 +70,7 @@
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row mt-2">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-row mt-2">';
+                        echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-row mt-2">';
                     }
                 ?>
             </div>
@@ -86,7 +87,7 @@
                     if ($banner1 == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="content-client-image-1">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="content-client-image-1">';
+                        echo '<img src="./assets/'.$reference.'/'.h($banner1).'" alt="Banner Destaque" class="content-client-image-1">';
                     }
                 ?>
             </div>

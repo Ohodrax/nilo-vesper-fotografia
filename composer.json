@@ -1,0 +1,6 @@
+{
+  "name": "ohodrax/paulo-bareta-fotografia",
+  "type": "project",
+  "require": { "php": "^8.2", "phpmailer/phpmailer": "^7.0" },
+  "config": { "sort-packages": true, "allow-plugins": {} }
+}

@@ -5,7 +5,7 @@ abstract class RouteSwitch
     protected function home()
     {
         if (!file_exists(__DIR__ . '/views/home.php')) {
-            
+
             // procura a página not found
             if (!file_exists(__DIR__ . '/views/not-found.php')) {
                 http_response_code(404);
@@ -142,7 +142,7 @@ abstract class RouteSwitch
                 require __DIR__ . '/views/not-found.php';
             }
         } else {
-            session_start();
+            app_session();
 
             $showMessage = false;
 
@@ -151,27 +151,20 @@ abstract class RouteSwitch
                 $message     = $_SESSION['showMessage'];
             }
 
-            if(array_key_exists("userName", $_SESSION)) {
+            if (current_user()) {
                 header("Location: /admin");
             } else {
-                session_destroy();
+                // Keep the CSRF session until an explicit logout.
                 require __DIR__ . '/views/admin/login.php';
             }
         }
     }
 
     protected function logout() {
-        session_start();
-
-        session_unset();
-        session_destroy();
-        session_abort();
-    
-        session_start();
-
-        $_SESSION["showMessage"] = array("return" => true, "ref" => "Você foi desconectado!");
-
-        header("Location: /login");
+        require_post();
+        $_SESSION = [];
+        session_regenerate_id(true);
+        json_result(true, 'Você foi desconectado.');
     }
 
     protected function recovery()
@@ -186,10 +179,10 @@ abstract class RouteSwitch
                 require __DIR__ . '/views/not-found.php';
             }
         } else {
-            session_start();
+            app_session();
 
-            if(array_key_exists("userName", $_SESSION)) {
-                session_destroy();
+            if (current_user()) {
+                // Keep the CSRF session until an explicit logout.
             }
 
             require __DIR__ . '/views/admin/recovery_password.php';
@@ -208,29 +201,27 @@ abstract class RouteSwitch
                 require __DIR__ . '/views/not-found.php';
             }
         } else {
-            session_start();
+            app_session();
 
             $showMessage = false;
 
             if (array_key_exists("showMessage", $_SESSION)) {
                 $showMessage = true;
                 $message     = $_SESSION['showMessage'];
-                
+
                 unset($_SESSION['showMessage']);
             }
 
-            if (array_key_exists("userName", $_SESSION)) {
+            if (current_user()) {
                 require __DIR__ . '/views/admin/administration_view.php';
             } else {
-                session_unset();
-                session_destroy();
-                session_abort();
+
 
                 header("Location: /login");
             }
         }
     }
-    
+
     public function __call($name, $arguments)
     {
         http_response_code(404);

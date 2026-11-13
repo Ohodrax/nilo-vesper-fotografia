@@ -1,3 +1,10 @@
+Options -Indexes
+<FilesMatch "(^\.|\.(ini|env|log|sql|bak|key|pem)$|^(package(-lock)?\.json|composer\.(json|lock))$)">
+    Require all denied
+</FilesMatch>
+RewriteEngine On
+RewriteRule ^(?:bin|vendor|deploy|tests|docs|database|views|node_modules)(?:/|$) - [F,L]
+RewriteRule ^assets/.*\.(?:php[0-9]*|phtml|phar)$ - [F,L,NC]
 # Ativação do RewriteEngine que nos permite gerenciar as rotas
 RewriteEngine On
 

@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -37,7 +38,7 @@
             if ($banner1 == 'default-image.jpg') {
                 echo '<img src="./assets/default-image.jpg" alt="Banner Destaque" class="banner-destaque">';
             } else {
-                echo '<img src="./assets/'.$reference.'/'.$banner1.'" alt="Banner Destaque" class="banner-destaque">';
+                echo '<img src="./assets/'.$reference.'/'.h($banner1).'" alt="Banner Destaque" class="banner-destaque">';
             }
         ?>
     </section>
@@ -57,7 +58,7 @@
                     if ($capaPrincipal == 'default-image.jpg') {
                         echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-retrato">';
                     } else {
-                        echo '<img src="./assets/'.$reference.'/'.$capaPrincipal.'" alt="Capa Principal" class="image-retrato">';
+                        echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-retrato">';
                     }
                 ?>
             </div>

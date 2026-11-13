@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -75,7 +76,7 @@
                     </label>
                 </div>
 
-                <input type="hidden" name="raid" value="<?php echo $raid; ?>" id="formRaid">
+                <input type="hidden" name="raid" value="<?php echo h($raid); ?>" id="formRaid">
     
                 <div data-aos="fade-up" data-aos-delay="500">
                     <button type="submit" class="btn" onclick="defineNewPassword(this)">Alterar</button>

@@ -15,14 +15,19 @@ window.onload = () => {
 
 function http_post(url, data) {
 
-    return new Promise(response => {
+    return new Promise((response, reject) => {
         var http = new XMLHttpRequest();
         http.open('POST', url, true);
+        http.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content);
+        http.timeout = 45000;
+        http.onerror = () => reject(new Error('Falha de conexão'));
+        http.ontimeout = () => reject(new Error('Tempo de espera excedido'));
     
         //Send the proper header information along with the request
         http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
+            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -55,7 +60,8 @@ function showToast(msg, ret) {
         toast.classList.add("toast-out");
     }, 5000);
     
-    toast.innerHTML = `${icon} ${msg}`;
+    toast.innerHTML = icon;
+    toast.appendChild(document.createTextNode(" " + String(msg)));
     
     toastBox.appendChild(toast);
 
@@ -89,7 +95,7 @@ async function processLogin(o) {
         return false;
     }
 
-    let data_post = `username=${username}&userpassword=${userpassword}`;
+    let data_post = `username=${encodeURIComponent(username)}&userpassword=${encodeURIComponent(userpassword)}`;
 
     try {
         await http_post(url, data_post).then(snapshot => {
@@ -157,7 +163,7 @@ async function runRecuperarSenha(o) {
         return false;
     }
 
-    let data_post = `emailsendrecovery=${emailsendrecovery}`;
+    let data_post = `emailsendrecovery=${encodeURIComponent(emailsendrecovery)}`;
 
     try {
         await http_post(url, data_post).then(snapshot => {

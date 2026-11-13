@@ -1,3 +1,4 @@
+<?php require_once dirname(__DIR__) . '/bin/_environment.php'; ?>
 
 <div class="modal-content">
     <div class="modal-header px-5 py-3">
@@ -7,7 +8,7 @@
     <div class="modal-body px-5 py-3 my-5">
         <div class="row">
             <div class="col-12 col-lg-6">
-                <p class="lead fs-2">Não foi possível carregar o conteúdo.: <?php echo $refError; ?></p>
+                <p class="lead fs-2">Não foi possível carregar o conteúdo.: <?php echo h($refError); ?></p>
             </div>
         </div>
     </div>

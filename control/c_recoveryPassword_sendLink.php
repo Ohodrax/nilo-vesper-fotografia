@@ -1,89 +1,28 @@
 <?php
-
-    header("Content-type: application/json");
-
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
-    
-    $array_return = array("return" => false, "ref" => "");
-    $proccess = true;
-
-    if (!array_key_exists("emailsendrecovery", $_POST)) {
-        $proccess = false;
-        $array_return['ref'] = "E-mail não informado";
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_post();
+rate_limit('recovery', 5, 900);
+$email = post_text('emailsendrecovery');
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) json_result(false, 'E-mail inválido.', 400);
+$db = new db_crud();
+$db->table = 'tb_usuario';
+$db->filters = [['email', '=', $email], ['status', '=', 1]];
+$user = $db->default_select_data()[0] ?? null;
+if ($user) {
+    $token = bin2hex(random_bytes(32));
+    $pdo = (new mySqlConnection())->newConnection();
+    $pdo->beginTransaction();
+    try {
+        $stmt = $pdo->prepare('UPDATE tb_recovery SET status = 0 WHERE id_usuario = ?');
+        $stmt->execute([$user['id_usuario']]);
+        $stmt = $pdo->prepare('INSERT INTO tb_recovery (id_usuario, hash, expire_time, criado_por, alterado_por) VALUES (?, ?, ?, ?, ?)');
+        $stmt->execute([$user['id_usuario'], hash('sha256', $token), date('Y-m-d H:i:s', time() + 900), 'RECOVERY', 'RECOVERY']);
+        $pdo->commit();
+    } catch (Throwable $error) { $pdo->rollBack(); throw new RuntimeException('Recuperação indisponível.'); }
+    $link = ROOT_URL . '/recovery/' . $token;
+    if (!send_email('Olá ' . h($user['nome']) . ',<br>Use este link em até 15 minutos:<br><a href="' . h($link) . '">Alterar senha</a>', 'Recuperação de senha', $user['email'])) {
+        $stmt = $pdo->prepare('UPDATE tb_recovery SET status = 0 WHERE hash = ?');
+        $stmt->execute([hash('sha256', $token)]);
     }
-
-    if ($proccess) {
-        $emailsendrecovery = $_POST['emailsendrecovery'];
-
-        if (!strpos($emailsendrecovery, "@") || !strpos($emailsendrecovery, ".")) {
-            $proccess = false;
-            $array_return['ref'] = "E-mail inválido";
-        } else {
-            $filters = array(
-                "id_usuario > 1",
-                "email = '".$emailsendrecovery."'",
-            );
-
-            $orderby = "id_usuario desc";
-
-            $selectUser = new db_crud();
-            $selectUser->table   = "tb_usuario";
-            $selectUser->filters = $filters;
-            $selectUser->orderby = $orderby;
-            $ret_selectUser = $selectUser->default_select_data();
-
-            if (count($ret_selectUser) > 0) {
-                $id_usuario          = $ret_selectUser[0]['id_usuario'];
-                $nome                = $ret_selectUser[0]['nome'];
-                $destinyAddr         = $ret_selectUser[0]['email'];
-                $status              = $ret_selectUser[0]['status'];
-                
-                $hashRecovery        = md5($nome.date("YmdHis"));
-                
-                $link_de_recuperacao = ROOT_URL . "/recovery/" . $hashRecovery;
-
-                if (boolval($status)) {
-                    $message = "Olá ".$nome.",<br><br>Segue link para alterar sua senha:<br><br>".$link_de_recuperacao."<br><br>Lembre-se este link irá expirar em 15 minutos!";
-                    $subject = "Recuperação de Senha";
-
-                    if (send_email($message, $subject, $destinyAddr)) {
-                        $array_data = array(
-                            "id_usuario"   => $id_usuario,
-                            "hash"         => $hashRecovery,
-                            "expire_time"  => date("Y-m-d H:i:s", strtotime("+15 minutes")),
-                            "criado_por"   => $nome,
-                            "alterado_por" => $nome,
-                        );
-    
-                        $insertNewUser = new db_crud();
-                        $insertNewUser->table = "tb_recovery";
-                        $insertNewUser->data  = $array_data;
-                        $ret_insertNewUser = $insertNewUser->default_insert_data();
-
-                        if ($ret_insertNewUser) {
-                            $array_return['return'] = true;
-                            $array_return['ref'] = "Verifique seu e-mail";
-                        } else {
-                            $array_return['return'] = null;
-                            $array_return['ref'] = "Erro ao salvar, e-mail enviado";
-                        }
-                        
-                    } else {
-                        $proccess = false;
-                        $array_return['ref'] = "Erro ao enviar e-mail de recuperação";
-                    }
-
-                } else {
-                    $proccess = false;
-                    $array_return['ref'] = $nome." sua conta está desativada";
-                }
-
-            } else {
-                $proccess = false;
-                $array_return['ref'] = "Conta de usuário não encontrada";
-            }
-        }
-    }
-
-    echo json_encode($array_return);
-?>
+}
+json_result(true, 'Solicitação recebida. Se houver uma conta ativa e o envio estiver disponível, você receberá as instruções.');

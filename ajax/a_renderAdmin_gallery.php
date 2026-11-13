@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(false);
 
     echo "<h1 class='my-5 texto-destaque text-center text-md-start'><span>".ucfirst($referencePage)."</span></h1>";
 
@@ -19,7 +21,7 @@
                 <input type="file" oninput="uploadImage(this, '<?php echo $reference; ?>', 'banner_1')" accept="image/png, image/jpg, image/jpeg">
 
                 <?php
-                    echo "<img src='../../assets/".$banner1."' alt='Image'>";
+                    echo "<img src='../../assets/".h($banner1)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">
@@ -44,7 +46,7 @@
                 <input type="file" oninput="uploadImage(this, '<?php echo $reference; ?>', 'capa_principal')" accept="image/png, image/jpg, image/jpeg">
                 
                 <?php
-                    echo "<img src='../../assets/".$capaImage."' alt='Image'>";
+                    echo "<img src='../../assets/".h($capaImage)."' alt='Image'>";
                 ?>
 
                 <div class="new-banner-box">

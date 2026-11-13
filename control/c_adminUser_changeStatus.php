@@ -2,7 +2,8 @@
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
     
-    session_start();
+    require_post();
+    require_admin(true);
     
     $array_return = array("return" => false, "ref" => "");
 

@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__) . '/bin/_environment.php';
+require_admin(true);
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/bin/_environment.php";
 
@@ -35,7 +37,7 @@
                     $id_usuario = intval($_POST['targetId']);
 
                     $filters = array(
-                        "id_usuario = ".$id_usuario
+                        ['id_usuario', '=', $id_usuario]
                     );
                 
                     $orderby = "id_usuario asc";
@@ -75,7 +77,7 @@
                     $id_usuario = intval($_POST['targetId']);
 
                     $filters = array(
-                        "id_usuario = ".$id_usuario
+                        ['id_usuario', '=', $id_usuario]
                     );
                 
                     $orderby = "id_usuario asc";
@@ -115,7 +117,7 @@
 
     if ($renderContent) {
         $filters = array(
-            "status = 1"
+            ['status', '=', 1]
         );
     
         $selectProfiles = new db_crud();
@@ -133,11 +135,11 @@
         <div class="row">
             <div class="col-12 col-lg-6 mb-3">
                 <label for="formName" class="custom-form-label">Nome</label>
-                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formName" required name="Nome" value="<?php echo $formInputName; ?>">
+                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formName" required name="Nome" value="<?php echo h($formInputName); ?>">
             </div>
             <div class="col-12 col-lg-6 mb-3">
                 <label for="formEmail" class="custom-form-label">E-mail</label>
-                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formEmail" required inputmode="email" name="E-mail" value="<?php echo $formInputEmail; ?>">
+                <input type="text" class="person-input-users" <?php echo $disableInputs; ?> id="formEmail" required inputmode="email" name="E-mail" value="<?php echo h($formInputEmail); ?>">
             </div>
         </div>
         <div class="row">
@@ -155,14 +157,14 @@
                                 echo "<option disabled selected value=''>Selecionar...</option>";
                                 
                                 foreach ($ret_selectProfiles as $key => $value) {
-                                    echo "<option value='".$value['id_perfil']."'>".$value['nome']."</option>";
+                                    echo "<option value='".$value['id_perfil']."'>".h($value['nome'])."</option>";
                                 }
                             } else {
                                 foreach ($ret_selectProfiles as $key => $value) {
                                     if ($formInputPerfil == $value['id_perfil']) {
-                                        echo "<option value='".$value['id_perfil']."' selected>".$value['nome']."</option>";
+                                        echo "<option value='".$value['id_perfil']."' selected>".h($value['nome'])."</option>";
                                     } else {
-                                        echo "<option value='".$value['id_perfil']."'>".$value['nome']."</option>";
+                                        echo "<option value='".$value['id_perfil']."'>".h($value['nome'])."</option>";
                                     }
                                 }
                             }
@@ -175,7 +177,7 @@
         </div>
     </div>
     <div class="modal-footer px-5 py-3">
-        <input type="hidden" name="action" id="formAction" value="<?php echo $content; ?>">
+        <input type="hidden" name="action" id="formAction" value="<?php echo h($content); ?>">
         <button type="button" class="btn-custom-default" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn-custom-default" <?php echo $dataSet; ?> onclick="performAction(this)"><?php echo $textContent; ?></button>
     </div>
