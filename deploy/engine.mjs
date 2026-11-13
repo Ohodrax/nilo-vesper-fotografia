@@ -2,7 +2,9 @@ import { createHash, randomUUID } from 'node:crypto';
 import { readFile, readdir, lstat } from 'node:fs/promises';
 import path from 'node:path';
 
-export const PROJECT = 'Ohodrax/paulo-bareta-fotografia';
+export const PROJECT = 'Ohodrax/nilo-vesper-fotografia';
+// Accept the immutable identity used by existing target markers and backups.
+const matchingProject = value => [PROJECT, 'Ohodrax/paulo-bareta-fotografia'].includes(value);
 export const hash = data => createHash('sha256').update(data).digest('hex');
 export function relativePath(value) {
   if (typeof value !== 'string' || !value || value.includes('\\') || value.startsWith('/') || value.split('/').some(part => !part || part === '.' || part === '..') || /[\x00-\x1f]/.test(value)) throw new Error('Caminho relativo inseguro.');
@@ -15,7 +17,7 @@ export function remoteRoot(value) {
 export function deployable(value) {
   const name = relativePath(value);
   if (['.htaccess', 'index.php', 'Router.php', 'RouteSwitch.php'].includes(name)) return true;
-  if (['bin/_environment.php', 'bin/_variables.php', 'bin/_functions.php', 'bin/config.php', 'bin/security.php', 'bin/password-reset.php', 'bin/classes/mySqlConnection.php', 'bin/classes/db_crud.php'].includes(name)) return true;
+  if (['bin/_environment.php', 'bin/_variables.php', 'bin/_functions.php', 'bin/config.php', 'bin/security.php', 'bin/branding.php', 'bin/image-upload.php', 'bin/password-reset.php', 'bin/classes/mySqlConnection.php', 'bin/classes/db_crud.php'].includes(name)) return true;
   if (/(^|\/)(?:\.|tests?\/|docs?\/|examples?\/)/i.test(name) || /(?:secret|private|config\.local|\.env|\.bak|\.old)/i.test(name)) return false;
   if (name === 'control/c_proccess_data.php') return false;
   return /^(?:ajax|control)\/[^/]+\.php$/.test(name)
@@ -84,7 +86,7 @@ export async function verifyTarget(sftp, config) {
     const file = await safePath(sftp, directory, filename);
     const data = await readRemote(sftp, file, 4096);
     const marker = data && JSON.parse(data.toString());
-    if (marker?.project !== PROJECT || marker.targetId !== config.targetId) throw new Error('Marcador de destino não confere. Valide o diretório manualmente.');
+    if (!matchingProject(marker?.project) || marker.targetId !== config.targetId) throw new Error('Marcador de destino não confere. Valide o diretório manualmente.');
   }
   return { root, backups };
 }
@@ -111,7 +113,7 @@ export async function rollback(sftp, config, release) {
   const data = await readRemote(sftp, await safePath(sftp, backups, `${release}/manifest.json`), 1024 * 1024);
   if (!data) throw new Error('Manifesto de rollback não encontrado.');
   const manifest = JSON.parse(data.toString());
-  if (manifest.project !== PROJECT || manifest.targetId !== config.targetId || manifest.root !== root || !Array.isArray(manifest.files)) throw new Error('Manifesto não corresponde ao destino.');
+  if (!matchingProject(manifest.project) || manifest.targetId !== config.targetId || manifest.root !== root || !Array.isArray(manifest.files)) throw new Error('Manifesto não corresponde ao destino.');
   const activeData = await readRemote(sftp, await safePath(sftp, backups, 'active-release.json'), 4096);
   const active = activeData ? JSON.parse(activeData.toString()).release : null;
   if (manifest.state === 'rolled-back') return { restored: 0, release };

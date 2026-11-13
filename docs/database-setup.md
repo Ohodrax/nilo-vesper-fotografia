@@ -1,6 +1,6 @@
 # Banco e credenciais no HelioHost
 
-As credenciais do banco não devem ser editadas no PHP nem enviadas ao GitHub. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` e `DB_PASSWORD` em variáveis do processo PHP ou em `paulo-bareta.private.ini` fora da raiz pública, conforme [heliohost-deploy.md](heliohost-deploy.md). O nome e o usuário devem ser copiados exatamente do painel, inclusive prefixos. A senha SMTP é independente da senha do banco.
+As credenciais do banco não devem ser editadas no PHP nem enviadas ao GitHub. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` e `DB_PASSWORD` em variáveis do processo PHP ou em `nilo-vesper.private.ini` fora da raiz pública, conforme [heliohost-deploy.md](heliohost-deploy.md). O nome e o usuário devem ser copiados exatamente do painel, inclusive prefixos. A senha SMTP é independente da senha do banco.
 
 ## Se o banco ainda está vazio
 

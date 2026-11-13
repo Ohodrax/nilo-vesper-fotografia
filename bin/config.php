@@ -1,6 +1,20 @@
 <?php
 declare(strict_types=1);
 
+function default_private_config(string $parent): string
+{
+    $current = $parent . '/nilo-vesper.private.ini';
+    $legacy = $parent . '/paulo-bareta.private.ini';
+    return !is_file($current) && is_file($legacy) ? $legacy : $current;
+}
+
+function default_state_directory(string $parent): string
+{
+    $current = $parent . '/nilo-vesper-state';
+    $legacy = $parent . '/paulo-bareta-state';
+    return !is_dir($current) && is_dir($legacy) ? $legacy : $current;
+}
+
 /** Environment wins; optional INI must live outside the document root. */
 function app_config(string $key, ?string $default = null): string
 {
@@ -10,7 +24,7 @@ function app_config(string $key, ?string $default = null): string
     if ($private === null) {
         $private = [];
         $configured = getenv('APP_CONFIG_FILE');
-        $path = $configured ?: dirname(__DIR__, 2) . '/paulo-bareta.private.ini';
+        $path = $configured ?: default_private_config(dirname(__DIR__, 2));
         if (is_file($path)) {
             $real = realpath($path);
             $root = realpath(dirname(__DIR__));

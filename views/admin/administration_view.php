@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
@@ -22,12 +22,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/admin-style.css">
 
-    <title>Admin Page</title>
+    <title>Administração | Nilo Vesper Fotografia</title>
 </head>
 <body>
     <header>
@@ -85,6 +85,8 @@
     <br>
 
     <section>
+        <p class="container-fluid content mt-4">JPEG e PNG: fotos grandes são adaptadas automaticamente para o site. O arquivo original permanece no seu dispositivo.</p>
+        <p class="container-fluid content" id="image-upload-status" role="status" aria-live="polite"></p>
         <div class="container-fluid content my-5" id="root">
             <?php include $_SERVER['DOCUMENT_ROOT'] . "/ajax/a_renderAdmin_main.php"; ?>
         </div>
@@ -96,7 +98,9 @@
     <div id="toastBox"></div>
 
     <!-- Custom JS -->
-    <script src="../../scripts/_admin.js"></script>
+    <script>window.imageUploadLimits = <?php echo js_value(image_upload_limits()); ?>;</script>
+    <script src="../../scripts/image-upload.js?v=1"></script>
+    <script src="../../scripts/_admin.js?v=2"></script>
 
     <?php
         // exibe a mensagem de logout

@@ -1,7 +1,7 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getSiteInfo.php"; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
@@ -21,12 +21,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
-    <title>Paulo Bareta Fotografia</title>
+    <title>Nilo Vesper Fotografia</title>
 
 </head>
 <body>
@@ -36,7 +36,7 @@
                 <nav class="container navbar align-items-center px-3" style="padding: 35px 0;transition: all 0.3s;">
                     <div data-aos="fade-down">
                         <a href="/" style="text-decoration: none;">
-                            <h1 style="color: var(--light-gray);font-weight: 400;transition: all 0.3s;margin: 0;">PAULO<span style="font-weight: 700;">BARETA</span>FOTOGRAFIA</h1>
+                            <h1 style="color: var(--light-gray);font-weight: 400;transition: all 0.3s;margin: 0;">NILO<span style="font-weight: 700;">VESPER</span>FOTOGRAFIA</h1>
                         </a>
                     </div>
     
@@ -62,7 +62,7 @@
             <div class="col-12 col-md-6 col-lg-5 text-end p-0 simple-image-div-box" style="height: 650px" data-aos="fade-up" data-aos-delay="300">
                 <?php
                     if ($capaPrincipal == 'default-image.jpg') {
-                        echo '<img src="./assets/default-image.jpg" alt="Capa Principal" class="image-row" style="height: 650px">';
+                        echo '<div class="brand-monogram" role="img" aria-label="Identidade visual Nilo Vesper"><span>NV</span><small>FOTOGRAFIA</small></div>';
                     } else {
                         echo '<img src="./assets/'.$reference.'/'.h($capaPrincipal).'" alt="Capa Principal" class="image-row" style="height: 650px">';
                     }

@@ -1,4 +1,5 @@
-AOS.init();
+// Animation availability must never prevent administration or uploads.
+globalThis.AOS?.init();
 
 var device;
 
@@ -195,7 +196,11 @@ function http_post_file(url, data) {
         // http.setRequestHeader('Content-type', 'multipart/form-data');
     
         http.onreadystatechange = function() {//Call a function when the state changes.
-            if (http.readyState === 4 && http.status !== 200) { reject(new Error("Requisição recusada (" + http.status + "). Atualize a página ou entre novamente.")); }
+            if (http.readyState === 4 && http.status !== 200) {
+                let message = http.status === 413 ? 'A hospedagem recusou o tamanho do arquivo. Atualize a página ou revise os limites de envio no Plesk.' : 'Envio recusado (' + http.status + '). Atualize a página ou entre novamente.';
+                try { const result = JSON.parse(http.responseText); if (typeof result.ref === 'string') message = result.ref.slice(0, 500); } catch {}
+                const error = new Error(message); error.status = http.status; reject(error);
+            }
             if(http.readyState == 4 && http.status == 200) {
                 response(http.responseText);
             }
@@ -388,50 +393,47 @@ async function logout() {
     }
 }
 
+let imageUploadInProgress = false;
 async function uploadImage(o, ref, loc) {
-    let files     = o.files;
-    let uploading = true;
-
-    if (typeof o !== "object" || ref === undefined || loc === undefined) {
-        showToast("Ausência de parametros", false);
-        
-        o.value = "";
-
-        return false;
+    if (!o || !o.files || !ref || !loc) { showToast('Selecione uma imagem e seu destino.', false); return; }
+    if (imageUploadInProgress) { showToast('Aguarde o envio em andamento.'); o.value = ''; return; }
+    const files = Array.from(o.files);
+    if (!files.length) return;
+    imageUploadInProgress = true;
+    o.disabled = true;
+    let saved = 0;
+    const status = document.getElementById('image-upload-status');
+    try {
+        for (let index = 0; index < files.length; index++) {
+            try {
+                if (status) status.textContent = 'Preparando foto ' + (index + 1) + ' de ' + files.length + '…';
+                const prepared = await PhotoUpload.prepare(files[index], window.imageUploadLimits);
+                const data = new FormData();
+                data.append('reference', ref);
+                data.append('localization', loc);
+                data.append(0, prepared.file);
+                if (status) status.textContent = 'Enviando foto ' + (index + 1) + ' de ' + files.length + '…';
+                const response = await http_post_file('../../control/c_uploadFile_save.php', data);
+                let result;
+                try { result = JSON.parse(response); }
+                catch { throw new Error('O servidor retornou uma resposta inesperada. Atualize a página e tente novamente.'); }
+                if (result.return !== true) throw new Error(typeof result.ref === 'string' ? result.ref : 'O servidor não confirmou o envio.');
+                saved++;
+            } catch (error) {
+                showToast(files[index].name + ': ' + (error.message || 'Não foi possível enviar a imagem.'), false);
+                if ([401, 403, 413, 429].includes(error.status)) break;
+            }
+        }
+        if (saved) {
+            showToast(saved === 1 ? 'Imagem salva com sucesso.' : saved + ' imagens salvas com sucesso.', true);
+            await renderPage(document.getElementById('nav-menu-' + ref));
+        }
+    } finally {
+        imageUploadInProgress = false;
+        o.disabled = false;
+        o.value = '';
+        if (status) status.textContent = saved + ' de ' + files.length + ' imagens salvas.';
     }
-
-    for (let index = 0; index < files.length; index++) {
-
-        if (uploading) {
-            const sendImage = new FormData();
-
-            sendImage.append("reference", ref);
-            sendImage.append("localization", loc);
-            sendImage.append(0, files[index]);
-
-            await http_post_file("../../control/c_uploadFile_save.php", sendImage).then(snapshot => {
-
-                try {
-                    let ret = JSON.parse(snapshot);
-
-                    showToast(ret.ref, ret.return);
-
-                    renderPage(document.getElementById("nav-menu-" + ref));
-                    
-                } catch (error) {
-                    console.log(error);
-                    showToast("Erro do sistema", false);
-                }
-
-            }).catch(error => {
-                console.log(error);
-                showToast("Erro no sistema", false);
-            })
-
-        }        
-    }
-
-    o.value = "";
 }
 
 async function deleteImage(id, reloadRef) {

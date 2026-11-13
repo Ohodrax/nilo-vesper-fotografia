@@ -17,7 +17,7 @@ const listener = createServer();
 listener.listen(0, '127.0.0.1'); await once(listener, 'listening');
 const port = listener.address().port; await new Promise(resolve => listener.close(resolve));
 const origin = 'http://127.0.0.1:' + port;
-const state = await mkdtemp(path.join(path.dirname(root), 'paulo-test-state-'));
+const state = await mkdtemp(path.join(path.dirname(root), 'nilo-test-state-'));
 let server, output = '', checks = 0;
 try {
   const fixture = run('prepare');
@@ -63,6 +63,17 @@ try {
   assert.equal(home.status, 200);
   assert.ok(home.text.includes('&lt;/textarea&gt;&lt;script&gt;alert(1)&lt;/script&gt;'));
   assert.ok(!home.text.includes('href="javascript:')); checks++;
+  for (const route of ['/', '/retratos', '/personalidades', '/moda', '/corporativo', '/clientes', '/sobre', '/contato', '/login']) {
+    const page = await visitor.request(route);
+    assert.equal(page.status, 200, route);
+    assert.ok(page.text.includes('Nilo Vesper Fotografia'), route);
+    assert.doesNotMatch(page.text, /paulo[\s_-]*bare(?:ta|te)|parceiros\.png|favicon\.ico|30 anos/i, route);
+    checks++;
+  }
+  const gallery = await visitor.post('/ajax/a_renderSite_galleryImages.php', { referenceRef: 'pictures', renderedRef: '0' });
+  assert.equal(gallery.status, 200);
+  assert.doesNotMatch(gallery.text, /barete/i);
+  checks++;
   const owner = new Browser();
   const admin = await owner.login('owner@example.invalid', 'test-password-owner-123');
   assert.equal(admin.status, 200);
@@ -78,6 +89,15 @@ try {
   forged.set('reference', 'pictures'); forged.set('localization', 'gallery');
   forged.set('0', new Blob(['<?php echo "injected"; ?>'], { type: 'image/png' }), 'payload.png');
   assert.equal((await owner.post('/control/c_uploadFile_save.php', forged)).status, 400); checks++;
+  // A small compressed file can exceed the pixel cap: reject it before GD decoding.
+  const largeHeader = Buffer.from(fixture.png, 'base64');
+  largeHeader.writeUInt32BE(6000, 16); largeHeader.writeUInt32BE(4000, 20);
+  const oversized = new FormData();
+  oversized.set('reference', 'pictures'); oversized.set('localization', 'gallery');
+  oversized.set('0', new Blob([largeHeader], { type: 'image/png' }), '24-megapixels.png');
+  const refused = await owner.post('/control/c_uploadFile_save.php', oversized);
+  assert.equal(refused.status, 400);
+  assert.match(JSON.parse(refused.text).ref, /resolução|processamento/); checks++;
   const valid = new FormData();
   valid.set('reference', 'pictures'); valid.set('localization', 'gallery');
   const png = Buffer.from(fixture.png, 'base64');
@@ -98,6 +118,35 @@ try {
   assert.equal((await owner.request('/logout')).status, 405);
   assert.equal((await owner.post('/logout', {})).status, 200);
   assert.equal((await owner.request('/ajax/a_renderAdmin_main.php')).status, 401); checks++;
+  if (process.env.TEST_BROWSER_UPLOAD === '1') {
+    const { chromium } = await import('@playwright/test');
+    const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || undefined });
+    try {
+      const page = await browser.newPage();
+      // Administration must work even if optional CDNs are unavailable.
+      await page.route('**/*', route => route.request().url().startsWith(origin + '/') ? route.continue() : route.abort());
+      await page.goto(origin + '/login');
+      await page.locator('#username').fill('owner@example.invalid');
+      await page.locator('#userpassword').fill('test-password-owner-123');
+      await Promise.all([page.waitForURL(origin + '/admin'), page.getByRole('button', { name: 'Entrar', exact: true }).click()]);
+      await page.evaluate(() => renderPage(document.getElementById('nav-menu-pictures')));
+      const input = page.locator('input[type=file][oninput*="gallery"]').first();
+      const uploadResponse = page.waitForResponse(response => response.url().endsWith('/control/c_uploadFile_save.php'));
+      // This approved 18 MP photo also exceeds the default 2 MiB PHP upload limit.
+      await input.setInputFiles(path.join(root, 'assets/clients/clients_banner_clientes.jpg'));
+      const response = await uploadResponse;
+      assert.equal(response.status(), 200);
+      assert.equal((await response.json()).return, true);
+      await page.waitForFunction(() => document.getElementById('image-upload-status').textContent === '1 de 1 imagens salvas.');
+      const uploadedImages = run('images');
+      assert.equal(uploadedImages.length, 1);
+      const deleted = await page.evaluate(async id => fetch('/control/c_uploadFile_delete.php', {
+        method: 'POST', headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content, 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ targetId: String(id) }),
+      }).then(response => response.json()), uploadedImages[0].id_image);
+      assert.equal(deleted.return, true);
+      checks++;
+    } finally { await browser.close(); }
+  }
   console.log('MariaDB + HTTP: ' + checks + ' security checks passed (schema, seed, SQLi, XSS, auth/roles, CSRF, uploads, reset and session revocation).');
 } catch (error) {
   console.error(output.slice(-12000).replace(/test-password-[^ \n]+/g, '[test password]'));

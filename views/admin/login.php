@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
@@ -22,9 +22,9 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     
-    <title>Admin Login</title>
+    <title>Login | Nilo Vesper Fotografia</title>
 
     <link rel="stylesheet" href="../../css/admin.css">
 </head>
@@ -107,7 +107,6 @@
     <div id="toastBox"></div>
 
     <script src="../scripts/_admin_login.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LflwJsnAAAAAK-pZDvzNjOwHAkGxpAzbhe-Ar6l"></script>
     <?php
         // exibe a mensagem de logout
         if ($showMessage) {

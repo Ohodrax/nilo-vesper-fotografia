@@ -1,6 +1,7 @@
 <?php
     require_once dirname(__DIR__) . "/vendor/autoload.php";
     require_once __DIR__ . "/config.php";
+    require_once __DIR__ . "/branding.php";
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -27,7 +28,7 @@
             $mail->SMTPOptions = ['ssl' => ['verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false]];
             $mail->Timeout = 20;
             $mail->CharSet = 'utf-8';
-            $mail->setFrom(app_config('SMTP_FROM'), app_config('SMTP_FROM_NAME', 'Paulo Bareta Fotografia'));
+            $mail->setFrom(app_config('SMTP_FROM'), brand_text(app_config('SMTP_FROM_NAME', 'Nilo Vesper Fotografia'), 'Nilo Vesper Fotografia'));
             $mail->addAddress($destinyAddr);
             $mail->isHTML(true);
             $mail->Subject = $subject;

@@ -20,6 +20,33 @@ header {
     width: 100%;
 }
 
+.offcanvas-header-nav .navbar h1 {
+    font-size: clamp(16px, 3.2vw, 40px);
+    white-space: nowrap;
+}
+
+.brand-monogram {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ededeb;
+    color: var(--light-gray);
+}
+.brand-monogram span {
+    font-size: clamp(96px, 14vw, 192px);
+    font-weight: 700;
+    line-height: 1;
+}
+.brand-monogram small {
+    margin-top: 24px;
+    font-size: 16px;
+    letter-spacing: 4px;
+}
+
 .container {
     max-width: 1440px;
     margin: 0 auto;

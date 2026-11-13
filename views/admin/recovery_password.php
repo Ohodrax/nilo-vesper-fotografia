@@ -1,7 +1,7 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/control/c_getInformations_recoveryPassword.php"; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta name="csrf-token" content="<?php echo h(csrf_token()); ?>">
     <meta charset="UTF-8">
@@ -21,12 +21,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
 
     <!-- Icons Ref -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
-    <title>Recuperar Senha</title>
+    <title>Recuperar senha | Nilo Vesper Fotografia</title>
 
     <link rel="stylesheet" href="../../css/admin.css">
 </head>

@@ -69,7 +69,7 @@ require_admin();
 
     $selecImages = new db_crud();
     $selecImages->table   = "tb_image";
-    $selecImages->filters = $filters;
+    $selecImages->filters = visible_media_filters($filters);
     $selecImages->orderby = $orderby;
     $ret_selecImages = $selecImages->default_select_data();
 

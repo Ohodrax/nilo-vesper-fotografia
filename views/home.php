@@ -21,17 +21,17 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
 
-    <title>Paulo Bareta Fotografia</title>
+    <title>Nilo Vesper Fotografia</title>
 
-    <meta property="og:title" content="Paulo Bareta Fotógrafo Profissional 30 anos de carreira">
-    <meta property="og:description" content="Fotógrafo profissional, campanhas publicitárias, Lookbook, Catálogo de moda, Still, fotos para mídias sociais, ​Making off, Retratos, Eventos,fotos corporativo.">
-    <meta property="og:url" content="https://www.paulobareta.com.br">
-    <meta property="og:site_name" content="bareta">
+    <meta property="og:title" content="Nilo Vesper Fotografia | Projeto demonstrativo">
+    <meta property="og:description" content="Portfólio demonstrativo de fotografia criado pela Spartun Digital, com identidade fictícia.">
+    <meta property="og:url" content="<?php echo h(ROOT_URL); ?>">
+    <meta property="og:site_name" content="Nilo Vesper Fotografia">
     <meta property="og:type" content="website">
     <meta name="keywords" content="Eventos, Fot&amp;oacute;grafo profissional, Life Style, Moda, Retrato, Still">
     

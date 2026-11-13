@@ -17,13 +17,13 @@ Havia credenciais de banco **e SMTP** no código versionado. Foram removidas dos
 
 ## Configuração privada da aplicação
 
-`bin/config.php` lê variáveis de processo primeiro. Como alternativa, lê um INI privado **fora da raiz pública**, cujo caminho absoluto pode ser informado por `APP_CONFIG_FILE`. Sem esta variável, procura `paulo-bareta.private.ini` no diretório pai da raiz da aplicação. Nunca coloca o arquivo privado no pacote ou no Git. `.env.example` documenta os nomes, mas o PHP **não carrega `.env` automaticamente**.
+`bin/config.php` lê variáveis de processo primeiro. Como alternativa, lê um INI privado **fora da raiz pública**, cujo caminho absoluto pode ser informado por `APP_CONFIG_FILE`. Sem esta variável, procura `nilo-vesper.private.ini` no diretório pai da raiz da aplicação. Nunca coloca o arquivo privado no pacote ou no Git. `.env.example` documenta os nomes, mas o PHP **não carrega `.env` automaticamente**.
 
 Exemplo fictício de INI, a ser criado pelo administrador no servidor:
 
 ```ini
 APP_URL="https://portfolio.example.com"
-APP_STATE_DIR="/example/private/paulo-bareta-state"
+APP_STATE_DIR="/example/private/nilo-vesper-state"
 DB_HOST="db.example.com"
 DB_PORT="3306"
 DB_NAME="example_database"
@@ -40,7 +40,7 @@ SMTP_FROM_NAME="Portfolio Example"
 
 Restrinja leitura ao usuário PHP/SFTP necessário (por exemplo, 0600/0640 conforme o provedor) e permita o caminho no `open_basedir` do domínio. Se o provedor não permitir variável de processo nem leitura fora do webroot, registre o bloqueio e ajuste o ambiente; não copie o segredo para arquivo público. Banco usa `utf8mb4`; Host HTTP não seleciona credenciais nem URL pública. SMTP exige certificado válido e 587/STARTTLS ou 465/TLS. Logs não exibem senha, DSN ou resposta SMTP bruta.
 
-`APP_STATE_DIR` guarda contadores de tentativas fora da raiz pública; precisa ser gravável pelo PHP e ter acesso restrito (0700). Sem a variável, usa `paulo-bareta-state` no diretório pai da aplicação. O limitador é compartilhado entre sessões no mesmo servidor. Não substitui uma proteção de borda contra ataques distribuídos. A aplicação usa cookies HttpOnly/SameSite=Lax, Secure quando APP_URL é HTTPS, timeout de sessão de 30 minutos e revalidação do usuário no banco a cada request. Apenas perfil 1 administra usuários. Troca de senha invalida sessões anteriores.
+`APP_STATE_DIR` guarda contadores de tentativas fora da raiz pública; precisa ser gravável pelo PHP e ter acesso restrito (0700). Sem a variável, usa `nilo-vesper-state` no diretório pai da aplicação. O limitador é compartilhado entre sessões no mesmo servidor. Não substitui uma proteção de borda contra ataques distribuídos. A aplicação usa cookies HttpOnly/SameSite=Lax, Secure quando APP_URL é HTTPS, timeout de sessão de 30 minutos e revalidação do usuário no banco a cada request. Apenas perfil 1 administra usuários. Troca de senha invalida sessões anteriores.
 
 Uploads aceitam PNG/JPEG até 8 MiB e 8 megapixels. Os bytes são decodificados e regravados pelo GD, com nome aleatório; nomes e caminhos enviados pelo navegador não determinam o destino. A substituição preserva arquivos antigos para backup/limpeza manual. Atualize e verifique as regras de `.htaccess` antes da ativação: seu arquivo remoto existente é preservado pelo deploy, portanto essa revisão precisa ser manual.
 
@@ -81,7 +81,7 @@ Variável **do repositório** `HELIOHOST_AUTO_DEPLOY`: ausente/`false` por padr�
 2. Conecte por SFTP com as mesmas credenciais e fingerprint verificadas. Na raiz do domínio crie **manualmente** `.deploy-target.json`; no diretório privado de backups crie `.deploy-backups.json`, ambos com:
 
    ```json
-   { "project": "Ohodrax/paulo-bareta-fotografia", "targetId": "example-confirmed-target" }
+   { "project": "Ohodrax/nilo-vesper-fotografia", "targetId": "example-confirmed-target" }
    ```
 
    O `targetId` deve corresponder à variável. O workflow nunca cria estes marcadores nem escolhe a raiz por você.

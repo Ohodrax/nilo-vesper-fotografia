@@ -1,5 +1,5 @@
 {
-  "name": "paulo-bareta-deploy-tools",
+  "name": "nilo-vesper-deploy-tools",
   "private": true,
   "type": "module",
   "engines": {
@@ -12,9 +12,11 @@
     "deploy:validate": "node deploy/cli.mjs validate",
     "deploy:apply": "node deploy/cli.mjs deploy",
     "deploy:rollback": "node deploy/cli.mjs rollback",
-    "test:security": "node tests/security-http.mjs"
+    "test:security": "node tests/security-http.mjs",
+    "test:images": "node tests/image-upload-browser.mjs"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "ssh2-sftp-client": "^12.1.1"
   }
 }

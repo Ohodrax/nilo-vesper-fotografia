@@ -73,7 +73,7 @@ function require_admin(bool $users = false): array {
 }
 /** Shared buckets: clearing cookies does not reset attempts; bounded disk usage. */
 function rate_limit(string $action, int $limit, int $seconds, string $identity = ''): void {
-    $directory = app_config('APP_STATE_DIR', dirname(__DIR__, 2) . '/paulo-bareta-state');
+    $directory = app_config('APP_STATE_DIR', default_state_directory(dirname(__DIR__, 2)));
     if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) throw new RuntimeException('Estado privado indisponível.');
     $resolved = realpath($directory);
     $root = str_replace('\\', '/', realpath(dirname(__DIR__)));

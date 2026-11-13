@@ -29,7 +29,7 @@
 
     $selectImages = new db_crud();
     $selectImages->table   = "tb_image";
-    $selectImages->filters = $filters;
+    $selectImages->filters = visible_media_filters($filters);
     $selectImages->orderby = $orderby;
     $ret_selectImages = $selectImages->default_select_data();
 

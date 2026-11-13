@@ -14,7 +14,7 @@
 
         $selectImages = new db_crud();
         $selectImages->table   = "tb_image";
-        $selectImages->filters = $filters;
+        $selectImages->filters = visible_media_filters($filters);
         $ret_selectImages = $selectImages->default_select_data();
 
         $arrayCarrosselImages = array();
@@ -50,7 +50,7 @@
     
             $selectImages = new db_crud();
             $selectImages->table   = "tb_image";
-            $selectImages->filters = $filters;
+            $selectImages->filters = visible_media_filters($filters);
             $ret_selectImages = $selectImages->default_select_data();
 
             $arrayCarrosselRetratos       = array();
@@ -79,60 +79,23 @@
     // Se a página for a home amigo.... seleciona os destaques de todas as galerias...
 
 
-    // Requisita as informações para contato
 
-        $filters = array(
-            ['id_parametro', '>', 0],
-            ['status', '=', 1],
-        );
-
-        $selecParametro = new db_crud();
-        $selecParametro->table   = "tb_parametro";
-        $selecParametro->filters = $filters;
-        $ret_selecParametro = $selecParametro->default_select_data();
-
-        if (count($ret_selecParametro) == 0) {
-            $textarea_capa                 = "";
-            $textarea_clients_capa         = "";
-            $textarea_about_capa           = "";
-            $input_whatsapp_number         = "";
-            $input_whatsapp_number_contact = "";
-            $input_email                   = "";
-            $input_instagram               = "";
-            $input_facebook                = "";
-            $input_linkedin                = "";
-        } else {
-            foreach ($ret_selecParametro as $key => $value) {
-                if ($value['input_reference'] == "textarea_capa") {
-                    $textarea_capa = $value['input_value'];
-                }
-                if ($value['input_reference'] == "textarea_clients_capa") {
-                    $textarea_clients_capa = $value['input_value'];
-                }
-                if ($value['input_reference'] == "textarea_about_capa") {
-                    $textarea_about_capa = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_whatsapp_number") {
-                    $input_whatsapp_number = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_whatsapp_number_contact") {
-                    $input_whatsapp_number_contact = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_email") {
-                    $input_email = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_instagram") {
-                    $input_instagram = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_facebook") {
-                    $input_facebook = $value['input_value'];
-                }
-                if ($value['input_reference'] == "input_linkedin") {
-                    $input_linkedin = $value['input_value'];
-                }
-            }
-        }
-
-    // Requisita as informações para contato
-
-?>
+$parameters = array_merge(brand_defaults(), array_fill_keys(['input_whatsapp_number', 'input_whatsapp_number_contact', 'input_email', 'input_instagram', 'input_facebook', 'input_linkedin'], ''));
+$selectParameters = new db_crud();
+$selectParameters->table = 'tb_parametro';
+$selectParameters->filters = [['status', '=', 1]];
+foreach ($selectParameters->default_select_data() as $parameter) {
+    $key = $parameter['input_reference'];
+    if (!array_key_exists($key, $parameters)) continue;
+    $value = brand_text((string) $parameter['input_value'], $parameters[$key]);
+    if ($value !== '') $parameters[$key] = $value;
+}
+$textarea_capa = $parameters['textarea_capa'];
+$textarea_clients_capa = $parameters['textarea_clients_capa'];
+$textarea_about_capa = $parameters['textarea_about_capa'];
+$input_whatsapp_number = $parameters['input_whatsapp_number'];
+$input_whatsapp_number_contact = $parameters['input_whatsapp_number_contact'];
+$input_email = $parameters['input_email'];
+$input_instagram = $parameters['input_instagram'];
+$input_facebook = $parameters['input_facebook'];
+$input_linkedin = $parameters['input_linkedin'];
