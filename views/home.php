@@ -30,7 +30,11 @@
 
     <meta property="og:title" content="Nilo Vesper Fotografia | Projeto demonstrativo">
     <meta property="og:description" content="Portfólio demonstrativo de fotografia criado pela Spartun Digital, com identidade fictícia.">
-    <meta property="og:url" content="<?php echo h(ROOT_URL); ?>">
+    <meta property="og:url" content="https://nilovesper.spartun.com.br/">
+    <meta property="og:image" content="https://nilovesper.spartun.com.br/assets/og-nilo-vesper-lens.png">
+    <meta property="og:image:secure_url" content="https://nilovesper.spartun.com.br/assets/og-nilo-vesper-lens.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Lente fotográfica com o nome Nilo Vesper Fotografia">
     <meta property="og:site_name" content="Nilo Vesper Fotografia">
     <meta property="og:type" content="website">
     <meta name="keywords" content="Eventos, Fot&amp;oacute;grafo profissional, Life Style, Moda, Retrato, Still">
