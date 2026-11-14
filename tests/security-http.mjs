@@ -67,7 +67,7 @@ try {
     const page = await visitor.request(route);
     assert.equal(page.status, 200, route);
     assert.ok(page.text.includes('Nilo Vesper Fotografia'), route);
-    assert.doesNotMatch(page.text, /paulo[\s_-]*bare(?:ta|te)|parceiros\.png|favicon\.ico|30 anos/i, route);
+    assert.doesNotMatch(page.text, /paulo[\s_-]*bare(?:ta|te)|parceiros\.png|30 anos/i, route);
     checks++;
   }
   const gallery = await visitor.post('/ajax/a_renderSite_galleryImages.php', { referenceRef: 'pictures', renderedRef: '0' });

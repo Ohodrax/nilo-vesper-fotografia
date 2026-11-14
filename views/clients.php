@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico?v=lens-1">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
