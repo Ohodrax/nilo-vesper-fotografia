@@ -22,7 +22,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico?v=lens-1">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?v=lens-2">
     
     <title>Login | Nilo Vesper Fotografia</title>
 
